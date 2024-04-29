@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information
 
-project = 'Zeta Edu Ros2 Version'
+project = 'Sunchon National University Version'
 # copyright = '2021, Graziella'
 author = 'Zetabank'
 
