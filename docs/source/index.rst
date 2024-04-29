@@ -44,7 +44,7 @@ AI 로봇 융합형 인재 교육
     edu/edu_2/hardware/index
     edu/edu_2/software/index
     edu/edu_2/making/index
-    edu/edu_2/control
+    edu/edu_2/teammission1
 
 .. toctree:: 
     :caption: DAY 3
@@ -52,8 +52,9 @@ AI 로봇 융합형 인재 교육
     :hidden:
     :titlesonly: 
 
-    edu/edu_4/making/index
-    edu/edu_4/control
+    edu/edu_3/rosintro2
+    edu/edu_4/competition
+    edu/edu_3/teammission2
 
 .. toctree:: 
     :caption: DAY 4
