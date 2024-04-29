@@ -2,7 +2,7 @@ ZetaBank Lecture
 ===================
 
 
-Welcome to ZetaBank Educational Program!!!
+Welcome to ZetaBank Educational Program!
 
 To foster future talent, we from ZetaBank provides the Philosophy of Education.
 
