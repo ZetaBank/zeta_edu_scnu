@@ -1,0 +1,338 @@
+.. _configuring_regulated_pure_puruit:
+
+Regulated Pure Pursuit
+#########################
+
+``zeta2_navigation_regulated_pp.launch.py`` 를 실행하면 체험해 볼 수 있습니다.
+
+Github_ 에서 소스 코드를 확인하실 수 있습니다.
+
+.. _Github: https://github.com/ros-planning/navigation2/tree/main/nav2_regulated_pure_pursuit_controller
+
+규제된 순수 추적(Regulated Pure Pursuit) 컨트롤러는 순수 추적 컨트롤러의 변형으로, 특히 서비스 및 산업 로봇의 요구를 고려합니다.
+
+경로의 곡률에 따라 선형 속도를 조절하여 높은 속도로 맹목적인 코너 주위의 초과 증폭을 줄이고 작업을 더 안전하게 수행할 수 있습니다.
+
+이는 순수 추적의 다른 변형보다 경로를 더 잘 따라가게 합니다.
+
+또한 다른 잠재적인 충돌이 근접할 때 로봇을 자동으로 감속시키는 휴리스틱을 제공합니다.
+
+또한 이러한 특징은 변속 가능한 내다보기 지점 기능을 구현하여 변속 가능한 안정적인 동작을 가능하게 합니다.
+
+더 자세한 정보는 패키지의 ``README`` 를 참조하십시오.
+
+규제된 순수 추적 매개변수
+*********************************
+
+:desired_linear_vel:
+
+  ============== ===========================
+  타입           기본값                    
+  -------------- ---------------------------
+  double         0.5 
+  ============== ===========================
+
+  설명
+    사용할 최대 선형 속도 (m/s).
+
+:lookahead_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.6
+  ============== =============================
+
+  설명
+    ``use_velocity_scaled_lookahead_dist`` 가 ``false`` 일 때 내다보기 지점을 찾을 때 사용하는 내다보기 거리 (m).
+
+:min_lookahead_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.3 
+  ============== =============================
+
+  설명
+    ``use_velocity_scaled_lookahead_dist`` 가 ``true`` 일 때 최소 내다보기 거리 (m) 임계값.
+
+:max_lookahead_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.9 
+  ============== =============================
+
+  설명
+    ``use_velocity_scaled_lookahead_dist`` 가 ``true`` 일 때 최대 내다보기 거리 (m) 임계값.
+
+:lookahead_time:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         1.5
+  ============== =============================
+
+  설명
+    ``use_velocity_scaled_lookahead_dist`` 가 ``true`` 일 때 속도를 예측하는 데 사용되는 시간 (s). 내다보기 이득이라고도 함.
+
+:rotate_to_heading_angular_vel:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         1.8            
+  ============== =============================
+
+  설명
+    ``use_rotate_to_heading`` 가 ``true`` 이면 사용되는 각속도입니다.
+
+:transform_tolerance:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.1      
+  ============== =============================
+
+  설명
+    TF 변환 허용 오차 (s).
+
+:use_velocity_scaled_lookahead_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           false            
+  ============== =============================
+
+  설명
+    속도에 따라 조정 가능한 내다보기 거리 또는 상수 ``lookahead_distance`` 를 사용할지 여부입니다.
+
+:min_approach_linear_velocity:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.05            
+  ============== =============================
+
+  설명
+    목표 지점에 접근할 때 진행을 보장하기 위해 적용되는 최소 속도 (m/s) 임계값입니다. ``> 0.01`` 이어야 합니다. 
+
+:approach_velocity_scaling_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.6            
+  ============== =============================
+
+  설명
+    감속을 시작할 경로 상의 남은 거리 (m). 코스트맵 너비의 절반보다 작아야 합니다. 
+
+:use_collision_detection:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           true           
+  ============== =============================
+
+  설명
+    충돌 검출을 활성화할지 여부입니다.
+
+:max_allowed_time_to_collision:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         1.0          
+  ============== =============================
+
+  설명
+    ``use_collision_detection`` 가 ``true`` 일 때 충돌을 확인하기 위해 속도 명령을 앞으로 프로젝션할 시간 (s). Pre-``Humble``에서는 ``max_allowed_time_to_collision`` 이었습니다.
+
+:use_regulated_linear_velocity_scaling:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           true           
+  ============== =============================
+
+  설명
+    경로 곡률에 대한 규제 기능 (예: 고 곡률 경로에서의 속도 감소)을 사용할지 여부입니다.
+
+:use_cost_regulated_linear_velocity_scaling:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           true            
+  ============== =============================
+
+  설명
+    장애물과의 근접성에 대한 규제 기능 (예: 장애물과의 가까운 근접성에서 감속)을 사용할지 여부입니다.
+
+:regulated_linear_scaling_min_radius:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.90       
+  ============== =============================
+
+  설명
+    ``use_regulated_linear_velocity_scaling`` 이 ``true`` 일 때 규제 기능이 트리거되는 회전 반경 (m). 더 작은 반경은 더 낮은 속도를 가져옵니다.
+
+:regulated_linear_scaling_min_speed:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.25            
+  ============== =============================
+
+  설명
+    규제된 휴리스틱이 높은 비용 공간과 높은 곡률을 가진 경로에서도 여전히 달성 가능하도록 하는 데 사용할 수 있는 최소 속도 (m/s). ``> 0.1`` 이어야 합니다.
+
+:use_fixed_curvature_lookahead:
+
+  ============== =============================
+  타입           기본값                      
+  -------------- -----------------------------
+  bool           false                        
+  ============== =============================
+
+  설명
+    곡률을 계산할 고정된 내다보기 거리를 사용할지 여부입니다. 내다보기 거리가 속도에 따라 변할 수 있기 때문에 대형 내다보기 거리의 경우 문제가 될 수 있는 참조 주기를 도입할 수 있습니다.
+
+:curvature_lookahead_dist:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.6            
+  ============== =============================
+
+  설명
+    경로에서 곡률을 감지하기 위해 내다보기할 거리입니다.
+
+:use_rotate_to_heading:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           true            
+  ============== =============================
+
+  설명
+    홀로노믹 플래너를 사용할 때 대략적인 헤딩 및 목표 방향으로 회전을 가능하게 할지 여부입니다. 장소에서 회전할 수 있는 모든 로봇 유형에 대해 권장됩니다. 
+
+    참고: ``use_rotate_to_heading`` 및 ``allow_reversing`` 모두 동시에 ``true`` 로 설정할 수 없습니다. 이렇게하면 모호한 상황이 발생합니다.
+
+:allow_reversing:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  bool           false            
+  ============== =============================
+
+  설명
+    경로가 후진하는 것을 포함하는 경우 로봇이 후진하도록 허용합니다(이는 방향 변경을 나타내는 방향 각도로 표시됨). smac_planner의 변형은 후진을 지원합니다. 자세한 내용은 :ref:`configuring_smac_planner` 를 확인하십시오.
+
+    참고: ``use_rotate_to_heading`` 및 ``allow_reversing`` 모두 동시에 ``true`` 로 설정할 수 없습니다. 이렇게하면 모호한 상황이 발생합니다.
+
+:rotate_to_heading_min_angle:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.785            
+  ============== =============================
+
+  설명
+    ``use_rotate_to_heading`` 가 ``true`` 인 경우 경로 방향과 시작 로봇 방향의 차이 (라디안)가 회전을 트리거하는 임계값입니다.
+
+:max_angular_accel:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         3.2          
+  ============== =============================
+
+  설명max_allowed_time_to_collision
+    ``use_rotate_to_heading`` 가 ``true`` 인 경우 헤딩으로 회전할 때 허용되는 최대 각 가속도 (rad/s/s).
+
+:max_robot_pose_search_dist:
+
+  ============== =================================================
+  타입           기본값
+  -------------- -------------------------------------------------
+  double         로컬 코스트맵 최대 범위 (max(너비, 높이) / 2)
+  ============== =================================================
+
+  설명
+    로봇 위치에 가장 가까운 자세를 검색하기 위해 전역 계획을 따라 통합된 거리의 상한입니다.
+    이 값을 변경할 필요가 있는 경우 지역 코스트맵을 벗어나지 않는 루프와 교차로가 있는 경로가 있습니다.
+    이 경우 이 값을 줄여서 바로 가기를 방지해야 합니다.
+    ``-1`` 로 설정하면 경로의 모든 지점에서 가장 가까운 경로 지점을 검색합니다.
+
+
+  
+
+Example
+*******
+.. code-block:: yaml
+
+  controller_server:
+    ros__parameters:
+      use_sim_time: True
+      controller_frequency: 20.0
+      min_x_velocity_threshold: 0.001
+      min_y_velocity_threshold: 0.5
+      min_theta_velocity_threshold: 0.001
+      progress_checker_plugins: ["progress_checker"] # progress_checker_plugin: "progress_checker" For Humble and older
+      goal_checker_plugins: ["goal_checker"]
+      controller_plugins: ["FollowPath"]
+
+      progress_checker:
+        plugin: "nav2_controller::SimpleProgressChecker"
+        required_movement_radius: 0.5
+        movement_time_allowance: 10.0
+      goal_checker:
+        plugin: "nav2_controller::SimpleGoalChecker"
+        xy_goal_tolerance: 0.25
+        yaw_goal_tolerance: 0.25
+        stateful: True
+      FollowPath:
+        plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+        desired_linear_vel: 0.5
+        lookahead_dist: 0.6
+        min_lookahead_dist: 0.3
+        max_lookahead_dist: 0.9
+        lookahead_time: 1.5
+        rotate_to_heading_angular_vel: 1.8
+        transform_tolerance: 0.1
+        use_velocity_scaled_lookahead_dist: false
+        min_approach_linear_velocity: 0.05
+        approach_velocity_scaling_dist: 0.6
+        use_collision_detection: true
+        max_allowed_time_to_collision: 1.0
+        use_regulated_linear_velocity_scaling: true
+        use_fixed_curvature_lookahead: false
+        curvature_lookahead_dist: 0.25
+        use_cost_regulated_linear_velocity_scaling: false
+        regulated_linear_scaling_min_radius: 0.9
+        regulated_linear_scaling_min_speed: 0.25
+        use_rotate_to_heading: true
+        allow_reversing: false
+        rotate_to_heading_min_angle: 0.785
+        max_angular_accel: 3.2
+        max_robot_pose_search_dist: 10.0

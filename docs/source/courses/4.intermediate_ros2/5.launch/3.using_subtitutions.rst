@@ -1,0 +1,376 @@
+대체 사용법 익히기
+===================
+
+**목표:** ROS 2 런치 파일에서 대체 사용법(substitutions)에 대해 배우기
+
+배경 지식
+----------
+
+런치 파일은 노드를 시작하고 서비스를 실행하며 프로세스를 실행하는 데 사용됩니다.
+이러한 일련의 작업에는 그들의 동작에 영향을 미치는 인수가 있을 수 있습니다.
+대체 사용법(substitutions)은 재사용 가능한 런치 파일을 설명할 때 더 많은 유연성을 제공하는 데 사용될 수 있습니다.
+대체 사용법은 실행 설명 실행 중에만 평가되는 변수로, 런치 설정, 환경 변수 또는 임의의 Python 표현식과 같은 특정 정보를 얻거나 계산하는 데 사용할 수 있습니다.
+
+이 튜토리얼에서는 ROS 2 런치 파일에서 대체 사용법의 사용 예제를 보여줍니다.
+
+전제 조건
+-------------
+
+이 튜토리얼은 :doc:`turtlesim </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 패키지를 사용합니다.
+또한 :doc:`패키지 생성 </courses/3.tutorial_client_libraries/3.create_package>` 에 익숙하다고 가정합니다.
+
+새로운 터미널을 열 때마다 ROS 2를 소스화하는 것을 잊지 마십시오. :doc:`여기 <../../Beginner-CLI-Tools/Configuring-ROS2-Environment>` 를 참고하세요.
+
+대체 사용법 사용하기
+-------------------
+
+1 패키지 생성 및 설정
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``ament_python`` 빌드 타입의 ``launch_tutorial`` 이라는 새 패키지를 만듭니다:
+
+.. code-block:: console
+
+  ros2 pkg create --build-type ament_python --license Apache-2.0 launch_tutorial
+
+그 패키지 내부에 ``launch`` 라는 디렉토리를 만듭니다:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: bash
+
+      mkdir launch_tutorial/launch
+
+
+마지막으로 패키지의 ``setup.py`` 에 변경 사항을 추가하여 런치 파일이 설치되도록 합니다:
+
+.. code-block:: python
+
+   import os
+   from glob import glob
+   from setuptools import setup
+
+   package_name = 'launch_tutorial'
+
+   setup(
+      # Other parameters ...
+      data_files=[
+         # ... Other data files
+         # Include all launch files.
+         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*')))
+      ]
+   )
+
+
+2 상위 런치 파일
+^^^^^^^^^^^^^^^^^^^^
+
+다른 런치 파일을 호출하고 인수를 전달할 수 있는 런치 파일을 만들어 봅시다.
+이를 위해 ``launch_tutorial`` 패키지의 ``launch`` 폴더에 ``example_main.launch.py`` 파일을 만듭니다.
+
+.. code-block:: python
+
+    from launch_ros.substitutions import FindPackageShare
+
+    from launch import LaunchDescription
+    from launch.actions import IncludeLaunchDescription
+    from launch.launch_description_sources import PythonLaunchDescriptionSource
+    from launch.substitutions import PathJoinSubstitution, TextSubstitution
+
+
+    def generate_launch_description():
+        colors = {
+            'background_r': '200'
+        }
+
+        return LaunchDescription([
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([
+                    PathJoinSubstitution([
+                        FindPackageShare('launch_tutorial'),
+                        'launch',
+                        'example_substitutions.launch.py'
+                    ])
+                ]),
+                launch_arguments={
+                    'turtlesim_ns': 'turtlesim2',
+                    'use_provided_red': 'True',
+                    'new_background_r': TextSubstitution(text=str(colors['background_r']))
+                }.items()
+            )
+        ])
+
+
+``example_main.launch.py`` 파일에서 ``FindPackageShare`` 대체 사용법은 ``launch_tutorial`` 패키지의 경로를 찾기 위해 사용됩니다.
+그런 다음 ``PathJoinSubstitution`` 대체 사용법을 사용하여 해당 패키지 경로와 ``example_substitutions.launch.py`` 파일 이름을 결합합니다.
+
+.. code-block:: python
+
+    PathJoinSubstitution([
+        FindPackageShare('launch_tutorial'),
+        'launch',
+        'example_substitutions.launch.py'
+    ])
+
+``IncludeLaunchDescription`` 액션에 ``turtlesim_ns`` 및 ``use_provided_red`` 인수가 포함된 ``launch_arguments`` 사전이 전달됩니다.
+``TextSubstitution`` 대체 사용법은 ``colors`` 사전의 ``background_r`` 키의 값을 정의하는 데 사용됩니다.
+
+.. code-block:: python
+
+    launch_arguments={
+        'turtlesim_ns': 'turtlesim2',
+        'use_provided_red': 'True',
+        'new_background_r': TextSubstitution(text=str(colors['background_r']))
+    }.items()
+
+3 대체 사용법 예제 런치 파일
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+이제 동일한 폴더에 ``example_substitutions.launch.py`` 파일을 만듭니다.
+
+.. code-block:: python
+
+    from launch_ros.actions import Node
+
+    from launch import LaunchDescription
+    from launch.actions import DeclareLaunchArgument, ExecuteProcess, TimerAction
+    from launch.conditions import IfCondition
+    from launch.substitutions import LaunchConfiguration, PythonExpression
+
+
+    def generate_launch_description():
+        turtlesim_ns = LaunchConfiguration('turtlesim_ns')
+        use_provided_red = LaunchConfiguration('use_provided_red')
+        new_background_r = LaunchConfiguration('new_background_r')
+
+        turtlesim_ns_launch_arg = DeclareLaunchArgument(
+            'turtlesim_ns',
+            default_value='turtlesim1'
+        )
+        use_provided_red_launch_arg = DeclareLaunchArgument(
+            'use_provided_red',
+            default_value='False'
+        )
+        new_background_r_launch_arg = DeclareLaunchArgument(
+            'new_background_r',
+            default_value='200'
+        )
+
+        turtlesim_node = Node(
+            package='turtlesim',
+            namespace=turtlesim_ns,
+            executable='turtlesim_node',
+            name='sim'
+        )
+        spawn_turtle = ExecuteProcess(
+            cmd=[[
+                'ros2 service call ',
+                turtlesim_ns,
+                '/spawn ',
+                'turtlesim/srv/Spawn ',
+                '"{x: 2, y: 2, theta: 0.2}"'
+            ]],
+            shell=True
+        )
+        change_background_r = ExecuteProcess(
+            cmd=[[
+                'ros2 param set ',
+                turtlesim_ns,
+                '/sim background_r ',
+                '120'
+            ]],
+            shell=True
+        )
+        change_background_r_conditioned = ExecuteProcess(
+            condition=IfCondition(
+                PythonExpression([
+                    new_background_r,
+                    ' == 200',
+                    ' and ',
+                    use_provided_red
+                ])
+            ),
+            cmd=[[
+                'ros2 param set ',
+                turtlesim_ns,
+                '/sim background_r ',
+                new_background_r
+            ]],
+            shell=True
+        )
+
+        return LaunchDescription([
+            turtlesim_ns_launch_arg,
+            use_provided_red_launch_arg,
+            new_background_r_launch_arg,
+            turtlesim_node,
+            spawn_turtle,
+            change_background_r,
+            TimerAction(
+                period=2.0,
+                actions=[change_background_r_conditioned],
+            )
+        ])
+
+``example_substitutions.launch.py`` 파일에서 ``turtlesim_ns``, ``use_provided_red``, 및 ``new_background_r`` 런치 설정이 정의됩니다.
+이들은 위의 변수에서 런치 인수의 값을 저장하고 필요한 액션에 전달하는 데 사용됩니다.
+이러한 ``LaunchConfiguration`` 대체 사용법을 사용하면 런치 설명의 어느 부분에서든 런치 인수의 값을 획득할 수 있습니다.
+
+``DeclareLaunchArgument`` 는 위의 런치 파일이나 콘솔에서 전달할 수 있는 런치 인수를 정의하는 데 사용됩니다.
+
+.. code-block:: python
+
+    turtlesim_ns = LaunchConfiguration('turtlesim_ns')
+    use_provided_red = LaunchConfiguration('use_provided_red')
+    new_background_r = LaunchConfiguration('new_background_r')
+
+    turtlesim_ns_launch_arg = DeclareLaunchArgument(
+        'turtlesim_ns',
+        default_value='turtlesim1'
+    )
+    use_provided_red_launch_arg = DeclareLaunchArgument(
+        'use_provided_red',
+        default_value='False'
+    )
+    new_background_r_launch_arg = DeclareLaunchArgument(
+        'new_background_r',
+        default_value='200'
+    )
+
+``namespace`` 가 ``turtlesim_ns`` ``LaunchConfiguration`` 대체 사용법으로 설정된 ``turtlesim_node`` 노드가 정의됩니다.
+
+.. code-block:: python
+
+    turtlesim_node = Node(
+        package='turtlesim',
+        namespace=turtlesim_ns,
+        executable='turtlesim_node',
+        name='sim'
+    )
+
+그런 다음 해당하는 ``cmd`` 인수를 사용하여 ``spawn_turtle`` 이라는 ``ExecuteProcess`` 액션을 정의합니다.
+이 명령은 turtleim 노드의 spawn service를 호출합니다.
+
+또한 ``LaunchConfiguration`` 대체 사용법을 사용하여 ``turtlesim_ns`` 런치 인수의 값을 가져와 명령 문자열을 구성합니다.
+
+.. code-block:: python
+
+    spawn_turtle = ExecuteProcess(
+        cmd=[[
+            'ros2 service call ',
+            turtlesim_ns,
+            '/spawn ',
+            'turtlesim/srv/Spawn ',
+            '"{x: 2, y: 2, theta: 0.2}"'
+        ]],
+        shell=True
+    )
+
+``change_background_r`` 및 ``change_background_r_conditioned`` 액션에 대해서도 동일한 접근 방식을 사용하여 turtlesim 배경의 빨간색 매개변수를 변경합니다.
+다른 점은 ``change_background_r_conditioned`` 액션이 제공된 ``new_background_r`` 인수가 ``200`` 이고 ``use_provided_red`` 런치 인수가 ``True`` 로 설정된 경우에만 실행됩니다.
+``IfCondition`` 내에서 평가는 ``PythonExpression`` 대체 사용법을 사용하여 수행됩니다.
+
+.. code-block:: python
+
+    change_background_r = ExecuteProcess(
+        cmd=[[
+            'ros2 param set ',
+            turtlesim_ns,
+            '/sim background_r ',
+            '120'
+        ]],
+        shell=True
+    )
+    change_background_r_conditioned = ExecuteProcess(
+        condition=IfCondition(
+            PythonExpression([
+                new_background_r,
+                ' == 200',
+                ' and ',
+                use_provided_red
+            ])
+        ),
+        cmd=[[
+            'ros2 param set ',
+            turtlesim_ns,
+            '/sim background_r ',
+            new_background_r
+        ]],
+        shell=True
+    )
+
+4 패키지 빌드
+^^^^^^^^^^^^^^^^^^^
+
+작업 공간의 루트로 이동하여 패키지를 빌드합니다:
+
+.. code-block:: console
+
+  colcon build
+
+빌드 후에는 작업 공간을 소스화하는 것을 잊지 마십시오.
+
+예제 실행
+-----------------
+
+이제 ``ros2 launch`` 명령을 사용하여 ``example_main.launch.py`` 파일을 실행할 수 있습니다.
+
+.. code-block:: console
+
+    ros2 launch launch_tutorial example_main.launch.py
+
+이렇게 하면 다음이 수행됩니다:
+
+1. 파란색 배경을 가진 turtlesim 노드 시작
+2. 두 번째 거북이 생성
+3. 2 초 후, 제공된 ``background_r`` 인수가 ``200`` 이고 ``use_provided_red`` 인수가 ``True`` 로 설정된 경우 분홍색으로 색 변경
+
+런치 인수 수정
+--------------------------
+
+제공된 런치 인수를 변경하려면 ``example_main.launch.py`` 의 ``launch_arguments`` 사전을 업데이트하거나 원하는 인수로 ``example_substitutions.launch.py`` 를 실행할 수 있습니다.
+런치 파일에 전달할 수 있는 인수를 확인하려면 다음 명령을 실행하세요:
+
+.. code-block:: console
+
+    ros2 launch launch_tutorial example_substitutions.launch.py --show-args
+
+이렇게 하면 런치 파일에 전달할 수 있는 인수와 기본값이 표시됩니다.
+
+.. code-block:: console
+
+    Arguments (pass arguments as '<name>:=<value>'):
+
+        'turtlesim_ns':
+            no description given
+            (default: 'turtlesim1')
+
+        'use_provided_red':
+            no description given
+            (default: 'False')
+
+        'new_background_r':
+            no description given
+            (default: '200')
+
+이제 다음과 같이 원하는 인수를 런치 파일에 전달할 수 있습니다:
+
+.. code-block:: console
+
+    ros2 launch launch_tutorial example_substitutions.launch.py turtlesim_ns:='turtlesim3' use_provided_red:='True' new_background_r:=200
+
+
+문서화
+-------------
+
+`런치 문서 <https://github.com/ros2/launch/blob/humble/launch/doc/source/architecture.rst>`_ 에서 사용 가능한 대체 사용법에 대한 자세한 정보를 제공합니다.
+
+요약
+-------
+
+이 튜토리얼에서는 런치 파일에서 대체 사용법 사용에 대해 배웠습니다.
+대체 사용법의 가능성과 재사용 가능한 런치 파일을 만드는 데 사용할 수 있는 능력을 배웠습니다.
+
+이제 런치 파일을 동적으로 수정하는 데 사용되는 이벤트 핸들러 사용에 대해 더 알아볼 수 있습니다. :doc:`이벤트 핸들러 사용하기 <./4.using_event_handlers>`

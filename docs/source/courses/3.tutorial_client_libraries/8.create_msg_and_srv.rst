@@ -1,0 +1,773 @@
+커스텀 msg와 srv 파일 생성하기
+=================================
+
+**목표:** 커스텀 인터페이스 파일(``.msg`` 및 ``.srv``)을 정의하고 Python 및 C++ 노드와 함께 사용합니다.
+
+
+배경
+----------
+
+이전 튜토리얼에서는 :doc:`토픽 </courses/2.tutorial_cli_ros2/4.topic>`, :doc:`서비스 </courses/2.tutorial_cli_ros2/5.service>` 및 간단한 퍼블리셔/서브스크라이버(:doc:`C++ <./4.writing_a_simple_cpp_pub_and_sub>` /:doc:`Python<./5.writing_a_simple_py_pub_and_sub>`)와 서비스/클라이언트(:doc:`C++ <./6.writing_a_simple_cpp_service_and_client>` /:doc:`Python<./7.writing_a_simple_py_service_and_client>`) 노드를 배우는 데 메시지 및 서비스 인터페이스를 활용했습니다.
+이 경우 사용된 인터페이스는 사전에 정의된 것이었습니다.
+
+사전에 정의된 인터페이스 정의를 사용하는 것이 좋은 관행이지만, 때로는 자신만의 메시지와 서비스를 정의해야 할 수도 있습니다.
+이 튜토리얼에서는 커스텀 인터페이스 정의를 생성하는 가장 간단한 방법을 소개합니다.
+
+사전 준비 사항
+-------------
+
+:doc:`ROS 2 워크스페이스 <./2.create_workspace>` 가 있어야 합니다.
+
+이 튜토리얼은 또한 이전 튜토리얼에서 생성한 퍼블리셔/서브스크라이버(:doc:`C++ <./4.writing_a_simple_cpp_pub_and_sub>` 및 :doc:`Python<./5.writing_a_simple_py_pub_and_sub>`) 및 서비스/클라이언트(:doc:`C++ <./6.writing_a_simple_cpp_service_and_client>` 및 :doc:`Python<./7.writing_a_simple_py_service_and_client>`) 패키지를 사용하여 새로운 커스텀 메시지를 시험해 봅니다.
+
+작업
+-----
+
+1 새 패키지 생성하기
+^^^^^^^^^^^^^^^^^^^^^^^
+
+이 튜토리얼에서는 자체 패키지에서 커스텀 ``.msg`` 및 ``.srv`` 파일을 생성한 다음 별도의 패키지에서 이를 활용할 것입니다.
+두 패키지 모두 동일한 워크스페이스에 있어야 합니다.
+
+이전 튜토리얼에서 생성한 pub/sub 및 서비스/클라이언트 패키지를 사용할 예정이므로, 해당 패키지와 동일한 워크스페이스(``ros2_ws/src``)에 있는지 확인한 후 다음 명령을 실행하여 새 패키지를 생성하세요:
+
+.. code-block:: console
+
+  ros2 pkg create --build-type ament_cmake --license Apache-2.0 tutorial_interfaces
+
+``tutorial_interfaces`` 는 새 패키지의 이름입니다.
+패키지는 CMake 패키지여야 하며, 이는 메시지와 서비스를 어떤 유형의 패키지에서 사용할 수 있는지를 제한하지 않습니다.
+CMake 패키지에서 커스텀 인터페이스를 생성한 다음, 마지막 섹션에서 다룰 C++ 또는 Python 노드에서 사용할 수 있습니다.
+
+``.msg`` 및 ``.srv`` 파일은 각각 ``msg`` 및 ``srv`` 라는 디렉토리에 위치해야 합니다.
+``ros2_ws/src/tutorial_interfaces`` 에서 디렉토리를 생성하세요:
+
+.. code-block:: console
+
+  mkdir msg srv
+
+2 커스텀 정의 생성하기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+2.1 msg 정의
+~~~~~~~~~~~~~~~~~~
+
+방금 생성한 ``tutorial_interfaces/msg`` 디렉토리에 ``Num.msg`` 라는 새 파일을 만들고 데이터 구조를 선언하는 한 줄의 코드를 추가하세요:
+
+.. code-block:: console
+
+    int64 num
+
+이것은 ``num`` 이라는 단일 64비트 정수를 전송하는 커스텀 메시지입니다.
+
+또한 ``tutorial_interfaces/msg`` 디렉토리에 ``Sphere.msg`` 라는 새 파일을 다음 내용으로 생성하세요:
+
+.. code-block:: console
+
+    geometry_msgs/Point center
+    float64 radius
+
+이 커스텀 메시지는 다른 메시지 패키지의 메시지(``geometry_msgs/Point``)를 사용합니다.
+
+2.2 srv 정의
+~~~~~~~~~~~~~~~~~~
+
+``tutorial_interfaces/srv`` 디렉토리로 돌아가서, 다음 요청 및 응답 구조를 가진 ``AddThreeInts.srv`` 라는 새 파일을 만드세요:
+
+.. code-block:: console
+
+  int64 a
+  int64 b
+  int64 c
+  ---
+  int64 sum
+
+이것은 ``a``, ``b``, ``c`` 라는 세 개의 정수를 요청하고 ``sum`` 이라는 정수로 응답하는 커스텀 서비스입니다.
+
+3 ``CMakeLists.txt``
+^^^^^^^^^^^^^^^^^^^^
+
+정의한 인터페이스를 C++ 및 Python과 같은 언어로 변환하여 해당 언어에서 사용할 수 있도록 하려면, ``CMakeLists.txt`` 에 다음 줄을 추가하세요:
+
+.. code-block:: cmake
+
+  find_package(geometry_msgs REQUIRED)
+  find_package(rosidl_default_generators REQUIRED)
+
+  rosidl_generate_interfaces(${PROJECT_NAME}
+    "msg/Num.msg"
+    "msg/Sphere.msg"
+    "srv/AddThreeInts.srv"
+    DEPENDENCIES geometry_msgs # Sphere.msg에 대한 의존성인 geometry_msgs를 추가하세요
+  )
+
+4 ``package.xml``
+^^^^^^^^^^^^^^^^^
+
+인터페이스가 언어별 코드를 생성하기 위해 ``rosidl_default_generators`` 에 의존하기 때문에, 이에 대한 빌드 도구 의존성을 선언해야 합니다.
+``rosidl_default_runtime`` 은 나중에 인터페이스를 사용할 수 있도록 필요한 런타임 또는 실행 단계의 의존성입니다.
+``rosidl_interface_packages`` 는 패키지인 ``tutorial_interfaces`` 가 연관되어야 하는 의존성 그룹의 이름이며, ``<member_of_group>`` 태그를 사용하여 선언됩니다.
+
+``package.xml`` 의 ``<package>`` 요소 내에 다음 줄을 추가하세요:
+
+.. code-block:: xml
+
+  <depend>geometry_msgs</depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+5 ``tutorial_interfaces`` 패키지 빌드하기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+커스텀 인터페이스 패키지의 모든 부분이 준비되었으므로, 이제 패키지를 빌드할 수 있습니다.
+워크스페이스의 루트(``~/ros2_ws``)에서 다음 명령을 실행하세요:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      colcon build --packages-select tutorial_interfaces
+
+
+이제 다른 ROS 2 패키지에서 인터페이스를 찾을 수 있게 됩니다.
+
+6 msg 및 srv 생성 확인하기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+새 터미널을 열고 워크스페이스(``ros2_ws``) 내에서 다음 명령을 실행하여 소스하세요:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      source install/setup.bash
+
+
+이제 ``ros2 interface show`` 명령을 사용하여 인터페이스 생성이 성공했는지 확인할 수 있습니다:
+
+.. code-block:: console
+
+  ros2 interface show tutorial_interfaces/msg/Num
+
+다음을 반환해야 합니다:
+
+.. code-block:: console
+
+    int64 num
+
+그리고
+
+.. code-block:: console
+
+  ros2 interface show tutorial_interfaces/msg/Sphere
+
+다음을 반환해야 합니다:
+
+.. code-block:: console
+
+    geometry_msgs/Point center
+            float64 x
+            float64 y
+            float64 z
+    float64 radius
+
+그리고
+
+.. code-block:: console
+
+  ros2 interface show tutorial_interfaces/srv/AddThreeInts
+
+다음을 반환해야 합니다:
+
+.. code-block:: console
+
+    int64 a
+    int64 b
+    int64 c
+    ---
+    int64 sum
+
+7 새 인터페이스 테스트하기
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+이 단계에서는 이전 튜토리얼에서 생성한 패키지를 사용할 수 있습니다.
+노드, ``CMakeLists.txt`` 및 ``package.xml`` 파일을 몇 가지 간단하게 수정하여 새 인터페이스를 사용할 수 있습니다.
+
+7.1 ``Num.msg`` 를 pub/sub으로 테스트하기
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+이전 튜토리얼에서 생성한 발행자/구독자 패키지(:doc:`C++ <./4.writing_a_simple_cpp_pub_and_sub>` 또는 :doc:`Python <./5.writing_a_simple_py_pub_and_sub>`)를 몇 가지 수정하면 ``Num.msg`` 를 작동시킬 수 있습니다.
+표준 문자열 메시지를 숫자 메시지로 변경하므로 출력이 약간 달라집니다.
+
+**Publisher**
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      #include <chrono>
+      #include <memory>
+
+      #include "rclcpp/rclcpp.hpp"
+      #include "tutorial_interfaces/msg/num.hpp"                                            // CHANGE
+
+      using namespace std::chrono_literals;
+
+      class MinimalPublisher : public rclcpp::Node
+      {
+      public:
+        MinimalPublisher()
+        : Node("minimal_publisher"), count_(0)
+        {
+          publisher_ = this->create_publisher<tutorial_interfaces::msg::Num>("topic", 10);  // CHANGE
+          timer_ = this->create_wall_timer(
+            500ms, std::bind(&MinimalPublisher::timer_callback, this));
+        }
+
+      private:
+        void timer_callback()
+        {
+          auto message = tutorial_interfaces::msg::Num();                                   // CHANGE
+          message.num = this->count_++;                                                     // CHANGE
+          RCLCPP_INFO_STREAM(this->get_logger(), "Publishing: '" << message.num << "'");    // CHANGE
+          publisher_->publish(message);
+        }
+        rclcpp::TimerBase::SharedPtr timer_;
+        rclcpp::Publisher<tutorial_interfaces::msg::Num>::SharedPtr publisher_;             // CHANGE
+        size_t count_;
+      };
+
+      int main(int argc, char * argv[])
+      {
+        rclcpp::init(argc, argv);
+        rclcpp::spin(std::make_shared<MinimalPublisher>());
+        rclcpp::shutdown();
+        return 0;
+      }
+
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      import rclpy
+      from rclpy.node import Node
+
+      from tutorial_interfaces.msg import Num                            # CHANGE
+
+
+      class MinimalPublisher(Node):
+
+          def __init__(self):
+              super().__init__('minimal_publisher')
+              self.publisher_ = self.create_publisher(Num, 'topic', 10)  # CHANGE
+              timer_period = 0.5
+              self.timer = self.create_timer(timer_period, self.timer_callback)
+              self.i = 0
+
+          def timer_callback(self):
+              msg = Num()                                                # CHANGE
+              msg.num = self.i                                           # CHANGE
+              self.publisher_.publish(msg)
+              self.get_logger().info('Publishing: "%d"' % msg.num)       # CHANGE
+              self.i += 1
+
+
+      def main(args=None):
+          rclpy.init(args=args)
+
+          minimal_publisher = MinimalPublisher()
+
+          rclpy.spin(minimal_publisher)
+
+          minimal_publisher.destroy_node()
+          rclpy.shutdown()
+
+
+      if __name__ == '__main__':
+          main()
+
+
+**Subscriber**
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      #include <functional>
+      #include <memory>
+
+      #include "rclcpp/rclcpp.hpp"
+      #include "tutorial_interfaces/msg/num.hpp"                                       // CHANGE
+
+      using std::placeholders::_1;
+
+      class MinimalSubscriber : public rclcpp::Node
+      {
+      public:
+        MinimalSubscriber()
+        : Node("minimal_subscriber")
+        {
+          subscription_ = this->create_subscription<tutorial_interfaces::msg::Num>(    // CHANGE
+            "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+        }
+
+      private:
+        void topic_callback(const tutorial_interfaces::msg::Num & msg) const  // CHANGE
+        {
+          RCLCPP_INFO_STREAM(this->get_logger(), "I heard: '" << msg.num << "'");     // CHANGE
+        }
+        rclcpp::Subscription<tutorial_interfaces::msg::Num>::SharedPtr subscription_;  // CHANGE
+      };
+
+      int main(int argc, char * argv[])
+      {
+        rclcpp::init(argc, argv);
+        rclcpp::spin(std::make_shared<MinimalSubscriber>());
+        rclcpp::shutdown();
+        return 0;
+      }
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      import rclpy
+      from rclpy.node import Node
+
+      from tutorial_interfaces.msg import Num                        # CHANGE
+
+
+      class MinimalSubscriber(Node):
+
+          def __init__(self):
+              super().__init__('minimal_subscriber')
+              self.subscription = self.create_subscription(
+                  Num,                                               # CHANGE
+                  'topic',
+                  self.listener_callback,
+                  10)
+              self.subscription
+
+          def listener_callback(self, msg):
+                  self.get_logger().info('I heard: "%d"' % msg.num)  # CHANGE
+
+
+      def main(args=None):
+          rclpy.init(args=args)
+
+          minimal_subscriber = MinimalSubscriber()
+
+          rclpy.spin(minimal_subscriber)
+
+          minimal_subscriber.destroy_node()
+          rclpy.shutdown()
+
+
+      if __name__ == '__main__':
+          main()
+
+**CMakeLists.txt**
+
+다음 줄을 추가하세요 (C++ 전용):
+
+.. code-block:: cmake
+
+    #...
+
+    find_package(ament_cmake REQUIRED)
+    find_package(rclcpp REQUIRED)
+    find_package(tutorial_interfaces REQUIRED)                      # CHANGE
+
+    add_executable(talker src/publisher_member_function.cpp)
+    ament_target_dependencies(talker rclcpp tutorial_interfaces)    # CHANGE
+
+    add_executable(listener src/subscriber_member_function.cpp)
+    ament_target_dependencies(listener rclcpp tutorial_interfaces)  # CHANGE
+
+    install(TARGETS
+      talker
+      listener
+      DESTINATION lib/${PROJECT_NAME})
+
+    ament_package()
+
+
+**package.xml**
+
+다음 줄을 추가하세요:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      <depend>tutorial_interfaces</depend>
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      <exec_depend>tutorial_interfaces</exec_depend>
+
+
+위의 변경사항을 모두 수정하고 저장한 후, 패키지를 빌드하세요:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    Linux에서:
+
+    .. code-block:: console
+
+      colcon build --packages-select cpp_pubsub
+
+
+  .. group-tab:: Python
+
+    Linux에서:
+
+    .. code-block:: console
+
+      colcon build --packages-select py_pubsub
+
+
+
+그런 다음 두 개의 새 터미널을 열고, 각각에서 ``ros2_ws`` 를 소스한 후 실행하세요:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: console
+
+          ros2 run cpp_pubsub talker
+
+    .. code-block:: console
+
+          ros2 run cpp_pubsub listener
+
+  .. group-tab:: Python
+
+    .. code-block:: console
+
+        ros2 run py_pubsub talker
+
+    .. code-block:: console
+
+        ros2 run py_pubsub listener
+
+``Num.msg`` 는 오직 정수만 전달하기 때문에, 발행자는 이전에 발행했던 문자열 대신 정수 값을 발행하게 됩니다:
+
+.. code-block:: console
+
+    [INFO] [minimal_publisher]: Publishing: '0'
+    [INFO] [minimal_publisher]: Publishing: '1'
+    [INFO] [minimal_publisher]: Publishing: '2'
+
+
+7.2 ``AddThreeInts.srv`` 를 서비스/클라이언트와 테스트하기
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+이전 튜토리얼에서 생성한 서비스/클라이언트 패키지(:doc:`C++ <./6.writing_a_simple_cpp_service_and_client>` 또는 :doc:`Python <./7.writing_a_simple_py_service_and_client>`)를 몇 가지 수정하면 ``AddThreeInts.srv`` 를 작동시킬 수 있습니다.
+원래의 두 정수 요청 서비스를 세 정수 요청 서비스로 변경하므로 출력이 약간 달라집니다.
+
+
+**Service**
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      #include "rclcpp/rclcpp.hpp"
+      #include "tutorial_interfaces/srv/add_three_ints.hpp"                                        // CHANGE
+
+      #include <memory>
+
+      void add(const std::shared_ptr<tutorial_interfaces::srv::AddThreeInts::Request> request,     // CHANGE
+                std::shared_ptr<tutorial_interfaces::srv::AddThreeInts::Response>       response)  // CHANGE
+      {
+        response->sum = request->a + request->b + request->c;                                      // CHANGE
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Incoming request\na: %ld" " b: %ld" " c: %ld",  // CHANGE
+                      request->a, request->b, request->c);                                         // CHANGE
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->sum);
+      }
+
+      int main(int argc, char **argv)
+      {
+        rclcpp::init(argc, argv);
+
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_three_ints_server");   // CHANGE
+
+        rclcpp::Service<tutorial_interfaces::srv::AddThreeInts>::SharedPtr service =               // CHANGE
+          node->create_service<tutorial_interfaces::srv::AddThreeInts>("add_three_ints",  &add);   // CHANGE
+
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add three ints.");                     // CHANGE
+
+        rclcpp::spin(node);
+        rclcpp::shutdown();
+      }
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      from tutorial_interfaces.srv import AddThreeInts                                                           # CHANGE
+
+      import rclpy
+      from rclpy.node import Node
+
+
+      class MinimalService(Node):
+
+          def __init__(self):
+              super().__init__('minimal_service')
+              self.srv = self.create_service(AddThreeInts, 'add_three_ints', self.add_three_ints_callback)       # CHANGE
+
+          def add_three_ints_callback(self, request, response):
+              response.sum = request.a + request.b + request.c                                                   # CHANGE
+              self.get_logger().info('Incoming request\na: %d b: %d c: %d' % (request.a, request.b, request.c))  # CHANGE
+
+              return response
+
+      def main(args=None):
+          rclpy.init(args=args)
+
+          minimal_service = MinimalService()
+
+          rclpy.spin(minimal_service)
+
+          rclpy.shutdown()
+
+      if __name__ == '__main__':
+          main()
+
+**Client**
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      #include "rclcpp/rclcpp.hpp"
+      #include "tutorial_interfaces/srv/add_three_ints.hpp"                                       // CHANGE
+
+      #include <chrono>
+      #include <cstdlib>
+      #include <memory>
+
+      using namespace std::chrono_literals;
+
+      int main(int argc, char **argv)
+      {
+        rclcpp::init(argc, argv);
+
+        if (argc != 4) { // CHANGE
+            RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "usage: add_three_ints_client X Y Z");      // CHANGE
+            return 1;
+        }
+
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_three_ints_client");  // CHANGE
+        rclcpp::Client<tutorial_interfaces::srv::AddThreeInts>::SharedPtr client =                // CHANGE
+          node->create_client<tutorial_interfaces::srv::AddThreeInts>("add_three_ints");          // CHANGE
+
+        auto request = std::make_shared<tutorial_interfaces::srv::AddThreeInts::Request>();       // CHANGE
+        request->a = atoll(argv[1]);
+        request->b = atoll(argv[2]);
+        request->c = atoll(argv[3]);                                                              // CHANGE
+
+        while (!client->wait_for_service(1s)) {
+          if (!rclcpp::ok()) {
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+            return 0;
+          }
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+        }
+
+        auto result = client->async_send_request(request);
+        // Wait for the result.
+        if (rclcpp::spin_until_future_complete(node, result) ==
+          rclcpp::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Sum: %ld", result.get()->sum);
+        } else {
+          RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service add_three_ints");    // CHANGE
+        }
+
+        rclcpp::shutdown();
+        return 0;
+      }
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      from tutorial_interfaces.srv import AddThreeInts                            # CHANGE
+      import sys
+      import rclpy
+      from rclpy.node import Node
+
+
+      class MinimalClientAsync(Node):
+
+          def __init__(self):
+              super().__init__('minimal_client_async')
+              self.cli = self.create_client(AddThreeInts, 'add_three_ints')       # CHANGE
+              while not self.cli.wait_for_service(timeout_sec=1.0):
+                  self.get_logger().info('service not available, waiting again...')
+              self.req = AddThreeInts.Request()                                   # CHANGE
+
+          def send_request(self):
+              self.req.a = int(sys.argv[1])
+              self.req.b = int(sys.argv[2])
+              self.req.c = int(sys.argv[3])                                       # CHANGE
+              self.future = self.cli.call_async(self.req)
+
+
+      def main(args=None):
+          rclpy.init(args=args)
+
+          minimal_client = MinimalClientAsync()
+          minimal_client.send_request()
+
+          while rclpy.ok():
+              rclpy.spin_once(minimal_client)
+              if minimal_client.future.done():
+                  try:
+                      response = minimal_client.future.result()
+                  except Exception as e:
+                      minimal_client.get_logger().info(
+                          'Service call failed %r' % (e,))
+                  else:
+                      minimal_client.get_logger().info(
+                          'Result of add_three_ints: for %d + %d + %d = %d' %                                # CHANGE
+                          (minimal_client.req.a, minimal_client.req.b, minimal_client.req.c, response.sum))  # CHANGE
+                  break
+
+          minimal_client.destroy_node()
+          rclpy.shutdown()
+
+
+      if __name__ == '__main__':
+          main()
+
+**CMakeLists.txt**
+
+다음 라인을 추가하십시오 (C++ 전용):
+
+.. code-block:: cmake
+
+  #...
+
+  find_package(ament_cmake REQUIRED)
+  find_package(rclcpp REQUIRED)
+  find_package(tutorial_interfaces REQUIRED)         # CHANGE
+
+  add_executable(server src/add_two_ints_server.cpp)
+  ament_target_dependencies(server
+    rclcpp tutorial_interfaces)                      # CHANGE
+
+  add_executable(client src/add_two_ints_client.cpp)
+  ament_target_dependencies(client
+    rclcpp tutorial_interfaces)                      # CHANGE
+
+  install(TARGETS
+    server
+    client
+    DESTINATION lib/${PROJECT_NAME})
+
+  ament_package()
+
+
+**package.xml**
+
+다음 라인을 추가하십시오:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: c++
+
+      <depend>tutorial_interfaces</depend>
+
+  .. group-tab:: Python
+
+    .. code-block:: python
+
+      <exec_depend>tutorial_interfaces</exec_depend>
+
+
+위의 편집 사항을 수행하고 모든 변경 사항을 저장한 후 패키지를 빌드하십시오:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    Linux에서:
+
+    .. code-block:: console
+
+      colcon build --packages-select cpp_srvcli
+
+
+
+  .. group-tab:: Python
+
+    Linux에서:
+
+    .. code-block:: console
+
+      colcon build --packages-select py_srvcli
+
+그런 다음 두 개의 새로운 터미널을 열고 각각에서 ``ros2_ws`` 를 소스하고 다음을 실행하십시오:
+
+.. tabs::
+
+  .. group-tab:: C++
+
+    .. code-block:: console
+
+          ros2 run cpp_srvcli server
+
+    .. code-block:: console
+
+          ros2 run cpp_srvcli client 2 3 1
+
+  .. group-tab:: Python
+
+    .. code-block:: console
+
+        ros2 run py_srvcli service
+
+    .. code-block:: console
+
+        ros2 run py_srvcli client 2 3 1
+
+
+요약
+------
+
+이 튜토리얼에서는 자체 패키지에서 사용자 정의 인터페이스를 만들고 다른 패키지에서 이러한 인터페이스를 활용하는 방법을 배웠습니다.
+
+이 튜토리얼은 사용자 정의 인터페이스 정의에 대한 기초만을 다룹니다.
+자세한 내용은 `ROS 2 인터페이스에 관한 정보 <https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html>`__ 에서 확인할 수 있습니다.
+
+다음 단계
+--------------
+
+:doc:`다음 튜토리얼 <./9.implementing_custom_interface>` 에서 ROS 2에서 인터페이스를 사용하는 더 많은 방법을 다룹니다.

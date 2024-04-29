@@ -1,0 +1,144 @@
+.. _configuring_rotation_shim:
+
+Rotation Shim Controller
+###############################
+
+``zeta2_navigation_rotation_shim.launch.py`` 를 실행하면 체험해 볼 수 있습니다.
+
+Github_ 에서 소스 코드를 확인할 수 있습니다.
+
+.. _Github: https://github.com/ros-planning/navigation2/tree/main/nav2_rotation_shim_controller
+
+**단독으로 안씀**
+
+이 ``Rotation Shim Controller`` 는 주로 특정한 동작을 구현하기 위해 컨트롤러 서버와 주요 컨트롤러 플러그인 사이에 위치한 "shim" 컨트롤러 플러그인을 구현하는 로컬 궤적 계획자입니다.
+이 shim은 새로운 경로의 대략적인 헤딩에 따라 로봇을 제자리에서 회전시킵니다.
+그 후로는 모든 이후 명령을 주요 컨트롤러로 전달합니다.
+이 컨트롤러는 경로 정렬 후 경로 추적을 위해 사용할 실제 컨트롤러가 포함된 primary_controller 매개변수를 입력으로 받습니다.
+
+이 컨트롤러는 다음과 같은 상황에서 유용합니다:
+
+- DWB를 훌륭한 경로 추적을 위해 강력하게 튜닝하면 큰 편차를 처리하기 어려워집니다.
+- TEB 동작은 작은 회전으로 로봇을 '휘저을' 수 있으며, 신축 밴드 접근 방식 때문에 다소 무서울 수 있습니다.
+- TEB나 DWB는 새로운 경로를 추적하기 시작할 때 로봇을 단순히 제자리에서 회전하지 않습니다. 대신 작은 '스파이럴 아웃' 기동을 수행하며 종종 이상한 속도로 불편합니다. 깔끔하고 간단한 제자리 회전을 선호할 수 있습니다.
+
+따라서 이 컨트롤러는 로봇과 새로운 경로 사이의 대략적인 헤딩 차이를 확인합니다.
+임계값 내에 있다면 요청을 실행할 컨트롤러에 전달합니다. 임계값 밖에 있다면 이 컨트롤러는 로봇을 해당 경로 헤딩 방향으로 회전시킵니다.
+허용 한계 내에 있다면, 이 회전 쉼 컨트롤러로부터 제어 실행을 주요 컨트롤러 플러그인으로 전달합니다. 이 시점에서 로봇은 여전히 회전 중이며, 현재 플러그인이 경로 추적으로 부드러운 전환을 수행할 수 있도록 허용됩니다.
+각도 임계값은 더 엄격함보다는 유연하게 설정하는 것이 권장되며, 특정 응용 프로그램의 원하는 동작에 맞게 조정되어야 합니다.
+
+더 자세한 정보는 패키지의 ``README`` 를 참조하십시오.
+
+.. raw:: html
+
+    <h1 align="center">
+      <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
+        <iframe width="708" height="400" src="https://www.youtube.com/embed/t-g2CBGByEw?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
+      </div>
+    </h1>
+
+Rotation Shim Controller 매개변수
+***********************************
+
+:angular_dist_threshold:
+
+  ============== ===========================
+  유형           기본값                    
+  -------------- ---------------------------
+  double         0.785
+  ============== ===========================
+
+  설명
+    경로 헤딩에서 최대 각도 차이, 라디안 단위로, 이내에서 회전을 트리거합니다.
+
+:forward_sampling_distance:
+
+  ============== =============================
+  유형           기본값                                               
+  -------------- -----------------------------
+  double         0.5
+  ============== =============================
+
+  설명
+    경로를 근사화하는 데 사용할 샘플링 포인트를 선택하기 위해 경로를 따라 앞으로 이동할 거리, 미터 단위
+
+:rotate_to_heading_angular_vel:
+
+  ============== =============================
+  유형           기본값                                               
+  -------------- -----------------------------
+  double         1.8 
+  ============== =============================
+
+  설명
+    경로 헤딩으로 회전하기 위한 각속도, 라디안/초 단위
+
+:primary_controller:
+
+  ============== =============================
+  유형           기본값                                               
+  -------------- -----------------------------
+  string         N/A 
+  ============== =============================
+
+  설명
+    회전 후 실제 제어 동작에 사용할 내부 컨트롤러 플러그인
+
+:max_angular_accel:
+
+  ============== =============================
+  유형           기본값                                               
+  -------------- -----------------------------
+  double         3.2
+  ============== =============================
+
+  설명
+    헤딩으로의 회전을 위한 최대 각 가속도 (라디안/초/초)
+
+:simulate_ahead_time:
+
+  ============== =============================
+  유형           기본값                                               
+  -------------- -----------------------------
+  double         1.0
+  ============== =============================
+
+  설명
+    충돌을 확인하기 위해 회전 명령을 전방으로 시뮬레이트할 시간, 초 단위. 충돌이 발생하면 제어를 다시 주요 컨트롤러 플러그인에 반환합니다.
+
+
+Example
+*******
+.. code-block:: yaml
+
+  controller_server:
+    ros__parameters:
+      use_sim_time: True
+      controller_frequency: 20.0
+      min_x_velocity_threshold: 0.001
+      min_y_velocity_threshold: 0.5
+      min_theta_velocity_threshold: 0.001
+      progress_checker_plugins: ["progress_checker"] # progress_checker_plugin: "progress_checker" For Humble and older
+      goal_checker_plugins: ["goal_checker"]
+      controller_plugins: ["FollowPath"]
+
+      progress_checker:
+        plugin: "nav2_controller::SimpleProgressChecker"
+        required_movement_radius: 0.5
+        movement_time_allowance: 10.0
+      goal_checker:
+        plugin: "nav2_controller::SimpleGoalChecker"
+        xy_goal_tolerance: 0.25
+        yaw_goal_tolerance: 0.25
+        stateful: True
+      FollowPath:
+        plugin: "nav2_rotation_shim_controller::RotationShimController"
+        primary_controller: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+        angular_dist_threshold: 0.785
+        forward_sampling_distance: 0.5
+        rotate_to_heading_angular_vel: 1.8
+        max_angular_accel: 3.2
+        simulate_ahead_time: 1.0
+
+        # Primary controller params can be placed here below
+        # ...

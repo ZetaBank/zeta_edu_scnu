@@ -1,0 +1,485 @@
+간단한 publisher/subscriber 작성 (C++)
+===============================================
+
+**목표:** C++을 사용하여 publisher 및 subscriber 노드를 생성하고 실행합니다.
+
+배경
+----------
+
+:doc:`Nodes </courses/2.tutorial_cli_ros2/3.node>` 는 ROS 그래프를 통해 통신하는 실행 가능한 프로세스입니다.
+이 튜토리얼에서는 노드들이 :doc:`topic </courses/2.tutorial_cli_ros2/4.topic>` 을 통해 서로에게 문자열 메시지 형식의 정보를 전달할 것입니다.
+여기서 사용되는 예제는 간단한 "talker" 및 "listener" 시스템입니다. 한 노드는 데이터를 게시하고, 다른 노드는 해당 주제를 구독하여 해당 데이터를 수신합니다.
+
+이 예제에 사용된 코드는 `여기에서 찾을 수 있습니다 <https://github.com/ros2/examples/tree/humble/rclcpp/topics>`__.
+
+전제 조건
+-------------
+
+이전 튜토리얼에서는 :doc:`작업 공간을 만드는 방법 </courses/3.tutorial_client_libraries/2.create_workspace>` 및 :doc:`패키지를 만드는 방법 </courses/3.tutorial_client_libraries/3.create_package>` 을 배웠습니다.
+
+작업
+-----
+
+1. 패키지 만들기
+^^^^^^^^^^^^^^^^^^
+
+새 터미널을 열고 ROS 2 설치를 :doc:`소스로 지정 <courses/2.tutorial_cli_ros2/1.setting>` 하여 ``ros2`` 명령이 작동하도록합니다.
+
+이전 튜토리얼에서 만든 :ref:`이전 디렉토리 </courses/3.tutorial_client_libraries/2.create_workspace>` 에서 생성한 ``ros2_ws`` 디렉토리로 이동합니다.
+
+패키지는 워크스페이스의 루트가 아닌 ``src`` 디렉토리에서 만들어야합니다.
+따라서 ``ros2_ws/src`` 로 이동하고 다음 명령을 실행하여 패키지 생성 명령을 실행합니다.
+
+.. code-block:: console
+
+    ros2 pkg create --build-type ament_cmake --license Apache-2.0 cpp_pubsub
+
+터미널에서 패키지 ``cpp_pubsub`` 및 모든 필요한 파일 및 폴더가 생성되었음을 확인하는 메시지가 반환됩니다.
+
+``ros2_ws/src/cpp_pubsub/src`` 로 이동합니다.
+이것은 CMake 패키지의 모든 실행 파일을 포함해야하는 디렉토리입니다.
+
+2. 퍼블리셔 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+다음 명령을 입력하여 예제 토크 코드를 다운로드합니다.
+
+.. tabs::
+
+   .. group-tab:: 리눅스
+
+      .. code-block:: console
+
+            wget -O publisher_member_function.cpp https://raw.githubusercontent.com/ros2/examples/humble/rclcpp/topics/minimal_publisher/member_function.cpp
+
+
+이제 ``publisher_member_function.cpp`` 라는 새 파일이 있어야합니다.
+
+원하는 텍스트 편집기를 사용하여 파일을 엽니다.
+
+.. code-block:: C++
+
+    #include <chrono>
+    #include <functional>
+    #include <memory>
+    #include <string>
+
+    #include "rclcpp/rclcpp.hpp"
+    #include "std_msgs/msg/string.hpp"
+
+    using namespace std::chrono_literals;
+
+    /* 이 예제는 노드의 하위 클래스를 만들고 타이머에서 콜백으로 등록하기 위해 std::bind()를 사용합니다. */
+
+    class MinimalPublisher : public rclcpp::Node
+    {
+      public:
+        MinimalPublisher()
+        : Node("minimal_publisher"), count_(0)
+        {
+          publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+          timer_ = this->create_wall_timer(
+          500ms, std::bind(&MinimalPublisher::timer_callback, this));
+        }
+
+      private:
+        void timer_callback()
+        {
+          auto message = std_msgs::msg::String();
+          message.data = "Hello, world! " + std::to_string(count_++);
+          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+          publisher_->publish(message);
+        }
+        rclcpp::TimerBase::SharedPtr timer_;
+        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+        size_t count_;
+    };
+
+    int main(int argc, char * argv[])
+    {
+      rclcpp::init(argc, argv);
+      rclcpp::spin(std::make_shared<MinimalPublisher>());
+      rclcpp::shutdown();
+      return 0;
+    }
+
+2.1 코드 검토
+~~~~~~~~~~~~~~~~~~~~
+
+코드 상단에는 사용할 표준 C++ 헤더가 포함되어 있습니다.
+표준 C++ 헤더 이후에는 ROS 2 시스템의 가장 일반적인 부분을 사용할 수 있게 해주는 ``rclcpp/rclcpp.hpp`` 가 포함되어 있습니다.
+마지막으로 데이터를 게시하는 데 사용할 내장 메시지 유형인 ``std_msgs/msg/string.hpp`` 가 있습니다.
+
+.. code-block:: C++
+
+    #include <chrono>
+    #include <functional>
+    #include <memory>
+    #include <string>
+
+    #include "rclcpp/rclcpp.hpp"
+    #include "std_msgs/msg/string.hpp"
+
+    using namespace std::chrono_literals;
+
+이러한 줄은 노드의 종속성을 나타냅니다.
+의존성은 ``package.xml`` 및 ``CMakeLists.txt`` 에 추가되어야합니다. 이 부분은 다음 섹션에서 수행합니다.
+
+다음 라인에서는 노드 클래스 ``MinimalPublisher`` 를 만들고 ``rclcpp::Node`` 에서 상속합니다.
+코드의 모든 ``this`` 는 노드를 가리킵니다.
+
+.. code-block:: C++
+
+    class MinimalPublisher : public rclcpp::Node
+
+공개 생성자에서는 노드 이름을 ``minimal_publisher`` 로 지정하고 ``count_`` 를 0으로 초기화합니다.
+생성자 내에서 ``publisher_`` 는 ``String`` 메시지 유형, 주제 이름 ``topic`` 및 백업 발생 시 메시지 수를 제한하는 데 필요한 대기열 크기로 초기화됩니다.
+다음으로 ``timer_`` 가 초기화되며 이로 인해 ``timer_callback`` 함수가 0.5초마다 두 번 실행됩니다.
+
+.. code-block:: C++
+
+    public:
+      MinimalPublisher()
+      : Node("minimal_publisher"), count_(0)
+      {
+        publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+        timer_ = this->create_wall_timer(
+        500ms, std::bind(&MinimalPublisher::timer_callback, this));
+      }
+
+``timer_callback`` 함수는 메시지 데이터가 설정되고 메시지가 실제로 게시되는 곳입니다.
+
+``RCLCPP_INFO`` 매크로를 사용하여 게시된 모든 메시지가 콘솔에 인쇄되도록합니다.
+
+.. code-block:: C++
+
+    private:
+      void timer_callback()
+      {
+        auto message = std_msgs::msg::String();
+        message.data = "Hello, world! " + std::to_string(count_++);
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        publisher_->publish(message);
+      }
+
+마지막으로 타이머, publisher 및 count의 선언이 있습니다.
+
+.. code-block:: C++
+
+    rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    size_t count_;
+
+``main`` 함수는 실제로 노드를 실행합니다.
+``rclcpp::init`` 은 ROS 2를 초기화하고, ``rclcpp::spin`` 은 타이머의 콜백을 포함하여 노드에서 데이터를 처리하기 시작합니다.
+
+.. code-block:: C++
+
+    int main(int argc, char * argv[])
+    {
+      rclcpp::init(argc, argv);
+      rclcpp::spin(std::make_shared<MinimalPublisher>());
+      rclcpp::shutdown();
+      return 0;
+    }
+
+2.2 종속성 추가
+~~~~~~~~~~~~~~~~~~~~
+
+이제 ``ros2_ws/src/cpp_pubsub`` 디렉토리로 한 번 더 이동하여 ``CMakeLists.txt`` 및 ``package.xml`` 파일이 이미 생성되었음을 확인합니다.
+
+텍스트 편집기에서 ``package.xml`` 을 엽니다.
+
+:doc:`이전 튜토리얼 <./3.create_package>` 에서 언급한대로 ``description``, ``maintainer`` 및 ``license`` 태그를 채워야합니다.
+
+.. code-block:: xml
+
+  <description>Examples of minimal publisher/subscriber using rclcpp</description>
+  <maintainer email="you@email.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+``ament_cmake`` 빌드 툴 의존성 뒤에 새 줄을 추가하고 노드의 include 문과 해당 종속성을 추가합니다.
+
+.. code-block:: xml
+
+    <depend>rclcpp</depend>
+    <depend>std_msgs</depend>
+
+이것은 코드가 빌드되고 실행될 때 패키지가 ``rclcpp`` 및 ``std_msgs`` 가 필요하다는 것을 나타냅니다.
+
+파일을 저장하십시오.
+
+2.3 CMakeLists.txt
+~~~~~~~~~~~~~~~~~~
+
+이제 ``CMakeLists.txt`` 파일을 엽니다.
+기존 종속성 ``find_package(ament_cmake REQUIRED)`` 아래에 다음 라인을 추가하십시오.
+
+.. code-block:: console
+
+    find_package(rclcpp REQUIRED)
+    find_package(std_msgs REQUIRED)
+
+그 다음 실행 파일을 추가하고 ``ros2 run`` 을 사용하여 노드를 실행할 수 있도록 ``talker`` 라는 이름으로 지정하십시오.
+
+.. code-block:: console
+
+    add_executable(talker src/publisher_member_function.cpp)
+    ament_target_dependencies(talker rclcpp std_msgs)
+
+마지막으로 ``install(TARGETS...)`` 섹션을 추가하여 ``ros2 run`` 이 실행 가능한 파일을 찾을 수 있도록하십시오.
+
+.. code-block:: console
+
+  install(TARGETS
+    talker
+    DESTINATION lib/${PROJECT_NAME})
+
+불필요한 섹션과 주석을 제거하여 ``CMakeLists.txt`` 파일을 정리하십시오.
+
+.. code-block:: console
+
+  cmake_minimum_required(VERSION 3.5)
+  project(cpp_pubsub)
+
+  # Default to C++14
+  if(NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 14)
+  endif()
+
+  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic)
+  endif()
+
+  find_package(ament_cmake REQUIRED)
+  find_package(rclcpp REQUIRED)
+  find_package(std_msgs REQUIRED)
+
+  add_executable(talker src/publisher_member_function.cpp)
+  ament_target_dependencies(talker rclcpp std_msgs)
+
+  install(TARGETS
+    talker
+    DESTINATION lib/${PROJECT_NAME})
+
+  ament_package()
+
+이제 패키지를 빌드하고 로컬 설정 파일을 소스로하고 실행할 수 있지만, 다음 섹션에서 전체 시스템이 작동하는 것을 볼 수 있도록 구독자 노드를 먼저 만들어 보겠습니다.
+
+3. 구독자 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+다음 명령을 사용하여 다음 노드를 만들기 위해 ``ros2_ws/src/cpp_pubsub/src`` 로 돌아갑니다.
+
+.. tabs::
+
+   .. group-tab:: 리눅스
+
+      .. code-block:: console
+
+            wget -O subscriber_member_function.cpp https://raw.githubusercontent.com/ros2/examples/humble/rclcpp/topics/minimal_subscriber/member_function.cpp
+
+
+이 파일들이 존재하는지 확인하십시오.
+
+.. code-block:: console
+
+    publisher_member_function.cpp  subscriber_member_function.cpp
+
+텍스트 편집기에서 ``subscriber_member_function.cpp`` 파일을 엽니다.
+
+.. code-block:: C++
+
+    #include <memory>
+
+    #include "rclcpp/rclcpp.hpp"
+    #include "std_msgs/msg/string.hpp"
+    using std::placeholders::_1;
+
+    class MinimalSubscriber : public rclcpp::Node
+    {
+      public:
+        MinimalSubscriber()
+        : Node("minimal_subscriber")
+        {
+          subscription_ = this->create_subscription<std_msgs::msg::String>(
+          "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+        }
+
+      private:
+        void topic_callback(const std_msgs::msg::String & msg) const
+        {
+          RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
+        }
+        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    };
+
+    int main(int argc, char * argv[])
+    {
+      rclcpp::init(argc, argv);
+      rclcpp::spin(std::make_shared<MinimalSubscriber>());
+      rclcpp::shutdown();
+      return 0;
+    }
+
+3.1 코드 검토
+~~~~~~~~~~~~~~~~~~~~
+
+구독자 노드의 코드는 패브릭 노드와 거의 동일합니다.
+이제 노드의 이름은 ``minimal_subscriber`` 로 지정되고 생성자는 노드의 ``create_subscription`` 클래스를 사용하여 콜백을 실행합니다.
+
+타이머가 없기 때문에 구독자는 메시지가 ``topic`` 주제로 게시될 때마다 간단히 응답합니다.
+
+.. code-block:: C++
+
+    public:
+      MinimalSubscriber()
+      : Node("minimal_subscriber")
+      {
+        subscription_ = this->create_subscription<std_msgs::msg::String>(
+        "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
+      }
+
+:doc:`이전 토픽 튜토리얼 </courses/2.tutorial_cli_ros2/4.topic>` 에서 토픽 이름과 메시지 타입이 퍼블리셔와 서브스크라이버 간에 일치해야 서로 통신할 수 있음을 기억하세요.
+
+``topic_callback`` 함수는 토픽을 통해 발행된 문자열 메시지 데이터를 수신하고, 해당 데이터를 ``RCLCPP_INFO`` 매크로를 사용하여 콘솔에 출력합니다.
+
+이 클래스에서 유일하게 선언된 필드는 구독(subscription)입니다.
+
+
+.. code-block:: C++
+
+    private:
+      void topic_callback(const std_msgs::msg::String & msg) const
+      {
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
+      }
+
+``main`` 함수는 정확히 동일하며, 이제 ``MinimalSubscriber`` 노드를 스핀합니다.
+퍼블리셔 노드의 경우 스핀은 타이머를 시작하는 것을 의미하지만 서브스크라이버의 경우 메시지가 도착할 때마다 수신할 준비를 하는 것을 의미합니다.
+
+이 노드는 퍼블리셔 노드와 동일한 종속성을 가지고 있으므로 ``package.xml`` 에 추가해야 할 새로운 내용은 없습니다.
+
+
+.. code-block:: C++
+
+    int main(int argc, char * argv[])
+    {
+      rclcpp::init(argc, argv);
+      rclcpp::spin(std::make_shared<MinimalSubscriber>());
+      rclcpp::shutdown();
+      return 0;
+    }
+
+3.2 CMakeLists.txt
+~~~~~~~~~~~~~~~~~~
+
+``CMakeLists.txt`` 파일을 다시 열고 실행 파일과 서브스크라이버 노드를 퍼블리셔 노드 항목 아래에 추가하세요.
+
+.. code-block:: cmake
+
+  add_executable(listener src/subscriber_member_function.cpp)
+  ament_target_dependencies(listener rclcpp std_msgs)
+
+  install(TARGETS
+    talker
+    listener
+    DESTINATION lib/${PROJECT_NAME})
+
+파일을 저장한 다음 퍼블리셔/서브스크라이버 시스템이 준비된 것입니다.
+
+.. _cpppubsub-build-and-run:
+
+
+4 빌드 및 실행
+^^^^^^^^^^^^^^^
+
+아마도 이미 ROS 2 시스템의 일부로 ``rclcpp`` 와 ``std_msgs`` 패키지가 설치되어 있을 것입니다.
+빌드하기 전에 빠진 종속성을 확인하려면 워크스페이스 루트 (``ros2_ws``)에서 ``rosdep`` 를 실행하는 것이 좋습니다.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      .. code-block:: console
+
+            rosdep install -i --from-path src --rosdistro humble -y
+
+
+
+여전히 워크스페이스 루트인 ``ros2_ws`` 에서 새 패키지를 빌드하세요.
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      colcon build --packages-select cpp_pubsub
+
+
+새 터미널을 열고 ``ros2_ws`` 로 이동한 다음 설정 파일을 소스로 지정하세요.
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      . install/setup.bash
+
+
+이제 토커 노드를 실행하세요.
+
+.. code-block:: console
+
+     ros2 run cpp_pubsub talker
+
+터미널은 다음과 같이 매 0.5초마다 정보 메시지를 게시하기 시작해야 합니다.
+
+.. code-block:: console
+
+    [INFO] [minimal_publisher]: Publishing: "Hello World: 0"
+    [INFO] [minimal_publisher]: Publishing: "Hello World: 1"
+    [INFO] [minimal_publisher]: Publishing: "Hello World: 2"
+    [INFO] [minimal_publisher]: Publishing: "Hello World: 3"
+    [INFO] [minimal_publisher]: Publishing: "Hello World: 4"
+
+다른 터미널을 열고 다시 ``ros2_ws`` 내에서 설정 파일을 소스로 지정한 다음 리스너 노드를 시작하세요.
+
+.. code-block:: console
+
+     ros2 run cpp_pubsub listener
+
+리스너는 터미널에 메시지를 출력하기 시작하며 그 때마다 게시자가 메시지 수신을 시작하는 시점부터 시작됩니다.
+
+.. code-block:: console
+
+  [INFO] [minimal_subscriber]: I heard: "Hello World: 10"
+  [INFO] [minimal_subscriber]: I heard: "Hello World: 11"
+  [INFO] [minimal_subscriber]: I heard: "Hello World: 12"
+  [INFO] [minimal_subscriber]: I heard: "Hello World: 13"
+  [INFO] [minimal_subscriber]: I heard: "Hello World: 14"
+
+각 터미널에서 ``Ctrl+C`` 를 입력하여 노드를 중지합니다.
+
+요약
+-------
+
+데이터를 퍼블리시하고 구독하는 두 개의 노드를 생성했습니다.
+빌드 및 실행하기 전에 종속성 및 실행 파일을 패키지 설정 파일에 추가했습니다.
+
+다음 단계
+----------
+
+다음으로, 서비스/클라이언트 모델을 사용하여 간단한 ROS 2 패키지를 더 생성할 것입니다.
+다시 한번 선택하여 :doc:`C++ </courses/3.tutorial_client_libraries/6.writing_a_simple_cpp_service_and_client>` 또는 :doc:`Python </courses/3.tutorial_client_libraries/7.writing_a_simple_py_service_and_client>` 로 작성할 수 있습니다.
+
+관련 콘텐츠
+---------------
+
+C++로 퍼블리셔와 서브스크라이버를 작성하는 여러 가지 방법이 있으며, `ros2/examples <https://github.com/ros2/examples/tree/humble/rclcpp/topics>`_ 리포지토리에서 ``minimal_publisher`` 및 ``minimal_subscriber`` 패키지를 확인할 수 있습니다.
+
+
+
+

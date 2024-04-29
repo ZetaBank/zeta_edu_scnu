@@ -1,0 +1,62 @@
+.. _configuring_dwb_controller:
+
+DWB 컨트롤러
+============
+
+``zeta2_navigation.launch.py`` 를 실행하면 체험해 볼 수 있습니다.
+
+Github_ 에서 소스 코드를 확인하세요.
+
+.. _Github: https://github.com/ros-planning/navigation2/tree/main/nav2_dwb_controller
+
+DWB 컨트롤러는 기본 컨트롤러입니다. ROS 2용으로 수정된 `David Lu의 컨트롤러 <https://github.com/locusrobotics/robot_navigation/tree/master/dwb_local_planner>`_ 의 포크이며, Dynamic Window Approach를 사용합니다.
+
+컨트롤러
+**********
+.. toctree::
+  :maxdepth: 1
+
+  dwb-params/controller.rst
+  dwb-params/iterator.rst
+  dwb-params/kinematic.rst
+  dwb-params/visualization.rst
+
+플러그인
+*******
+
+아래에 나열된 플러그인은 ``dwb_plugins`` 네임 스페이스 내에 있습니다.
+
+.. toctree::
+  :maxdepth: 1
+
+  dwb-plugins/limited_accel_generator.rst
+  dwb-plugins/standard_traj_generator.rst
+
+
+트라젝토리 크리틱
+******************
+
+아래에 나열된 트라젝토리 크리틱은 ``dwb_critics`` 네임 스페이스 내에 있습니다.
+
+.. toctree::
+  :maxdepth: 1
+
+  trajectory_critics/base_obstacle.rst
+  trajectory_critics/goal_align.rst
+  trajectory_critics/goal_dist.rst
+  trajectory_critics/obstacle_footprint.rst
+  trajectory_critics/oscillation.rst
+  trajectory_critics/path_align.rst
+  trajectory_critics/path_dist.rst
+  trajectory_critics/prefer_forward.rst
+  trajectory_critics/rotate_to_goal.rst
+  trajectory_critics/twirling.rst
+
+
+위의 내용은 DWB 컨트롤러 설정을 설명합니다.
+
+
+다음 단계
+----------
+
+다음 과정에선 ``Smac planner`` 에 대해서 알아보겠습니다.

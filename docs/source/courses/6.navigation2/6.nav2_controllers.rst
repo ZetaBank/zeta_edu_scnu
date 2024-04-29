@@ -1,0 +1,338 @@
+.. _configuring_controller_server:
+
+Navigation2 컨트롤러
+===================
+
+**목표:** ``navigation2`` 의 다양한 컨트롤러들을 간단하게 알아봅시다.
+
+전제조건
+--------
+
+앞의 과정을 다 끝내고 와야 합니다. ``ROS2`` 와 ``navigation2`` 의 기본 개념이 없으면 이해하기 힘들 수 있습니다.
+
+앞에서 우리는 ``navigation2`` 를 시작할 때 필수적인 요소들에 대해서 공부했습니다. 
+
+
+1 ``Controllers`` 의 종류
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+아래와 같이 약 6가지 정도의 플래너가 존재한다. 현재 로봇에 사용중인 플래너는 ``DWB Controller`` 이다. 기본으로 설정되어 있는 컨트롤러다.
+
+하나씩 순서대로 플래너에 대한 설명을 할 것이다.
+
+
++--------------------------------+--------------------+----------------------------------+-----------------------+
+|      Plugin Name               |       Creator      |       Description                | Drivetrain support    |
++================================+====================+==================================+=======================+
+|  `DWB Controller`_             | David Lu!!         | A highly configurable  DWA       | Differential,         |
+|                                |                    | implementation with plugin       | Omnidirectional,      |
+|                                |                    | interfaces                       | Legged                |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+|  `TEB Controller`_             | Christoph Rösmann  | A MPC-like controller suitable   | **Ackermann**, Legged,|
+|                                |                    | for ackermann, differential, and | Omnidirectional,      |
+|                                |                    | holonomic robots.                | Differential          |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+| `Regulated Pure Pursuit`_      | Steve Macenski     | A service / industrial robot     | **Ackermann**, Legged,|
+|                                |                    | variation on the pure pursuit    | Differential          |
+|                                |                    | algorithm with adaptive features.|                       |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+| `MPPI Controller`_             | Steve Macenski     | A predictive MPC controller with | Differential, Omni,   |
+|                                | Aleksei Budyakov   | modular & custom cost functions  | **Ackermann**         |
+|                                |                    | that can accomplish many tasks.  |                       |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+| `Rotation Shim Controller`_    | Steve Macenski     | A "shim" controller to rotate    | Differential, Omni,   |
+|                                |                    | to path heading before passing   | model rotate in place |
+|                                |                    | to main controller for  tracking.|                       |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+| `Graceful Controller`_         | Alberto Tudela     | A controller based on a          | Differential          |
+|                                |                    | pose-following control law to    |                       |
+|                                |                    | generate smooth trajectories.    |                       |
++--------------------------------+--------------------+----------------------------------+-----------------------+
+
+.. _DWB Controller: https://github.com/ros-planning/navigation2/tree/main/nav2_dwb_controller
+.. _TEB Controller: https://github.com/rst-tu-dortmund/teb_local_planner
+.. _Regulated Pure Pursuit: https://github.com/ros-planning/navigation2/tree/main/nav2_regulated_pure_pursuit_controller
+.. _Rotation Shim Controller: https://github.com/ros-planning/navigation2/tree/main/nav2_rotation_shim_controller
+.. _MPPI Controller: https://github.com/ros-planning/navigation2/tree/main/nav2_mppi_controller
+.. _Graceful Controller: https://github.com/ros-planning/navigation2/tree/main/nav2_graceful_controller
+
+각각의 내용들을 익히고 사용하고 싶은 컨트롤러를 사용해 볼 수 있습니다.
+
+**TEB** 는 ROS2의 공식적인 지원을 중단하여 생략하겠습니다.
+
+2 ``Controllers`` 기본 사용법
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Github_에서 소스 코드를 확인하세요.
+
+.. _Github: https://github.com/ros-planning/navigation2/tree/main/nav2_controller
+
+컨트롤러 서버는 스택의 컨트롤러 요청을 처리하고 플러그인 구현의 맵을 호스팅하는 서버를 구현합니다.
+컨트롤러, 진행 체커 및 목표 체커에 대한 경로와 플러그인 이름을 입력하고 적절한 플러그인을 호출합니다.
+또한 로컬 코스트맵을 호스팅합니다.
+
+매개변수
+**********
+
+:controller_frequency:
+
+  ============== =======
+  타입           기본값
+  -------------- -------
+  double         20.0   
+  ============== =======
+
+  설명
+    컨트롤러를 실행하는 주파수입니다(Hz).
+
+:use_realtime_priority:
+
+  ============== =======
+  타입           기본값
+  -------------- -------
+  bool           false   
+  ============== =======
+
+  설명
+    코드베이스의 시간에 민감한 부분에 리소스를 더 잘 할당하기 위해 컨트롤러 서버에 소프트 실시간 우선 순위를 추가합니다. 이것은 시스템의 나머지 부분보다 컨트롤러의 실행 스레드를 더 높은 우선 순위로 설정하여 놓쳐진 루프 속도를 줄이기 위해 스케줄링 기한을 충족합니다(90). 이 기능을 사용하려면 다음을 사용하여 /etc/security/limits.conf 내부에 다음을 설정하여 사용자 공간에 우선 순위 권한을 부여합니다: "<username> soft rtprio 99 <username> hard rtprio 99"
+
+:action_server_result_timeout:
+
+  ====== ======= ======= 
+  타입   기본값  단위
+  ------ ------- -------
+  double 10.0    초
+  ====== ======= =======
+
+  설명
+    액션 서버가 결과를 생성하지 않은 경우 골 핸들을 폐기하는 시간 제한 값(초)입니다. 이것은 기본적으로 rcl에서 15분으로 설정되어 있었으나 이 `PR #1012 <https://github.com/ros2/rcl/pull/1012>`_ 에서 10초로 변경되었습니다. 
+    대부분의 응용 프로그램에서는 서버 내의 액션이이 기간을 초과하지 않는 한이 기간을 조정할 필요가 없습니다. 이 문제는 OSRF와 함께 활동 중인 골 타임아웃을 방지하기 위한 다른 솔루션을 찾기 위해 제기되었으므로 이것은 반시시적인 임시 해결책입니다
+
+:controller_plugins:
+
+  ============== ==============
+  타입           기본값                                               
+  -------------- --------------
+  vector<string> ['FollowPath']            
+  ============== ==============
+
+  설명
+    처리 요청 및 매개변수를위한 컨트롤러 플러그인의 매핑 된 이름 목록입니다.
+
+  참고
+    이 목록에 정의된 각 플러그인 네임스페이스는 로드할 플러그인의 유형을 정의하는 :code:`plugin` 매개변수를 가져야 합니다.
+
+    예제:
+
+    .. code-block:: yaml
+
+        controller_server:
+          ros__parameters:
+            controller_plugins: ["FollowPath"]
+            FollowPath:
+              plugin: "dwb_core::DWBLocalPlanner"
+    ..
+
+:progress_checker_plugins:
+
+  ============== ==============
+  타입           기본값
+  -------------- --------------
+  vector<string> ["progress_checker"]
+  ============== ==============
+
+  설명
+    로봇이 이동하는 진행률을 확인하는 진행 체커 플러그인에 대한 매핑 된 이름입니다. 이전에는 단일 문자열 플러그인이었습니다.
+
+  참고
+    정의된 플러그인 네임스페이스에는 로드할 플러그인 유형을 정의하는 :code:`plugin` 매개변수가 있어야 합니다.
+
+    예제:
+
+    .. code-block:: yaml
+
+        controller_server:
+          ros__parameters:
+            progress_checker_plugins: ["progress_checker"] # progress_checker_plugin: "progress_checker" For Humble and older
+            progress_checker:
+              plugin: "nav2_controller::SimpleProgressChecker"
+    ..
+
+:goal_checker_plugins:
+
+  ============== ================
+  타입           기본값
+  -------------- ----------------
+  vector<string> ["goal_checker"]
+  ============== ================
+
+  설명
+    목표 달성 여부를 확인하는 목표 체커 플러그인에 대한 매핑 된 이름입니다. 플러그인 수가 2개 이상인 경우 각 :code:`FollowPath` 액션은 :code:`goal_checker_id` 필드와 함께 목표 체커 플러그인 이름을 지정해야 합니다.
+
+  참고
+    정의된 플러그인 네임스페이스에는 로드할 플러그인 유형을 정의하는 :code:`plugin` 매개변수가 있어야 합니다.
+
+    예제:
+
+    .. code-block:: yaml
+
+        controller_server:
+          ros__parameters:
+            goal_checker_plugins: ["goal_checker"]
+            goal_checker:
+              plugin: "nav2_controller::SimpleGoalChecker"
+
+:min_x_velocity_threshold:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.0001            
+  ============== =============================
+
+  설명
+    컨트롤러 서버는 컨트롤러 플러그인으로 보내기 전에 받은 오도메트리 메시지의 속도 부분을 필터링합니다.
+    이 임계 값을 아래의 오도메트리 값(m/s)으로 설정합니다.
+
+:min_y_velocity_threshold:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.0001            
+  ============== =============================
+
+  설명
+    컨트롤러 서버는 컨트롤러 플러그인으로 보내기 전에 받은 오도메트리 메시지의 속도 부분을 필터링합니다.
+    이 임계 값을 아래의 오도메트리 값(m/s)으로 설정합니다. 비 홀로노믹 로봇을 위해.
+
+:min_theta_velocity_threshold:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.0001            
+  ============== =============================
+
+  설명
+    컨트롤러 서버는 컨트롤러 플러그인으로 보내기 전에 받은 오도메트리 메시지의 속도 부분을 필터링합니다.
+    이 임계 값을 아래의 오도메트리 값(rad/s)으로 설정합니다.
+
+:failure_tolerance:
+
+  ============== =============================
+  타입           기본값                                               
+  -------------- -----------------------------
+  double         0.0           
+  ============== =============================
+
+  설명
+    호출된 컨트롤러 플러그인이 실패할 수 있는 최대 기간(즉, 플러그인의 :code:`computeVelocityCommands` 함수가 예외를 throw 할 때)은 :code:`nav2_msgs::action::FollowPath` 액션이 실패하기 전에 지정합니다.
+    특별한 값을 -1.0으로 설정하면 무한대이고, 0으로 설정하면 비활성화되며 적절한 타임아웃을 위해 양수 값을 설정합니다.
+
+:speed_limit_topic:
+
+  ============== =============================
+  타입           기본값
+  -------------- -----------------------------
+  string         "speed_limit"
+  ============== =============================
+
+  설명
+    구독 할 속도 제한 토픽 이름입니다. 이것은 속도 필터에 의해 발행 될 수 있습니다 (:ref:`speed_filter` 구성 페이지를 참조하세요). 속도 필터없이도 이를 사용할 수 있습니다. 외부 서버에서 `이러한 메시지 <https://github.com/ros-planning/navigation2/blob/main/nav2_msgs/msg/SpeedLimit.msg>`_ 를 게시하는 경우도 있습니다.
+
+:odom_topic:
+
+  ============== =============================
+  타입           기본값
+  -------------- -----------------------------
+  string         "odom"
+  ============== =============================
+
+  설명
+    속도의 즉각적인 측정을 받을 토픽입니다.
+
+:enable_stamped_cmd_vel:
+
+  ============== =============================
+  타입           기본값
+  -------------- -----------------------------
+  bool           false
+  ============== =============================
+
+  설명
+    geometry_msgs::msg::Twist 또는 geometry_msgs::msg::TwistStamped 속도 데이터를 사용할지 여부입니다.
+    True는 TwistStamped를 사용하고, false는 Twist를 사용합니다.
+
+제공된 플러그인
+****************
+ 아래에 나열된 플러그인은 ``nav2_controller`` 네임 스페이스 내에 있습니다.
+
+.. toctree::
+  :maxdepth: 1
+
+  nav2_controller-plugins/simple_progress_checker.rst
+  nav2_controller-plugins/pose_progress_checker.rst
+  nav2_controller-plugins/simple_goal_checker.rst
+  nav2_controller-plugins/stopped_goal_checker.rst
+
+기본 플러그인
+***************
+
+:code:`progress_checker_plugins`, :code:`goal_checker_plugin` 또는 :code:`controller_plugins` 매개변수가 재정의되지 않은 경우 다음 기본 플러그인이 로드됩니다:
+
+  ================== =====================================================
+  네임스페이스          플러그인
+  ------------------ -----------------------------------------------------
+  "progress_checker"  "nav2_controller::SimpleProgressChecker"
+  ------------------ -----------------------------------------------------
+  "goal_checker"      "nav2_controller::SimpleGoalChecker"
+  ------------------ -----------------------------------------------------
+  "FollowPath"        "dwb_core::DWBLocalPlanner"
+  ================== =====================================================
+
+
+위의 코드를 사용하여 컨트롤러 서버 설정을 설명했습니다.
+
+
+Example
+*******
+.. code-block:: yaml
+
+    controller_server:
+      ros__parameters:
+        use_sim_time: True
+        controller_frequency: 20.0
+        min_x_velocity_threshold: 0.001
+        min_y_velocity_threshold: 0.5
+        min_theta_velocity_threshold: 0.001
+        failure_tolerance: 0.3
+        odom_topic: "odom"
+        progress_checker_plugins: ["progress_checker"] # progress_checker_plugin: "progress_checker" For Humble and older
+        goal_checker_plugins: ["goal_checker"] # goal_checker_plugin: "goal_checker" For Galactic and older
+        controller_plugins: ["FollowPath"]
+        progress_checker:
+          plugin: "nav2_controller::SimpleProgressChecker"
+          required_movement_radius: 0.5
+          movement_time_allowance: 10.0
+        goal_checker:
+          plugin: "nav2_controller::SimpleGoalChecker"
+          xy_goal_tolerance: 0.25
+          yaw_goal_tolerance: 0.25
+          stateful: True
+        FollowPath:
+          plugin: "dwb_core::DWBLocalPlanner"
+
+요약
+-------
+
+컨트롤러의 종류에 대해서 배웠습니다.
+
+컨트롤러의 기본 설정법에 대해서 배웠습니다.
+
+아무 설정을 하지 않아도 ``progress_checker_plugins``, ``goal_checker_plugin``, ``controller_plugins`` 가 기본 값으로 지정 됩니다.
+
+다음 단계
+----------
+
+다음 과정에선 사용할 수 있는 각각의 컨트롤러의 내용에 대해서 배워 볼 것이다. 가장 먼저는 ``DWBLocalPlanner`` 입니다.

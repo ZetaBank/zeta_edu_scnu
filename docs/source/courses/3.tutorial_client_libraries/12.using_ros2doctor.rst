@@ -1,0 +1,189 @@
+``ros2doctor`` 를 사용하여 문제 식별
+=======================================
+
+**목표:** ``ros2doctor`` 도구를 사용하여 ROS 2 설정에서 문제를 식별합니다.
+
+배경
+----------
+
+ROS 2 설정이 원하는대로 작동하지 않을 때 ``ros2doctor`` 도구로 설정을 확인할 수 있습니다.
+
+``ros2doctor`` 는 플랫폼, 버전, 네트워크, 환경, 실행 중인 시스템 등 ROS 2의 모든 측면을 확인하고 가능한 오류와 문제 원인에 대한 경고를 제공합니다.
+
+필수 조건
+-------------
+
+``ros2doctor`` 는 ``ros2cli`` 패키지의 일부입니다.
+일반적으로 ``ros2cli`` 를 설치했다면 ``ros2doctor`` 를 사용할 수 있습니다.
+
+이 튜토리얼에서는 몇 가지 예를 보여 주기 위해 :doc:`turtlesim </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 을 사용합니다.
+
+작업
+-----
+
+1 설정 확인
+^^^^^^^^^^^^^^^^^^
+
+먼저 ``ros2doctor`` 를 사용하여 전체적인 ROS 2 설정을 확인해 보겠습니다.
+먼저 새 터미널에서 ROS 2를 활성화하고 다음 명령을 입력합니다.
+
+.. code-block:: console
+
+    ros2 doctor
+
+이 명령은 설정 모듈 전체에서 검사를 수행하고 경고와 오류를 반환합니다.
+
+ROS 2 설정이 완벽한 상태라면 다음과 유사한 메시지가 표시됩니다.
+
+.. code-block:: console
+
+    All <n> checks passed
+
+그러나 일부 경고가 반환되는 것은 흔한 일이 아닙니다.
+``UserWarning`` 은 설정이 이상한 방식으로 구성되어있음을 나타내는 것일 뿐 사용할 수 없다는 뜻이 아닙니다.
+
+경고를 받은 경우 다음과 같이 보일 것입니다.
+
+.. code-block:: console
+
+    <path>: <line>: UserWarning: <message>
+
+예를 들어, ``ros2doctor`` 는 안정성이 낮은 ROS 2 배포판을 사용하는 경우 다음 경고를 찾을 것입니다.
+
+.. code-block:: console
+
+    UserWarning: Distribution <distro> is not fully supported or tested. To get more consistent features, download a stable version at https://index.ros.org/doc/ros2/Installation/
+
+만약 ``ros2doctor`` 에서 시스템에서 경고만 발견하면 ``All <n> checks passed`` 메시지를 받게 됩니다.
+
+대부분의 검사는 오류가 아닌 경고로 분류됩니다.
+``ros2doctor`` 의 피드백의 중요성은 대부분 사용자인 여러분에게 달렸습니다.
+때때로 설치 중에 드문 오류를 발견하면 ``UserWarning: ERROR:`` 로 표시되며 검사는 실패로 간주됩니다.
+
+다음은 문제 피드백 목록과 유사한 메시지를 표시합니다.
+
+.. code-block:: console
+
+  1/3 checks failed
+
+  Failed modules:  network
+
+오류는 시스템이 중요한 설정 또는 ROS 2의 올바른 작동에 중요한 기능이 없음을 나타냅니다.
+시스템이 올바르게 작동하도록하려면 오류를 수정해야 합니다.
+
+2 시스템 확인
+^^^^^^^^^^^^^^^^^^
+
+실행 중인 ROS 2 시스템을 검사하여 문제 원인을 식별할 수도 있습니다.
+``ros2doctor`` 가 실행 중인 시스템에서 작동하는 것을 보려면 활성적으로 통신하는 노드가 있는 ``turtlesim`` 을 실행해 보겠습니다.
+
+새 터미널을 열고 ROS 2를 활성화한 다음 다음 명령을 입력하여 시스템을 시작합니다.
+
+.. code-block:: console
+
+    ros2 run turtlesim turtlesim_node
+
+다른 터미널을 열고 ROS 2를 활성화한 다음 텔레옵 컨트롤을 실행하려면 다음 명령을 입력합니다.
+
+.. code-block:: console
+
+    ros2 run turtlesim turtle_teleop_key
+
+이제 ``ros2doctor`` 를 다시 자체 터미널에서 실행하십시오.
+이전에 설정에 대해 ``ros2doctor`` 를 마지막으로 실행했을 때 경고와 오류를 볼 것입니다.
+이전 실행에서 경고가 있었다면 이에 추가로 시스템 자체와 관련된 몇 가지 새로운 경고가 나타납니다.
+
+.. code-block:: console
+
+    UserWarning: Publisher without subscriber detected on /turtle1/color_sensor.
+    UserWarning: Publisher without subscriber detected on /turtle1/pose.
+
+``ros2doctor`` 가 ``/turtlesim`` 노드가 구독되지 않는 두 개의 토픽에 데이터를 발행한다고 생각하고 있으며, 이것이 문제를 일으킬 가능성이 있다고 생각합니다.
+
+``/color_sensor`` 와 ``/pose`` 토픽을 echo하는 명령어를 실행하면, 이러한 경고가 사라집니다. 왜냐하면 publisher들이 subscriber를 가지게 되기 때문입니다.
+
+turtlesim이 여전히 실행 중인 동안 각각 새로운 터미널을 열고 각각 ROS 2를 활성화한 다음 그들의 터미널에서 다음 명령을 실행하여 시도해 볼 수 있습니다.
+
+.. code-block:: console
+
+    ros2 topic echo /turtle1/color_sensor
+
+.. code-block:: console
+
+    ros2 topic echo /turtle1/pose
+
+그런 다음 ``ros2doctor`` 를 자체 터미널에서 다시 실행하십시오.
+``publisher without subscriber`` 경고가 사라집니다.
+(``echo`` 를 실행한 터미널에서 ``Ctrl+C`` 를 입력하는 것을 잊지 마십시오).
+
+이제 turtlesim 창을 종료하거나 텔레옵을 종료하고 ``ros2doctor`` 를 다시 실행하십시오.
+하나의 노드가 시스템에서 사용할 수 없게되어 다른 토픽에 대한 ``publisher without subscriber`` 또는 ``subscriber without publisher`` 경고가 표시됩니다.
+
+다수의 노드가 있는 복잡한 시스템에서 ``ros2doctor`` 는 통신 문제의 가능한 원인을 식별하는 데 매우 유용할 것입니다.
+
+3 전체 보고서 얻기
+^^^^^^^^^^^^^^^^^^^
+
+``ros2doctor`` 는 네트워크, 시스템 등에 대한 경고를 알려줄 것이지만 ``--report`` 인수와 함께 실행하면 이슈를 분석하는 데 도움이 되는 더 자세한 정보를 제공합니다.
+
+네트워크 설정에 대한 경고를 받은 경우 해당 경고를 일으키는 구성의 어떤 부분이 문제인지 정확히 찾고자 할 때 ``--report`` 를 사용하면 매우 유용합니다.
+
+ROS 2에 대한 도움을 얻기 위해 지원 티켓을 열어야 하는 경우 보고서의 관련 부분을 티켓에 복사하여 도움을 받는 사람이 환경을 더 잘 이해하고 더 나은 지원을 제공할 수 있도록 할 수 있습니다.
+
+전체 보고서를 얻으려면 다음 명령을 입력하십시오.
+
+.. code-block:: console
+
+    ros2 doctor --report
+
+이 명령은 다섯 개의 그룹으로 분류된 정보 목록을 반환합니다.
+
+.. code-block:: console
+
+  NETWORK CONFIGURATION
+  ...
+
+  PLATFORM INFORMATION
+  ...
+
+  RMW MIDDLEWARE
+  ...
+
+  ROS 2 INFORMATION
+  ...
+
+  TOPIC LIST
+  ...
+
+여기서 제공되는 정보를 ``ros2 doctor`` 를 실행할 때 받는 경고와 대조할 수 있습니다.
+예를 들어, ``ros2 doctor`` 가 배포판이 "완전히 지원되지 않거나 테스트되지 않았다"는 경고를 반환하는 경우 보고서의 ``ROS 2 INFORMATION`` 섹션을 살펴볼 수 있습니다.
+
+.. code-block:: console
+
+  distribution name      : <distro>
+  distribution type      : ros2
+  distribution status    : prerelease
+  release platforms      : {'<platform>': ['<version>']}
+
+여기에서 ``distribution status`` 가 ``prerelease`` 임을 확인할 수 있으며, 이것이 완전히 지원되지 않은 이유입니다.
+
+
+요약
+-------
+
+``ros2doctor`` 는 ROS 2 설정 및 실행 중인 시스템에서 문제를 알려줍니다.
+``--report`` 인수를 사용하여 경고 뒤에 있는 정보를 자세히 살펴볼 수 있습니다.
+
+기억해야 할 점은 ``ros2doctor`` 가 디버그 도구가 아니라는 것입니다. 코드나 시스템 구현 측면에서의 오류에는 도움이 되지 않습니다.
+
+
+관련 콘텐츠
+---------------
+
+`ros2doctor의 README <https://github.com/ros2/ros2cli/tree/humble/ros2doctor>`__ 에서 다양한 인수에 대해 자세히 알아볼 수 있습니다.
+``ros2doctor`` 리포지토리를 살펴보는 것도 좋습니다. 초보자 친화적이며 기여를 시작하기에 좋은 장소입니다.
+
+다음 단계
+----------------
+
+초급 레벨 튜토리얼을 완료하셨습니다!

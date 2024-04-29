@@ -1,0 +1,440 @@
+사용자 정의 인터페이스 구현
+==============================
+
+**목표:** ROS 2에서 사용자 정의 인터페이스를 더 다양한 방법으로 구현하는 방법을 배우세요.
+
+배경 지식
+----------
+
+:doc:`이전 튜토리얼 <./8.create_msg_and_srv>` 에서는 사용자 정의 msg 및 srv 인터페이스를 생성하는 방법을 배웠습니다.
+
+인터페이스를 전용 인터페이스 패키지에 선언하는 것이 가장 좋은 방법이지만, 때로는 하나의 패키지에서 인터페이스를 선언, 생성 및 사용하는 것이 편리할 수 있습니다.
+
+인터페이스는 현재 CMake 패키지에서만 정의할 수 있습니다.
+그러나 `ament_cmake_python <https://github.com/ament/ament_cmake/tree/humble/ament_cmake_python>`_ 을 사용하여 CMake 패키지에 Python 라이브러리와 노드를 포함시킬 수 있으므로 인터페이스와 Python 노드를 한 패키지에서 정의할 수 있습니다.
+여기서는 간단함을 위해 CMake 패키지와 C++ 노드를 사용하겠습니다.
+
+이 튜토리얼은 msg 인터페이스 유형에 중점을 둘 것이지만, 여기에서 수행하는 단계는 모든 인터페이스 유형에 적용됩니다.
+
+전제 조건
+-------------
+
+이 튜토리얼을 진행하기 전에 :doc:`커스텀 msg와 srv 파일 생성하기 <./8.create_msg_and_srv>` 튜토리얼의 기본 내용을 검토했다고 가정합니다.
+
+ROS 2가 설치되어 있어야 하며 :doc:`작업 공간 <./2.create_workspace>` 과 :doc:`패키지 생성 <./3.create_package>` 에 대한 이해가 있어야 합니다.
+
+항상 새 터미널에서 :doc:`ROS 2 환경 설정 </courses/2.tutorial_cli_ros2/1.setting>` 을 소스로 지정하지 않는 것을 잊지 마십시오.
+
+작업
+-----
+
+1 패키지 생성
+^^^^^^^^^^^^^^^^^^
+
+작업 공간 ``src`` 디렉토리에서 ``more_interfaces`` 라는 패키지를 생성하고 msg 파일을 위한 디렉토리를 만듭니다:
+
+.. code-block:: console
+
+  ros2 pkg create --build-type ament_cmake --license Apache-2.0 more_interfaces
+  mkdir more_interfaces/msg
+
+2 msg 파일 생성
+^^^^^^^^^^^^^^^^^^^
+
+``more_interfaces/msg`` 디렉토리 안에 새 파일 ``AddressBook.msg`` 를 생성하고 다음 코드를 붙여넣어 개인 정보를 나타내는 메시지를 만듭니다:
+
+.. code-block:: console
+
+   uint8 PHONE_TYPE_HOME=0
+   uint8 PHONE_TYPE_WORK=1
+   uint8 PHONE_TYPE_MOBILE=2
+
+   string first_name
+   string last_name
+   string phone_number
+   uint8 phone_type
+
+이 메시지는 다음과 같은 필드로 구성됩니다:
+
+* first_name: string 유형
+* last_name: string 유형
+* phone_number: string 유형
+* phone_type: uint8 유형, 몇 가지 명명된 상수 값이 정의됩니다
+
+필드 내에서 기본값을 설정할 수 있는 것에 유의하십시오.
+인터페이스를 사용자 정의하는 다른 방법에 대한 자세한 내용은 `Interface <https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html>`__ 를 참조하십시오.
+
+다음으로, msg 파일이 C++, Python 및 기타 언어의 소스 코드로 변환되도록 해야 합니다.
+
+2.1 msg 파일 빌드
+~~~~~~~~~~~~~~~~~~~~
+
+``package.xml`` 을 열고 다음 라인을 추가하십시오:
+
+.. code-block:: xml
+
+     <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+     <exec_depend>rosidl_default_runtime</exec_depend>
+
+     <member_of_group>rosidl_interface_packages</member_of_group>
+
+빌드 시에 ``rosidl_default_generators`` 가 필요하지만 런타임에는 ``rosidl_default_runtime`` 만 필요합니다.
+
+``CMakeLists.txt`` 를 열고 다음 라인을 추가하십시오:
+
+msg/srv 파일에서 메시지 코드를 생성하는 패키지를 찾습니다:
+
+.. code-block:: cmake
+
+   find_package(rosidl_default_generators REQUIRED)
+
+생성할 메시지 목록을 선언합니다:
+
+.. code-block:: cmake
+
+   set(msg_files
+     "msg/AddressBook.msg"
+   )
+
+.msg 파일을 수동으로 추가함으로써 다른 .msg 파일을 추가한 후 프로젝트를 다시 구성해야 할 때 CMake가 알 수 있도록 합니다.
+
+메시지를 생성합니다:
+
+.. code-block:: cmake
+
+   rosidl_generate_interfaces(${PROJECT_NAME}
+     ${msg_files}
+   )
+
+또한 메시지 런타임 종속성을 내보내도록 합니다:
+
+.. code-block:: cmake
+
+   ament_export_dependencies(rosidl_default_runtime)
+
+이제 msg 정의에서 소스 파일을 생성할 준비가 되었습니다.
+우리는 현재 모든 것을 함께 아래의 4단계에서 진행할 것이기 때문에 컴파일 단계를 건너뜁니다.
+
+2.2 (추가) 여러 인터페이스 설정
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+  ``CMakeLists.txt`` 에서 ``set`` 을 사용하여 모든 인터페이스를 깔끔하게 나열할 수 있습니다.
+
+  .. code-block:: cmake
+
+     set(msg_files
+       "msg/Message1.msg"
+       "msg/Message2.msg"
+       # etc
+       )
+
+     set(srv_files
+       "srv/Service1.srv"
+       "srv/Service2.srv"
+        # etc
+       )
+
+  그리고 다음과 같이 한 번에 모든 목록을 생성할 수 있습니다:
+
+  .. code-block:: cmake
+
+     rosidl_generate_interfaces(${PROJECT_NAME}
+       ${msg_files}
+       ${srv_files}
+     )
+
+
+3 동일 패키지에서 인터페이스 사용
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+이제 이 메시지를 사용하는 코드를 작성해볼 수 있습니다.
+
+``more_interfaces/src`` 에서 ``publish_address_book.cpp`` 라는 파일을 만들고 다음 코드를 붙여넣습니다:
+
+.. code-block:: c++
+
+  #include <chrono>
+  #include <memory>
+
+  #include "rclcpp/rclcpp.hpp"
+  #include "more_interfaces/msg/address_book.hpp"
+
+  using namespace std::chrono_literals;
+
+  class AddressBookPublisher : public rclcpp::Node
+  {
+  public:
+    AddressBookPublisher()
+    : Node("address_book_publisher")
+    {
+      address_book_publisher_ =
+        this->create_publisher<more_interfaces::msg::AddressBook>("address_book", 10);
+
+      auto publish_msg = [this]() -> void {
+          auto message = more_interfaces::msg::AddressBook();
+
+          message.first_name = "John";
+          message.last_name = "Doe";
+          message.phone_number = "1234567890";
+          message.phone_type = message.PHONE_TYPE_MOBILE;
+
+          std::cout << "Publishing Contact\nFirst:" << message.first_name <<
+            "  Last:" << message.last_name << std::endl;
+
+          this->address_book_publisher_->publish(message);
+        };
+      timer_ = this->create_wall_timer(1s, publish_msg);
+    }
+
+  private:
+    rclcpp::Publisher<more_interfaces::msg::AddressBook>::SharedPtr address_book_publisher_;
+    rclcpp::TimerBase::SharedPtr timer_;
+  };
+
+
+  int main(int argc, char * argv[])
+  {
+    rclcpp::init(argc, argv);
+    rclcpp::spin(std::make_shared<AddressBookPublisher>());
+    rclcpp::shutdown();
+
+    return 0;
+  }
+
+3.1 코드 설명
+~~~~~~~~~~~~~~~~~~~~~~
+
+새로 생성한 ``AddressBook.msg`` 의 헤더를 포함시킵니다.
+
+.. code-block:: c++
+
+   #include "more_interfaces/msg/address_book.hpp"
+
+노드와 ``AddressBook`` 퍼블리셔를 생성합니다.
+
+.. code-block:: c++
+
+   using namespace std::chrono_literals;
+
+   class AddressBookPublisher : public rclcpp::Node
+   {
+   public:
+     AddressBookPublisher()
+     : Node("address_book_publisher")
+     {
+       address_book_publisher_ =
+         this->create_publisher<more_interfaces::msg::AddressBook>("address_book");
+
+메시지를 주기적으로 게시하는 콜백을 생성합니다.
+
+.. code-block:: c++
+
+    auto publish_msg = [this]() -> void {
+
+게시할 메시지를 나중에 게시할 수 있도록 만들 인스턴스를 생성합니다.
+
+.. code-block:: c++
+
+    auto message = more_interfaces::msg::AddressBook();
+
+``AddressBook`` 필드를 채웁니다.
+
+.. code-block:: c++
+
+    message.first_name = "John";
+    message.last_name = "Doe";
+    message.phone_number = "1234567890";
+    message.phone_type = message.PHONE_TYPE_MOBILE;
+
+마지막으로 메시지를 주기적으로 전송합니다.
+
+.. code-block:: c++
+
+    std::cout << "Publishing Contact\nFirst:" << message.first_name <<
+      "  Last:" << message.last_name << std::endl;
+
+    this->address_book_publisher_->publish(message);
+
+1초마다 ``publish_msg`` 함수를 호출하는 타이머를 생성합니다.
+
+.. code-block:: c++
+
+       timer_ = this->create_wall_timer(1s, publish_msg);
+
+3.2 퍼블리셔 빌드
+~~~~~~~~~~~~~~~~~~~~~~~
+
+이 노드를 위한 새로운 대상을 ``CMakeLists.txt`` 에 추가해야 합니다:
+
+.. code-block:: cmake
+
+   find_package(rclcpp REQUIRED)
+
+   add_executable(publish_address_book src/publish_address_book.cpp)
+   ament_target_dependencies(publish_address_book rclcpp)
+
+   install(TARGETS
+       publish_address_book
+     DESTINATION lib/${PROJECT_NAME})
+
+3.3 인터페이스와 연결
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+동일한 패키지에서 생성된 인터페이스를 사용하려면 다음과 같은 CMake 코드를 사용해야 합니다:
+
+.. code-block:: cmake
+
+  rosidl_get_typesupport_target(cpp_typesupport_target
+    ${PROJECT_NAME} rosidl_typesupport_cpp)
+
+  target_link_libraries(publish_address_book "${cpp_typesupport_target}")
+
+인터페이스를 정의한 패키지와 동일한 패키지에서 인터페이스를 사용하려는 경우에만 이 CMake 코드가 필요하다는 것을 알 수 있습니다.
+
+4 실행해 보기
+^^^^^^^^^^^^
+
+패키지를 빌드하기 위해 작업 공간의 루트로 돌아가십시오:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      cd ~/ros2_ws
+      colcon build --packages-up-to more_interfaces
+
+
+그런 다음 작업 공간을 소스로 지정하고 퍼블리셔를 실행하십시오:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      source install/local_setup.bash
+      ros2 run more_interfaces publish_address_book
+
+메시지가 정의한 대로 게시되는 것을 확인할 수 있어야 합니다. ``publish_address_book.cpp`` 에서 설정한 값을 포함하여 메시지가 게시되는 것을 확인할 수 있어야 합니다.
+
+``address_book`` 주제에 메시지가 게시되고 있는지 확인하려면 다른 터미널을 열고 작업 공간을 소스로 지정하고 ``topic echo`` 를 호출하십시오:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      source install/setup.bash
+      ros2 topic echo /address_book
+
+
+이 튜토리얼에서는 구독자를 생성하지 않겠지만 연습을 위해 직접 생성해 보실 수 있습니다. (:doc:`./4.writing_a_simple_cpp_pub_and_sub` 를 사용하여 연습하실 수 있습니다.)
+
+5 (추가) 기존 인터페이스 정의 사용
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+  새로운 인터페이스 정의에서 기존 인터페이스 정의를 사용할 수 있습니다.
+  예를 들어, ``rosidl_tutorials_msgs`` 라는 기존 ROS 2 패키지에 속한 ``Contact.msg`` 라는 메시지가 있다고 가정해 보겠습니다.
+  이 메시지의 정의가 앞에서 만든 ``AddressBook.msg`` 인터페이스와 동일하다고 가정해 봅시다.
+
+  그런 경우 ``AddressBook.msg`` (노드가 있는 패키지 내의 인터페이스)를 ``Contact`` (별도의 패키지 내의 인터페이스) 유형으로 정의할 수 있습니다.
+  또한 ``AddressBook.msg`` 를 ``Contact`` 유형의 배열로 정의할 수도 있습니다.
+
+  ::
+
+     rosidl_tutorials_msgs/Contact[] address_book
+
+  이 메시지를 생성하려면 ``package.xml`` 에서 ``Contact.msg`` 패키지 ``rosidl_tutorials_msgs`` 에 대한 종속성을 선언해야 합니다:
+
+  .. code-block:: xml
+
+       <build_depend>rosidl_tutorials_msgs</build_depend>
+
+       <exec_depend>rosidl_tutorials_msgs</exec_depend>
+
+  그리고 ``CMakeLists.txt`` 에서 다음과 같이 선언해야 합니다:
+
+  .. code-block:: cmake
+
+     find_package(rosidl_tutorials_msgs REQUIRED)
+
+     rosidl_generate_interfaces(${PROJECT_NAME}
+       ${msg_files}
+       DEPENDENCIES rosidl_tutorials_msgs
+     )
+
+  또한 메시지 런타임 종속성을 내보내도록 합니다:
+
+  .. code-block:: cmake
+
+     ament_export_dependencies(rosidl_default_runtime)
+
+  ``Contact.msg`` 의 헤더를 포함시켜야 합니다. 이를 통해 ``contacts`` 를 ``address_book`` 에 추가할 수 있습니다.
+
+  .. code-block:: c++
+
+     #include "rosidl_tutorials_msgs/msg/contact.hpp"
+
+  콜백을 다음과 같이 변경할 수 있습니다:
+
+  .. code-block:: c++
+
+    auto publish_msg = [this]() -> void {
+       auto msg = std::make_shared<more_interfaces::msg::AddressBook>();
+       {
+         rosidl_tutorials_msgs::msg::Contact contact;
+         contact.first_name = "John";
+         contact.last_name = "Doe";
+         contact.phone_number = "1234567890";
+         contact.phone_type = message.PHONE_TYPE_MOBILE;
+         msg->address_book.push_back(contact);
+       }
+       {
+         rosidl_tutorials_msgs::msg::Contact contact;
+         contact.first_name = "Jane";
+         contact.last_name = "Doe";
+         contact.phone_number = "4254242424";
+         contact.phone_type = message.PHONE_TYPE_HOME;
+         msg->address_book.push_back(contact);
+       }
+
+       std::cout << "Publishing address book:" << std::endl;
+       for (auto contact : msg->address_book) {
+         std::cout << "First:" << contact.first_name << "  Last:" << contact.last_name <<
+           std::endl;
+       }
+
+       address_book_publisher_->publish(*msg);
+     };
+
+  이러한 변경 사항을 적용한 후 메시지를 빌드하고 실행해 보면 동일한 메시지가 게시되는 것을 확인할 수 있습니다.
+
+  또한, ``AddressBook`` 메시지를 ``Contact[]`` 메시지 유형으로 사용하기 위해 ``more_interfaces/msg/address_book.hpp`` 파일을 새로 작성하여 사용자 지정 메시지 타입의 포함을 정의해야 합니다.
+
+축하합니다! 이제 사용자 정의 인터페이스를 정의하고 사용하는 방법을 배웠습니다. 다음 튜토리얼에서는 메시지를 받아서 처리하는 방법에 대해 배우게 될 것입니다.
+
+요약
+----------------
+
+이 튜토리얼에서는 여러 가지 필드 유형을 시도한 다음 인터페이스를 동일한 패키지에서 빌드했습니다.
+
+또한 다른 인터페이스를 필드 유형으로 사용하는 방법과, 해당 기능을 활용하기 위해 필요한 ``package.xml``, ``CMakeLists.txt``, 및 ``#include`` 문을 배웠습니다.
+
+다음 단계
+----------------
+
+다음에는 로드 파일에서 설정하는 방법을 배울 사용자 정의 파라미터가 있는 간단한 ROS 2 패키지를 만듭니다.
+다시 말하지만 이를 :doc:`C++ <./10.using_parameters_cpp>` 또는 :doc:`Python <./11.using_parameters_py>` 언어로 작성할 수 있습니다.
+
+관련 컨텐츠
+-------------------
+
+ROS 2 인터페이스 및 IDL (인터페이스 정의 언어)에 대한 여러 디자인 문서가 있습니다. `여기 <https://design.ros2.org/#interfaces>`_ 에서 확인할 수 있습니다.

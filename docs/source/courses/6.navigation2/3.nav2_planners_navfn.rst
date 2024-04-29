@@ -1,0 +1,77 @@
+NavFn Planner
+===================
+
+``zeta2_navigation.launch.py`` 의 기본 옵션으로 되어 있습니다.
+
+Github_ 에서 소스 코드 확인하기.
+
+.. _Github: https://github.com/ros-planning/navigation2/tree/main/nav2_navfn_planner
+
+Navfn 플래너 플러그인은 웨이브 프론트 Dijkstra 또는 A* 확장 홀로노믹 플래너를 구현합니다.
+
+``<name>`` 은 이 유형에 선택된 해당 플래너 플러그인 ID입니다.
+
+매개변수
+**********
+
+:``<name>``.tolerance:
+
+  ============== =======
+  타입           기본값
+  -------------- -------
+  double         0.5  
+  ============== =======
+
+  설명
+    요청된 목표 포즈와 경로의 끝 사이의 거리 허용치(미터).
+
+:``<name>``.use_astar:
+
+  ==== =======
+  타입   기본값                                                   
+  ---- -------
+  bool   False            
+  ==== =======
+
+  설명
+    A*를 사용할지 여부. False인 경우 Dijkstra의 확장을 사용합니다.
+
+:``<name>``.allow_unknown:
+
+  ==== =======
+  타입   기본값                                                   
+  ---- -------
+  bool   True            
+  ==== =======
+
+  설명
+    알 수없는 공간에서의 계획을 허용할지 여부.
+    
+:``<name>``.use_final_approach_orientation:
+
+  ====== =======
+  타입    기본값                                                   
+  ------ -------
+  bool   false      
+  ====== =======
+
+  설명
+    True인 경우, 플래너가 생성한 경로의 마지막 포즈의 방향이 최종 접근 방향으로 설정됩니다. 즉, 경로의 마지막 두 지점을 연결하는 벡터의 방향입니다.
+   
+예시
+*******
+.. code-block:: yaml
+
+    planner_server:
+      ros__parameters:
+        planner_plugins: ['GridBased']
+        GridBased:
+          plugin: 'nav2_navfn_planner/NavfnPlanner'
+          use_astar: True
+          allow_unknown: True
+          tolerance: 1.0
+
+다음 단계
+----------
+
+다음 과정에선 ``Smac planner`` 에 대해서 알아보겠습니다.

@@ -1,0 +1,239 @@
+서비스 이해하기
+======================
+
+**목표:** 명령 줄 도구를 사용하여 ROS 2에서 서비스에 대해 배웁니다.
+
+배경
+----------
+
+서비스는 ROS 그래프의 노드 간에 또 다른 통신 방법입니다.
+서비스는 주제의 게시자-구독자 모델과는 달리 호출 및 응답 모델을 기반으로 합니다.
+주제는 노드가 데이터 스트림에 구독하고 지속적으로 업데이트를 받을 수 있게 해주지만, 서비스는 클라이언트가 명시적으로 호출할 때만 데이터를 제공합니다.
+
+.. image:: /_images/service/Service-SingleServiceClient.gif
+
+.. image:: /_images/service/Service-MultipleServiceClient.gif
+
+필수 준비물
+-------------
+
+이 튜토리얼에서 언급한 것과 같이, 노드와 주제와 같은 몇 가지 개념은 이전 튜토리얼에서 다루었습니다. (:doc:`노드 이해하기 </courses/2.tutorial_cli_ros2/3.node>` 및 :doc:`주제 이해하기 </courses/2.tutorial_cli_ros2/4.topic>`).
+
+또한 :doc:`turtlesim 패키지 </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 가 필요합니다.
+
+항상 새로운 터미널을 열 때마다 ROS 2를 소스로 지정하는 것을 잊지 마세요.
+
+작업
+-----
+
+1 설정
+^^^^^^^
+``/turtlesim`` 과 ``/teleop_turtle`` 두 개의 turtlesim 노드를 시작합니다.
+
+새로운 터미널을 열고 다음 명령을 실행합니다:
+
+.. code-block:: console
+
+    ros2 run turtlesim turtlesim_node
+
+다른 터미널을 열고 다음 명령을 실행합니다:
+
+.. code-block:: console
+
+    ros2 run turtlesim turtle_teleop_key
+
+2 ros2 service list
+^^^^^^^^^^^^^^^^^^^
+
+새로운 터미널에서 ``ros2 service list`` 명령을 실행하면 시스템에서 현재 활성화된 모든 서비스 목록이 반환됩니다.
+
+.. code-block:: console
+
+  /clear
+  /kill
+  /reset
+  /spawn
+  /teleop_turtle/describe_parameters
+  /teleop_turtle/get_parameter_types
+  /teleop_turtle/get_parameters
+  /teleop_turtle/list_parameters
+  /teleop_turtle/set_parameters
+  /teleop_turtle/set_parameters_atomically
+  /turtle1/set_pen
+  /turtle1/teleport_absolute
+  /turtle1/teleport_relative
+  /turtlesim/describe_parameters
+  /turtlesim/get_parameter_types
+  /turtlesim/get_parameters
+  /turtlesim/list_parameters
+  /turtlesim/set_parameters
+  /turtlesim/set_parameters_atomically
+
+두 노드가 이름에 ``parameters`` 가 포함된 동일한 여섯 개의 서비스를 가지고 있음을 볼 수 있습니다.
+ROS 2의 거의 모든 노드에는 이러한 인프라 서비스가 내장되어 있어서 매개변수가 이에 기반하여 작동합니다.
+매개변수에 대한 자세한 내용은 다음 튜토리얼에서 다루겠습니다.
+이 튜토리얼에서는 매개변수 서비스에 대한 논의를 생략하겠습니다.
+
+지금은 turtlesim에 특화된 서비스인 ``/clear``, ``/kill``, ``/reset``, ``/spawn``, ``/turtle1/set_pen``, ``/turtle1/teleport_absolute`` 및 ``/turtle1/teleport_relative`` 에 중점을 두겠습니다.
+이러한 서비스 중 일부를 이전 튜토리얼의 :doc:`turtlesim_rqt </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 에서 rqt를 사용하여 상호 작용했을 것입니다.
+
+3 ros2 service type
+^^^^^^^^^^^^^^^^^^^
+
+서비스는 요청 및 응답 데이터의 구조를 설명하는 타입을 갖습니다.
+서비스 타입은 주제 타입과 유사하게 정의되지만 서비스 타입은 요청과 응답을 위한 두 부분으로 구성됩니다.
+
+서비스의 타입을 알아보려면 다음 명령을 사용하십시오:
+
+.. code-block:: console
+
+  ros2 service type <service_name>
+
+예를 들어 turtlesim의 ``/clear`` 서비스를 살펴보겠습니다.
+새로운 터미널에서 다음 명령을 입력하십시오:
+
+.. code-block:: console
+
+  ros2 service type /clear
+
+이 명령은 다음을 반환해야 합니다:
+
+.. code-block:: console
+
+  std_srvs/srv/Empty
+
+``Empty`` 타입은 서비스 호출이 요청을 보낼 때 데이터를 전송하지 않고 응답을 수신하지 않음을 의미합니다.
+
+3.1 ros2 service list -t
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+모든 활성 서비스의 타입을 동시에 볼려면 ``list`` 명령에 ``--show-types`` 옵션 또는 ``-t`` 로 약어를 추가할 수 있습니다:
+
+.. code-block:: console
+
+  ros2 service list -t
+
+이 명령은 다음을 반환합니다:
+
+.. code-block:: console
+
+  /clear [std_srvs/srv/Empty]
+  /kill [turtlesim/srv/Kill]
+  /reset [std_srvs/srv/Empty]
+  /spawn [turtlesim/srv/Spawn]
+  ...
+  /turtle1/set_pen [turtlesim/srv/SetPen]
+  /turtle1/teleport_absolute [turtlesim/srv/TeleportAbsolute]
+  /turtle1/teleport_relative [turtlesim/srv/TeleportRelative]
+  ...
+
+4 ros2 service find
+^^^^^^^^^^^^^^^^^^^
+
+특정 타입의 모든 서비스를 찾고 싶다면 다음 명령을 사용할 수 있습니다:
+
+.. code-block:: console
+
+  ros2 service find <type_name>
+
+예를 들어, 이렇게 모든 ``Empty`` 타입의 서비스를 찾을 수 있습니다:
+
+.. code-block:: console
+
+  ros2 service find std_srvs/srv/Empty
+
+이 명령은 다음을 반환합니다:
+
+.. code-block:: console
+
+  /clear
+  /reset
+
+5 ros2 interface show
+^^^^^^^^^^^^^^^^^^^^^
+
+명령 줄에서 서비스를 호출할 수 있지만 먼저 입력 인수의 구조를 알아야 합니다.
+
+.. code-block:: console
+
+  ros2 interface show <type_name>
+
+이 명령을 ``/clear`` 서비스의 타입인 ``Empty`` 에 대해 시도해 보십시오:
+
+.. code-block:: console
+
+  ros2 interface show std_srvs/srv/Empty
+
+이 명령은 다음을 반환합니다:
+
+.. code-block:: console
+
+  ---
+
+``---`` 은 요청 구조(위)와 응답 구조(아래)를 구분합니다.
+그러나 앞서 배운 대로 ``Empty`` 타입은 데이터를 보내지 않고 수신하지 않으므로 해당 구조는 비어 있습니다.
+
+``/spawn`` 과 같이 데이터를 보내고 수신하는 타입과 같이 서비스의 요청 및 응답 인수를 확인할 수 있지만 이 경우에는 필요하지 않은 정보입니다.
+그러나 응답에서 받는 데이터 유형을 이해하는 데 도움이 될 수 있습니다.
+
+6 ros2 service call
+^^^^^^^^^^^^^^^^^^^
+
+이제 서비스 타입을 알고, 서비스의 타입을 찾고, 그 타입의 인수 구조를 찾는 방법을 알았으므로 다음과 같이 서비스를 호출할 수 있습니다:
+
+.. code-block:: console
+
+  ros2 service call <service_name> <service_type> <arguments>
+
+``<arguments>`` 부분은 선택 사항입니다.
+예를 들어, ``Empty`` 타입의 서비스에는 인수가 없음을 알고 있습니다:
+
+.. code-block:: console
+
+  ros2 service call /clear std_srvs/srv/Empty
+
+이 명령은 당신의 거북이가 그린 선들을 turtlesim 창에서 지울 것입니다.
+
+.. image:: /_images/service/clear.png
+
+이제 새로운 거북이를 생성하여 ``/spawn`` 을 호출하고 인수를 설정하여 보겠습니다.
+명령 줄에서 서비스 호출의 입력 ``<arguments>`` 는 YAML 구문을 사용해야 합니다.
+
+다음 명령을 입력하십시오:
+
+.. code-block:: console
+
+  ros2 service call /spawn turtlesim/srv/Spawn "{x: 2, y: 2, theta: 0.2, name: ''}"
+
+이 명령을 실행하면 다음과 같은 방식으로 진행 상황이 표시되고 서비스 응답이 반환됩니다:
+
+.. code-block:: console
+
+  requester: making request: turtlesim.srv.Spawn_Request(x=2.0, y=2.0, theta=0.2, name='')
+
+  response:
+  turtlesim.srv.Spawn_Response(name='turtle2')
+
+당신의 turtlesim 창은 즉시 새로 생성된 거북이로 업데이트될 것입니다:
+
+.. image:: /_images/service/spawn.png
+
+요약
+-------
+
+ROS 2에서 노드는 서비스를 사용하여 통신할 수 있습니다.
+주제와 달리 서비스는 클라이언트가 서비스를 제공하는 노드에 요청을 보내고 서비스가 요청을 처리하고 응답을 생성하는 요청/응답 패턴입니다.
+
+일반적으로 지속적인 호출에는 서비스를 사용하면 안됩니다. 주제 또는 작업이 더 적합할 것입니다.
+
+이 튜토리얼에서는 명령 줄 도구를 사용하여 서비스를 식별하고, 검사하고, 호출하는 방법을 배웠습니다.
+
+다음 단계
+----------
+
+다음 튜토리얼, :doc:`/courses/2.tutorial_cli_ros2/6.parameters` 에서 노드 설정을 배우게 됩니다.
+
+관련 콘텐츠
+---------------
+
+`이 튜토리얼 <https://discourse.ubuntu.com/t/call-services-in-ros-2/15261>`_ 를 확인하세요. 로보티스 로봇 암을 사용한 ROS 서비스의 현실적인 응용 프로그램입니다.

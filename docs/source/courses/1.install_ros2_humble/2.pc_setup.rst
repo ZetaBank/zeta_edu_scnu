@@ -1,0 +1,123 @@
+PC 셋업
+==========
+
+**목표:** PC에서 로봇과 쉽게 연결할 수 있게 한다.
+
+이 과정에서는 PC에서 로봇에 연결하는 방법을 알려줍니다.
+
+PC에 로봇에 맞는 ubuntu 버전을 설치하고 ros 또한 설치하여 PC에서도 ros를 사용할 수 있게 할 것입니다.
+
+전제조건
+--------
+
+1. 로봇과 동일한 네트워크
+
+2. :doc:`전 작업 <./1.robot_setup>` 이 끝난 zeta2 로봇
+
+3. USB 준비
+
+1 **Ubuntu** USB 메모리 스틱 만들기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+https://mirror.kakao.com/ubuntu-releases/
+
+위의 링크로 들어가서 **Ubuntu** 를 다운로드 받습니다.
+
+이 버전에선 ``22.04`` 를 설치할 것입니다.
+
+desktop 버전으로 다운 받으면 됩니다.
+
+다음은 USB에 다운로드 받은 iso 파일을 넣습니다. 넣는 방법은 다양합니다.
+
+https://makingrobot.tistory.com/132 이 사이트를 참고할 수도 있습니다.
+
+https://www.bangseongbeom.com/balena-etcher-intro.html 이 사이트를 참고할 수도 있습니다.
+
+USB에 ISO 파일을 넣으면 이제 우분투 설치용 USB가 생성된 것입니다.
+
+
+2 PC에 Ubuntu 설치하기
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+앞의 과정을 다 하였으면 이제 PC에 Ubuntu를 설치하는 과정이 남았습니다.
+
+1. USB 메모리 스틱을 PC에 장착하고 전원 버튼을 켭니다. USB 부팅이 가능하도록 CMOS를 설정해야 하기 때문에 부팅과 동시에 F11 기능키를 누릅니다. 아래와 같은 부팅 디바이스 선택 화면이 출력됩니다.
+
+.. image:: images/ubuntu_1.jpg
+
+.. image:: images/ubuntu_2.jpg
+
+PC의 메인 보드에 따라서 눌려야 하는 버튼이 다를 수도 있습니다.
+
+자신의 USB 제품을 선택합니다.
+
+2. USB 장치가 인식되어 부팅이 시작 됩니다. Try Ubuntu or Install 을 설택한다음 -> Install 을 선택하면 설치가 진행됩니다.
+
+.. image:: images/ubuntu_3.jpg
+
+3. 다음 버튼을 눌러줍니다.
+
+.. image:: images/ubuntu_4.jpg
+
+.. image:: images/ubuntu_5.jpg
+
+4. 윈도우를 살릴 사람은 잘선택해서 살리고 전 그냥 다 제거하고 우분투만 남겼습니다.
+
+.. image:: images/ubuntu_6.jpg
+
+5. 다음 버튼을 계속 눌러줍니다.
+
+.. image:: images/ubuntu_7.jpg
+
+.. image:: images/ubuntu_8.jpg
+
+.. image:: images/ubuntu_9.jpg
+
+6. 계정 이름과 비밀번호를 입력하는 화면이 나오면 본인이 원하는 계정 이름과 패스워드를 입력합니다.
+
+.. image:: images/ubuntu_10.jpg
+
+7. 설치 중인 화면입니다.
+
+.. image:: images/ubuntu_11.jpg
+
+8. 설치가 완료되고 재시작을 누릅니다.
+
+.. image:: images/ubuntu_12.jpg
+
+9. 설치에 사용한 USB를 제거하고 엔터를 누르면 완료.
+
+.. image:: images/ubuntu_13.jpg
+
+4 PC에서 로봇 ssh 연결
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+우리는 로봇에 WiFi에 연결 되어 있는 상태이다. 또한 아까 로봇에 ``openssh-server`` 를 설치한 상태이다.
+
+이제 우리는 로봇에 ``ssh`` 접속 이라는걸 할 수 있다. 방법은 쉽다. 
+
+1. PC의 터미널을 연다. ``ssh 로봇의이름@IP주소`` 순서로 터미널에 입력한다.
+
+.. image:: images/ssh_1.jpg
+
+2. ``yes`` 입력, ``비밀번호`` 입력
+
+.. image:: images/ssh_2.jpg
+
+.. image:: images/ssh_3.jpg
+
+4. 연결된 모습을 확인할 수 있다.
+
+.. image:: images/ssh_4.jpg
+
+
+요약
+-------
+
+PC에서 로봇에 연결하는 방법을 학습했습니다. 이제 우리는 PC에서 로봇의 터미널에 명령을 줄 수 있습니다. 
+
+
+다음 단계
+----------
+
+다음엔 로봇과 PC에 ROS2를 설치 하는 방법에 대해서 알아보겠습니다.

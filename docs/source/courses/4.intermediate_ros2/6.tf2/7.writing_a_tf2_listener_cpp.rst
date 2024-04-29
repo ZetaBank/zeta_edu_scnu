@@ -1,0 +1,355 @@
+리스너 작성하기 (C++)
+=====================
+
+**목표:** tf2를 사용하여 프레임 변환에 액세스하는 방법을 배웁니다.
+
+배경
+----
+
+이전 튜토리얼에서는 tf2 브로드캐스터를 생성하여 거북이의 위치를 tf2에 게시했습니다.
+
+이 튜토리얼에서는 tf2를 사용하기 시작하는 tf2 리스너를 생성합니다.
+
+전제 조건
+----------
+
+이 튜토리얼은 이전의 :doc:`tf2 정적 브로드캐스터 튜토리얼 (C++) <./3.writing_a_tf2_static_broadcaster_cpp>` 및 :doc:`tf2 브로드캐스터 튜토리얼 (C++) <./4.writing_a_tf2_broadcaster_cpp>` 을 완료했다고 가정합니다.
+이전 튜토리얼에서는 ``learning_tf2_cpp`` 패키지를 생성했으며 여기에서 계속 작업합니다.
+
+작업
+----
+
+1. 리스너 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^
+
+먼저 소스 파일을 생성합시다.
+이전 튜토리얼에서 생성한 ``learning_tf2_cpp`` 패키지로 이동합니다.
+``src`` 디렉토리 안으로 들어가 다음 명령어를 입력하여 예제 리스너 코드를 다운로드합니다.
+
+.. tabs::
+
+    .. group-tab:: Linux
+
+        .. code-block:: console
+
+            wget https://raw.githubusercontent.com/ros/geometry_tutorials/ros2/turtle_tf2_cpp/src/turtle_tf2_listener.cpp
+
+
+선호하는 텍스트 편집기로 파일을 엽니다.
+
+.. code-block:: C++
+
+    #include <chrono>
+    #include <functional>
+    #include <memory>
+    #include <string>
+
+    #include "geometry_msgs/msg/transform_stamped.hpp"
+    #include "geometry_msgs/msg/twist.hpp"
+    #include "rclcpp/rclcpp.hpp"
+    #include "tf2/exceptions.h"
+    #include "tf2_ros/transform_listener.h"
+    #include "tf2_ros/buffer.h"
+    #include "turtlesim/srv/spawn.hpp"
+
+    using namespace std::chrono_literals;
+
+    class FrameListener : public rclcpp::Node
+    {
+    public:
+      FrameListener()
+      : Node("turtle_tf2_frame_listener"),
+        turtle_spawning_service_ready_(false),
+        turtle_spawned_(false)
+      {
+        // Declare and acquire `target_frame` parameter
+        target_frame_ = this->declare_parameter<std::string>("target_frame", "turtle1");
+
+        tf_buffer_ =
+          std::make_unique<tf2_ros::Buffer>(this->get_clock());
+        tf_listener_ =
+          std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+        // Create a client to spawn a turtle
+        spawner_ =
+          this->create_client<turtlesim::srv::Spawn>("spawn");
+
+        // Create turtle2 velocity publisher
+        publisher_ =
+          this->create_publisher<geometry_msgs::msg::Twist>("turtle2/cmd_vel", 1);
+
+        // Call on_timer function every second
+        timer_ = this->create_wall_timer(
+          1s, std::bind(&FrameListener::on_timer, this));
+      }
+
+    private:
+      void on_timer()
+      {
+        // Store frame names in variables that will be used to
+        // compute transformations
+        std::string fromFrameRel = target_frame_.c_str();
+        std::string toFrameRel = "turtle2";
+
+        if (turtle_spawning_service_ready_) {
+          if (turtle_spawned_) {
+            geometry_msgs::msg::TransformStamped t;
+
+            // Look up for the transformation between target_frame and turtle2 frames
+            // and send velocity commands for turtle2 to reach target_frame
+            try {
+              t = tf_buffer_->lookupTransform(
+                toFrameRel, fromFrameRel,
+                tf2::TimePointZero);
+            } catch (const tf2::TransformException & ex) {
+              RCLCPP_INFO(
+                this->get_logger(), "Could not transform %s to %s: %s",
+                toFrameRel.c_str(), fromFrameRel.c_str(), ex.what());
+              return;
+            }
+
+            geometry_msgs::msg::Twist msg;
+
+            static const double scaleRotationRate = 1.0;
+            msg.angular.z = scaleRotationRate * atan2(
+              t.transform.translation.y,
+              t.transform.translation.x);
+
+            static const double scaleForwardSpeed = 0.5;
+            msg.linear.x = scaleForwardSpeed * sqrt(
+              pow(t.transform.translation.x, 2) +
+              pow(t.transform.translation.y, 2));
+
+            publisher_->publish(msg);
+          } else {
+            RCLCPP_INFO(this->get_logger(), "Successfully spawned");
+            turtle_spawned_ = true;
+          }
+        } else {
+          // Check if the service is ready
+          if (spawner_->service_is_ready()) {
+            // Initialize request with turtle name and coordinates
+            // Note that x, y and theta are defined as floats in turtlesim/srv/Spawn
+            auto request = std::make_shared<turtlesim::srv::Spawn::Request>();
+            request->x = 4.0;
+            request->y = 2.0;
+            request->theta = 0.0;
+            request->name = "turtle2";
+
+            // Call request
+            using ServiceResponseFuture =
+              rclcpp::Client<turtlesim::srv::Spawn>::SharedFuture;
+            auto response_received_callback = [this](ServiceResponseFuture future) {
+                auto result = future.get();
+                if (strcmp(result->name.c_str(), "turtle2") == 0) {
+                  turtle_spawning_service_ready_ = true;
+                } else {
+                  RCLCPP_ERROR(this->get_logger(), "Service callback result mismatch");
+                }
+              };
+            auto result = spawner_->async_send_request(request, response_received_callback);
+          } else {
+            RCLCPP_INFO(this->get_logger(), "Service is not ready");
+          }
+        }
+      }
+
+      // Boolean values to store the information
+      // if the service for spawning turtle is available
+      bool turtle_spawning_service_ready_;
+      // if the turtle was successfully spawned
+      bool turtle_spawned_;
+      rclcpp::Client<turtlesim::srv::Spawn>::SharedPtr spawner_{nullptr};
+      rclcpp::TimerBase::SharedPtr timer_{nullptr};
+      rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_{nullptr};
+      std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
+      std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
+      std::string target_frame_;
+    };
+
+    int main(int argc, char * argv[])
+    {
+      rclcpp::init(argc, argv);
+      rclcpp::spin(std::make_shared<FrameListener>());
+      rclcpp::shutdown();
+      return 0;
+    }
+
+1.1 코드 검토
+~~~~~~~~~~~~~~~~~~
+
+터틀을 생성하는 서비스에 대한 작동 방식을 이해하려면 :doc:`간단한 서비스 및 클라이언트 작성하기 (C++) </courses/3.tutorial_client_libraries/6.writing_a_simple_cpp_service_and_client>` 튜토리얼을 참조하십시오.
+
+이제 프레임 변환에 액세스하기 위한 코드를 살펴보겠습니다.
+``tf2_ros`` 에는 변환을 수신하는 작업을 더 쉽게 만드는 ``TransformListener`` 헤더 파일 구현이 포함되어 있습니다.
+
+.. code-block:: C++
+
+    #include "tf2_ros/transform_listener.h"
+
+여기에서 ``TransformListener`` 개체를 생성합니다.
+한 번 리스너가 생성되면, 최대 10초 동안 tf2 변환을 수신하고 버퍼링합니다.
+
+.. code-block:: C++
+
+    tf_listener_ =
+      std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+마지막으로 리스너에게 특정 변환을 조회합니다.
+다음과 같은 인수로 ``lookup_transform`` 메서드를 호출합니다.
+
+#. 대상 프레임
+
+#. 소스 프레임
+
+#. 변환을 조회하려는 시간
+
+``tf2::TimePointZero()`` 를 제공하면 최신 사용 가능한 변환을 얻습니다.
+이 모든 것은 예외 처리를 처리하기 위한 try-catch 블록으로 래핑됩니다.
+
+.. code-block:: C++
+
+    t = tf_buffer_->lookupTransform(
+      toFrameRel, fromFrameRel,
+      tf2::TimePointZero);
+
+1.2 CMakeLists.txt
+~~~~~~~~~~~~~~~~~~
+
+``learning_tf2_cpp`` 디렉토리로 이동하여 ``CMakeLists.txt`` 와 ``package.xml`` 파일이 있는 곳으로 이동합니다.
+
+그런 다음 ``turtle_tf2_listener`` 라는 실행 파일을 추가하고 나중에 ``ros2 run`` 에서 사용할 이름을 설정합니다.
+
+.. code-block:: console
+
+    add_executable(turtle_tf2_listener src/turtle_tf2_listener.cpp)
+    ament_target_dependencies(
+        turtle_tf2_listener
+        geometry_msgs
+        rclcpp
+        tf2
+        tf2_ros
+        turtlesim
+    )
+
+마지막으로 ``install(TARGETS...)`` 섹션을 추가하여 ``ros2 run`` 이 실행 가능한 파일을 찾을 수 있도록합니다.
+
+.. code-block:: console
+
+    install(TARGETS
+        turtle_tf2_listener
+        DESTINATION lib/${PROJECT_NAME})
+
+2. 런치 파일 업데이트
+^^^^^^^^^^^^^^^^^^^^^^
+
+텍스트 편집기에서 ``turtle_tf2_demo.launch.py`` 라는 런치 파일을 열고, 런치 설명에 두 개의 새로운 노드를 추가하고 런치 인수를 추가하고 가져오기를 추가합니다.
+결과 파일은 다음과 같아야 합니다.
+
+.. code-block:: python
+
+    from launch import LaunchDescription
+    from launch.actions import DeclareLaunchArgument
+    from launch.substitutions import LaunchConfiguration
+
+    from launch_ros.actions import Node
+
+
+    def generate_launch_description():
+        return LaunchDescription([
+            Node(
+                package='turtlesim',
+                executable='turtlesim_node',
+                name='sim'
+            ),
+            Node(
+                package='learning_tf2_cpp',
+                executable='turtle_tf2_broadcaster',
+                name='broadcaster1',
+                parameters=[
+                    {'turtlename': 'turtle1'}
+                ]
+            ),
+            DeclareLaunchArgument(
+                'target_frame', default_value='turtle1',
+                description='Target frame name.'
+            ),
+            Node(
+                package='learning_tf2_cpp',
+                executable='turtle_tf2_broadcaster',
+                name='broadcaster2',
+                parameters=[
+                    {'turtlename': 'turtle2'}
+                ]
+            ),
+            Node(
+                package='learning_tf2_cpp',
+                executable='turtle_tf2_listener',
+                name='listener',
+                parameters=[
+                    {'target_frame': LaunchConfiguration('target_frame')}
+                ]
+            ),
+        ])
+
+이것은 ``target_frame`` 런치 인수를 선언하고, 두 번째로 생성할 터틀을 시작하며 해당 변환을 구독할 리스너를 시작합니다.
+
+3. 빌드
+^^^^^^^
+
+워크스페이스의 루트에서 빠진 종속성을 확인하려면 ``rosdep`` 를 실행합니다.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      .. code-block:: console
+
+          rosdep install -i --from-path src --rosdistro humble -y
+
+
+워크스페이스의 루트에서 패키지를 빌드합니다.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      .. code-block:: console
+
+          colcon build --packages-select learning_tf2_cpp
+
+
+새 터미널을 열고 워크스페이스 루트로 이동하여 설정 파일을 소스합니다.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      .. code-block:: console
+
+          . install/setup.bash
+
+
+4. 실행
+^^^^^
+
+이제 전체 거북이 데모를 시작할 준비가 되었습니다.
+
+.. code-block:: console
+
+    ros2 launch learning_tf2_cpp turtle_tf2_demo.launch.py
+
+두 개의 터틀이 있는 터틀 시뮬레이터를 볼 수 있어야 합니다.
+두 번째 터미널 창에서 다음 명령을 입력합니다.
+
+.. code-block:: console
+
+    ros2 run turtlesim turtle_teleop_key
+
+모든 것이 제대로 작동하는지 확인하려면 첫 번째 터틀을 화살표 키로 조작하여 두 번째 터틀이 첫 번째 터틀을 따라가는 것을 볼 수 있습니다!
+
+요약
+-------
+
+이 튜토리얼에서는 tf2를 사용하여 프레임 변환에 액세스하는 방법을 배웠습니다.
+또한 :doc:`tf2 소개 <./1.introduction_to_tf2>` 튜토리얼에서 처음 시도한 자체 turtlesim 데모를 작성하는 것을 완료했습니다.

@@ -1,0 +1,297 @@
+이벤트 핸들러 사용
+====================
+
+**목표:** ROS 2 런치 파일에서 이벤트 핸들러에 대해 배우기
+
+배경 정보
+----------
+
+ROS 2의 런치(Launch)는 사용자가 정의한 프로세스를 실행하고 관리하는 시스템입니다.
+런치는 시작한 프로세스의 상태를 모니터하고 상태의 변경을 보고하며 이러한 상태 변경에 대응합니다.
+이러한 변경 사항을 이벤트(events)라고 하며, 이러한 이벤트를 처리하기 위해 런치 시스템에 이벤트 핸들러를 등록할 수 있습니다.
+이벤트 핸들러는 특정 이벤트에 대해 등록되며 프로세스 상태를 모니터링하는 데 유용할 수 있습니다.
+또한 이러한 이벤트 핸들러를 사용하여 런치 파일을 동적으로 수정하는 데 사용할 수 있는 복잡한 규칙 세트를 정의할 수 있습니다.
+
+이 튜토리얼에서는 ROS 2 런치 파일에서 이벤트 핸들러의 사용 예를 보여줍니다.
+
+전제 조건
+-------------
+
+이 튜토리얼은 :doc:`turtlesim <courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 패키지를 사용합니다.
+또한 ``ament_python`` 빌드 유형으로 된 새로운 패키지를 생성한 것으로 가정합니다. 이 패키지의 이름은 ``launch_tutorial`` 입니다.
+
+이 튜토리얼은 :doc:`런치 파일에서 대체 사용법 사용하기 <./3.using_subtitutions>` 튜토리얼에서 소개한 코드를 확장합니다.
+
+이벤트 핸들러 사용
+--------------------
+
+1. 이벤트 핸들러 예제 런치 파일
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``launch_tutorial`` 패키지의 ``launch`` 폴더에 ``example_event_handlers.launch.py`` 파일을 생성하세요.
+
+.. code-block:: python
+
+    from launch_ros.actions import Node
+
+    from launch import LaunchDescription
+    from launch.actions import (DeclareLaunchArgument, EmitEvent, ExecuteProcess,
+                                LogInfo, RegisterEventHandler, TimerAction)
+    from launch.conditions import IfCondition
+    from launch.event_handlers import (OnExecutionComplete, OnProcessExit,
+                                    OnProcessIO, OnProcessStart, OnShutdown)
+    from launch.events import Shutdown
+    from launch.substitutions import (EnvironmentVariable, FindExecutable,
+                                    LaunchConfiguration, LocalSubstitution,
+                                    PythonExpression)
+
+
+    def generate_launch_description():
+        turtlesim_ns = LaunchConfiguration('turtlesim_ns')
+        use_provided_red = LaunchConfiguration('use_provided_red')
+        new_background_r = LaunchConfiguration('new_background_r')
+
+        turtlesim_ns_launch_arg = DeclareLaunchArgument(
+            'turtlesim_ns',
+            default_value='turtlesim1'
+        )
+        use_provided_red_launch_arg = DeclareLaunchArgument(
+            'use_provided_red',
+            default_value='False'
+        )
+        new_background_r_launch_arg = DeclareLaunchArgument(
+            'new_background_r',
+            default_value='200'
+        )
+
+        turtlesim_node = Node(
+            package='turtlesim',
+            namespace=turtlesim_ns,
+            executable='turtlesim_node',
+            name='sim'
+        )
+        spawn_turtle = ExecuteProcess(
+            cmd=[[
+                FindExecutable(name='ros2'),
+                ' service call ',
+                turtlesim_ns,
+                '/spawn ',
+                'turtlesim/srv/Spawn ',
+                '"{x: 2, y: 2, theta: 0.2}"'
+            ]],
+            shell=True
+        )
+        change_background_r = ExecuteProcess(
+            cmd=[[
+                FindExecutable(name='ros2'),
+                ' param set ',
+                turtlesim_ns,
+                '/sim background_r ',
+                '120'
+            ]],
+            shell=True
+        )
+        change_background_r_conditioned = ExecuteProcess(
+            condition=IfCondition(
+                PythonExpression([
+                    new_background_r,
+                    ' == 200',
+                    ' and ',
+                    use_provided_red
+                ])
+            ),
+            cmd=[[
+                FindExecutable(name='ros2'),
+                ' param set ',
+                turtlesim_ns,
+                '/sim background_r ',
+                new_background_r
+            ]],
+            shell=True
+        )
+
+        return LaunchDescription([
+            turtlesim_ns_launch_arg,
+            use_provided_red_launch_arg,
+            new_background_r_launch_arg,
+            turtlesim_node,
+            RegisterEventHandler(
+                OnProcessStart(
+                    target_action=turtlesim_node,
+                    on_start=[
+                        LogInfo(msg='Turtlesim started, spawning turtle'),
+                        spawn_turtle
+                    ]
+                )
+            ),
+            RegisterEventHandler(
+                OnProcessIO(
+                    target_action=spawn_turtle,
+                    on_stdout=lambda event: LogInfo(
+                        msg='Spawn request says "{}"'.format(
+                            event.text.decode().strip())
+                    )
+                )
+            ),
+            RegisterEventHandler(
+                OnExecutionComplete(
+                    target_action=spawn_turtle,
+                    on_completion=[
+                        LogInfo(msg='Spawn finished'),
+                        change_background_r,
+                        TimerAction(
+                            period=2.0,
+                            actions=[change_background_r_conditioned],
+                        )
+                    ]
+                )
+            ),
+            RegisterEventHandler(
+                OnProcessExit(
+                    target_action=turtlesim_node,
+                    on_exit=[
+                        LogInfo(msg=(EnvironmentVariable(name='USER'),
+                                ' closed the turtlesim window')),
+                        EmitEvent(event=Shutdown(
+                            reason='Window closed'))
+                    ]
+                )
+            ),
+            RegisterEventHandler(
+                OnShutdown(
+                    on_shutdown=[LogInfo(
+                        msg=['Launch was asked to shutdown: ',
+                            LocalSubstitution('event.reason')]
+                    )]
+                )
+            ),
+        ])
+
+``RegisterEventHandler`` 액션을 사용하여 런치 설명에서 ``OnProcessStart``, ``OnProcessIO``, ``OnExecutionComplete``, ``OnProcessExit``, 및 ``OnShutdown`` 이벤트에 대한 핸들러를 정의했습니다.
+
+``OnProcessStart`` 이벤트 핸들러는 런치 파일이 시작될 때 실행되는 콜백 함수를 등록하는 데 사용됩니다.
+이 핸들러는 터틀심 노드가 시작되면 콘솔에 메시지를 기록하고 터틀 생성 작업인 ``spawn_turtle`` 액션을 실행합니다.
+
+.. code-block:: python
+
+    RegisterEventHandler(
+        OnProcessStart(
+            target_action=turtlesim_node,
+            on_start=[
+                LogInfo(msg='Turtlesim started, spawning turtle'),
+                spawn_turtle
+            ]
+        )
+    ),
+
+``OnProcessIO`` 이벤트 핸들러는 ``spawn_turtle`` 액션이 표준 출력에 쓸 때 실행되는 콜백 함수를 등록하는 데 사용됩니다.
+이 핸들러는 스폰 요청의 결과를 기록합니다.
+
+.. code-block:: python
+
+    RegisterEventHandler(
+        OnProcessIO(
+            target_action=spawn_turtle,
+            on_stdout=lambda event: LogInfo(
+                msg='Spawn request says "{}"'.format(
+                    event.text.decode().strip())
+            )
+        )
+    ),
+
+``OnExecutionComplete`` 이벤트 핸들러는 ``spawn_turtle`` 액션이 완료될 때 실행되는 콜백 함수를 등록하는 데 사용됩니다.
+이 핸들러는 콘솔에 메시지를 기록하고 스폰 작업이 완료되면 ``change_background_r`` 및 ``change_background_r_conditioned`` 액션을 실행합니다.
+
+.. code-block:: python
+
+    RegisterEventHandler(
+        OnExecutionComplete(
+            target_action=spawn_turtle,
+            on_completion=[
+                LogInfo(msg='Spawn finished'),
+                change_background_r,
+                TimerAction(
+                    period=2.0,
+                    actions=[change_background_r_conditioned],
+                )
+            ]
+        )
+    ),
+
+``OnProcessExit`` 이벤트 핸들러는 터틀심 노드가 종료될 때 실행되는 콜백 함수를 등록하는 데 사용됩니다.
+이 핸들러는 콘솔에 메시지를 기록하고 터틀심 창이 닫힐 때 ``Shutdown`` 이벤트를 발생시키기 위해 ``EmitEvent`` 액션을 실행합니다.
+
+.. code-block:: python
+
+    RegisterEventHandler(
+        OnProcessExit(
+            target_action=turtlesim_node,
+            on_exit=[
+                LogInfo(msg=(EnvironmentVariable(name='USER'),
+                        ' closed the turtlesim window')),
+                EmitEvent(event=Shutdown(
+                    reason='Window closed'))
+            ]
+        )
+    ),
+
+마지막으로, ``OnShutdown`` 이벤트 핸들러는 런치 파일이 종료되면 실행되는 콜백 함수를 등록하는 데 사용됩니다.
+이 핸들러는 런치 파일이 왜 종료되었는지에 대한 이유와 함께 메시지를 콘솔에 기록합니다. 이유는 사용자가 터틀심 창을 닫거나 사용자가 만든 :kbd:`ctrl-c` 신호 등과 같이 종료 이유를 나타냅니다.
+
+.. code-block:: python
+
+    RegisterEventHandler(
+        OnShutdown(
+            on_shutdown=[LogInfo(
+                msg=['Launch was asked to shutdown: ',
+                    LocalSubstitution('event.reason')]
+            )]
+        )
+    ),
+
+패키지 빌드
+-----------------
+
+워크스페이스의 루트로 이동하여 패키지를 빌드합니다:
+
+.. code-block:: console
+
+  colcon build
+
+빌드 후에는 워크스페이스를 소스화하는 것을 잊지 마세요.
+
+예제 실행
+-----------------
+
+이제 ``ros2 launch`` 명령을 사용하여 ``example_event_handlers.launch.py`` 파일을 실행할 수 있습니다.
+
+.. code-block:: console
+
+    ros2 launch launch_tutorial example_event_handlers.launch.py turtlesim_ns:='turtlesim3' use_provided_red:='True' new_background_r:=200
+
+이렇게 하면 다음과 같은 작업이 수행됩니다:
+
+1. 파란색 배경으로 터틀심 노드 시작
+2. 두 번째 터틀 생성
+3. ``background_r`` 인수가 ``200`` 이고 ``use_provided_red`` 인수가 ``True`` 일 때 2초 후에 색상을 분홍색으로 변경합니다.
+4. 터틀심 창이 닫힐 때 런치 파일 종료
+
+또한 다음과 같은 경우에 콘솔에 메시지를 기록합니다:
+
+1. 터틀심 노드 시작
+2. 스폰 액션이 실행될 때
+3. ``change_background_r`` 액션이 실행될 때
+4. ``change_background_r_conditioned`` 액션이 실행될 때
+5. 터틀심 노드 종료
+6. 런치 프로세스가 종료되기를 요청할 때
+
+문서화
+-------------
+
+`런치 문서 <https://github.com/ros2/launch/blob/humble/launch/doc/source/architecture.rst>`_ 에서 사용 가능한 이벤트 핸들러에 대한 자세한 정보를 제공합니다.
+
+요약
+-------
+
+이 튜토리얼에서는 런치 파일에서 이벤트 핸들러의 사용에 대해 배웠습니다.
+이벤트 핸들러의 구문 및 동적으로 런치 파일을 수정하기 위한 사용 예제에 대해 알아보았습니다.

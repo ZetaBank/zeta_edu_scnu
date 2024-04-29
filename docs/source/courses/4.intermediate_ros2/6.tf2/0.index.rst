@@ -1,0 +1,86 @@
+``tf2``
+=======
+
+많은 tf2 튜토리얼은 C++ 및 Python 언어로 모두 사용 가능합니다.
+튜토리얼은 C++ 트랙 또는 Python 트랙 중 하나를 완료하기 위해 최적화되어 있습니다.
+C++ 및 Python을 모두 학습하려면 튜토리얼을 C++로 한 번 진행하고 Python으로 한 번 더 진행해야 합니다.
+
+.. contents:: 목차
+   :depth: 2
+   :local:
+
+.. toctree::
+   :hidden:
+
+   1.introduction_to_tf2
+   2.writing_a_tf2_static_broadcaster_py
+   3.writing_a_tf2_static_broadcaster_cpp
+   4.writing_a_tf2_broadcaster_py
+   5.writing_a_tf2_broadcaster_cpp
+   6.writing_a_tf2_listener_py
+   7.writing_a_tf2_listener_cpp
+   8.adding_a_frame_py
+   9.adding_a_frame_cpp
+   10.learning_about_tf2_and_time_py
+   11.learning_about_tf2_and_time_cpp
+   12.time_travel_with_tf2_py
+   13.time_travel_with_tf2_cpp
+   14.debugging_tf2_problems
+   15.quaternion_fundamentals
+   16.using_stamped_datatypes_with_tf2_ros_messagefilter
+
+작업 공간 설정
+---------------
+
+아직 튜토리얼을 완료할 작업 공간을 만들지 않았다면 :doc:`이 튜토리얼을 따르십시오 </courses/3.tutorial_client_libraries/2.create_workspace>`.
+
+tf2 학습
+------------
+
+#. :doc:`tf2 학습 <./1.introduction_to_tf2>`.
+
+   이 튜토리얼은 tf2가 무엇을 할 수 있는지에 대한 좋은 개요를 제공합니다.
+   이것은 turtlesim을 사용한 다중 로봇 예제에서 일부 tf2의 기능을 보여줍니다.
+   또한 ``tf2_echo``, ``view_frames``, 및 ``rviz`` 사용을 소개합니다.
+
+#. 스태틱 브로드캐스터 작성 :doc:`(Python) <./2.writing_a_tf2_static_broadcaster_py>` :doc:`(C++) <./3.writing_a_tf2_static_broadcaster_cpp>`.
+
+   이 튜토리얼은 tf2에 정적 좌표 프레임을 브로드캐스트하는 방법을 가르칩니다.
+
+#. 브로드캐스터 작성 :doc:`(Python) <./4.writing_a_tf2_broadcaster_py>` :doc:`(C++) <5.writing_a_tf2_broadcaster_cpp>`.
+
+   이 튜토리얼은 로봇의 상태를 tf2에 브로드캐스트하는 방법을 가르칩니다.
+
+#. 리스너 작성 :doc:`(Python) <./6.writing_a_tf2_listener_py>` :doc:`(C++) <./7.writing_a_tf2_listener_cpp>`.
+
+   이 튜토리얼은 프레임 변환에 액세스하는 방법을 알려줍니다.
+
+#. 프레임 추가 :doc:`(Python) <./8.adding_a_frame_py>` :doc:`(C++) <9.adding_a_frame_cpp>`.
+
+   이 튜토리얼은 tf2에 추가적인 고정 프레임을 추가하는 방법을 가르칩니다.
+
+#. 시간 사용 :doc:`(Python) <10.learning_about_tf2_and_time_py>` :doc:`(C++) <11.learning_about_tf2_and_time_cpp>`.
+
+   이 튜토리얼은 ``lookup_transform`` 함수의 타임아웃을 사용하여 tf2 트리에서 변환을 대기하는 방법을 가르칩니다.
+
+#. 시간 여행 :doc:`(Python) <./12.time_travel_with_tf2_py>` :doc:`(C++) <./13.time_travel_with_tf2_cpp>`.
+
+   이 튜토리얼은 tf2의 고급 시간 여행 기능에 대해 가르칩니다.
+
+tf2 디버깅
+-------------
+
+#. :doc:`tf2 문제 디버깅 <./14.debugging_tf2_problems>`.
+
+   이 튜토리얼은 tf2 관련 문제를 디버깅하는 체계적인 접근 방식에 대해 가르칩니다.
+
+#. :doc:`쿼터니온 기초 <./15.quaternion_fundamentals>`.
+
+   이 튜토리얼은 ROS 2에서 쿼터니온 사용의 기본 사항을 가르칩니다.
+
+tf2와 센서 메시지 사용
+------------------------------
+
+#. :doc:`tf2_ros::MessageFilter와 함께 스탬프 데이터 유형 사용하기 <./16.using_stamped_datatypes_with_tf2_ros_messagefilter>`.
+
+   이 튜토리얼은 ``tf2_ros::MessageFilter`` 를 사용하여 스탬프 데이터 유형을 처리하는 방법을 가르칩니다.

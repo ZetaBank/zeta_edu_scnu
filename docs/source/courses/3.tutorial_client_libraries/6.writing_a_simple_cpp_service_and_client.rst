@@ -1,0 +1,366 @@
+간단한 service and client 작성 (C++)
+============================================
+
+**목표:** C++을 사용하여 서비스와 클라이언트 노드를 만들고 실행합니다.
+
+배경
+----
+
+:doc:`Node </courses/2.tutorial_cli_ros2/3.node>` 가 :doc:`service </courses/2.tutorial_cli_ros2/5.service>` 를 사용하여 통신할 때, 데이터를 요청하는 노드를 클라이언트 노드라고 하고 요청에 응답하는 노드를 서비스 노드라고 합니다.
+요청과 응답의 구조는 ``.srv`` 파일에 의해 결정됩니다.
+
+여기서 사용하는 예제는 간단한 정수 덧셈 시스템입니다. 하나의 노드는 두 정수의 합을 요청하고 다른 노드는 결과를 응답합니다.
+
+
+사전 준비 사항
+--------------
+
+이전 튜토리얼에서는 :doc:`작업 공간을 만드는 방법 </courses/3.tutorial_client_libraries/2.create_workspace>` 및 :doc:`패키지를 만드는 방법 </courses/3.tutorial_client_libraries/3.create_package>` 을 배웠습니다.
+
+작업
+----
+
+1 패키지 생성
+^^^^^^^^^^^^^^^^^^
+
+새 터미널을 열고 ROS 2 설치를 :doc:`소스로 지정 <courses/2.tutorial_cli_ros2/1.setting>` 하여 ``ros2`` 명령이 작동하도록합니다.
+
+이전 튜토리얼에서 만든 :ref:`이전 디렉토리 </courses/3.tutorial_client_libraries/2.create_workspace>` 에서 생성한 ``ros2_ws`` 디렉토리로 이동합니다.
+
+패키지는 워크스페이스의 루트가 아닌 ``src`` 디렉토리에서 생성해야 합니다.
+``ros2_ws/src`` 로 이동하고 새로운 패키지를 만듭니다.
+
+.. code-block:: console
+
+  ros2 pkg create --build-type ament_cmake --license Apache-2.0 cpp_srvcli --dependencies rclcpp example_interfaces
+
+터미널은 패키지 ``cpp_srvcli`` 와 필요한 모든 파일 및 폴더를 생성했음을 확인하는 메시지를 반환합니다.
+
+``--dependencies`` 인자는 ``package.xml`` 및 ``CMakeLists.txt`` 에 필요한 종속성 라인을 자동으로 추가합니다.
+``example_interfaces``는 요청과 응답을 구성하는 `.srv 파일 <https://github.com/ros2/example_interfaces/blob/humble/srv/AddTwoInts.srv>`__ 이 들어 있는 패키지입니다.
+
+.. code-block:: console
+
+    int64 a
+    int64 b
+    ---
+    int64 sum
+
+첫 두 줄은 요청의 매개변수이며 대시 아래에 응답이 나타납니다.
+
+1.1 ``package.xml`` 업데이트
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+패키지 생성 시 ``--dependencies`` 옵션을 사용했으므로 종속성을 수동으로 ``package.xml`` 또는 ``CMakeLists.txt`` 에 추가할 필요가 없습니다.
+
+또한 항상 ``package.xml`` 에 설명, 유지 관리자 이메일 및 이름, 그리고 라이선스 정보를 추가해야 합니다.
+
+.. code-block:: xml
+
+  <description>C++ client server tutorial</description>
+  <maintainer email="you@email.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+
+2 서비스 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+``ros2_ws/src/cpp_srvcli/src`` 디렉토리 안에서 새 파일 ``add_two_ints_server.cpp`` 을 만들고 아래 코드를 붙여넣습니다.
+
+.. code-block:: C++
+
+      #include "rclcpp/rclcpp.hpp"
+      #include "example_interfaces/srv/add_two_ints.hpp"
+
+      #include <memory>
+
+      void add(const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
+                std::shared_ptr<example_interfaces::srv::AddTwoInts::Response>      response)
+      {
+        response->sum = request->a + request->b;
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Incoming request\na: %ld" " b: %ld",
+                      request->a, request->b);
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->sum);
+      }
+
+      int main(int argc, char **argv)
+      {
+        rclcpp::init(argc, argv);
+
+        std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_server");
+
+        rclcpp::Service<example_interfaces::srv::AddTwoInts>::SharedPtr service =
+          node->create_service<example_interfaces::srv::AddTwoInts>("add_two_ints", &add);
+
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add two ints.");
+
+        rclcpp::spin(node);
+        rclcpp::shutdown();
+      }
+
+2.1 코드 분석
+~~~~~~~~~~~~~~~~~~~~
+
+첫 두 ``#include`` 문은 패키지 종속성입니다.
+
+``add`` 함수는 요청에서 두 정수를 더하고 결과를 응답에 전달하면서 상태를 로그로 알립니다.
+
+.. code-block:: C++
+
+    void add(const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
+             std::shared_ptr<example_interfaces::srv::AddTwoInts::Response>      response)
+    {
+        response->sum = request->a + request->b;
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Incoming request\na: %ld" " b: %ld",
+            request->a, request->b);
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "sending back response: [%ld]", (long int)response->sum);
+    }
+
+``main`` 함수는 다음과 같은 작업을 순서대로 수행합니다.
+
+* ROS 2 C++ 클라이언트 라이브러리를 초기화합니다:
+
+  .. code-block:: C++
+
+    rclcpp::init(argc, argv);
+
+* ``add_two_ints_server`` 라는 이름의 노드를 생성합니다:
+
+  .. code-block:: C++
+
+    std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_server");
+
+* 해당 노드의 ``add_two_ints`` 라는 이름의 서비스를 생성하고 ``&add`` 메소드로 자동으로 네트워크에 게시합니다:
+
+  .. code-block:: C++
+
+    rclcpp::Service<example_interfaces::srv::AddTwoInts>::SharedPtr service =
+    node->create_service<example_interfaces::srv::AddTwoInts>("add_two_ints", &add);
+
+* 준비가 되면 로그 메시지를 출력합니다:
+
+  .. code-block:: C++
+
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Ready to add two ints.");
+
+* 노드를 스핀하여 서비스를 이용 가능하게 합니다.
+
+  .. code-block:: C++
+
+    rclcpp::spin(node);
+
+2.2 실행 파일 추가
+~~~~~~~~~~~~~~~~~~
+
+``add_executable`` 매크로를 사용하여 ``ros2 run`` 을 사용하여 실행할 수 있는 실행 파일을 생성합니다.
+다음 코드 블록을 ``CMakeLists.txt`` 에 추가하여 ``server`` 라는 이름의 실행 파일을 만듭니다.
+
+.. code-block:: console
+
+    add_executable(server src/add_two_ints_server.cpp)
+    ament_target_dependencies(server rclcpp example_interfaces)
+
+``ros2 run`` 이 실행 파일을 찾을 수 있도록 파일 끝에 다음 라인을 ``ament_package()`` 바로 앞에 추가하세요.
+
+.. code-block:: console
+
+    install(TARGETS
+        server
+      DESTINATION lib/${PROJECT_NAME})
+
+패키지를 빌드하고 로컬 설정 파일을 소스화한 다음 실행할 수 있지만, 먼저 클라이언트 노드를 만들어서 작동 중인 전체 시스템을 볼 수 있도록 합시다.
+
+3 클라이언트 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^
+
+``ros2_ws/src/cpp_srvcli/src`` 디렉토리에서 ``add_two_ints_client.cpp`` 라는 새 파일을 만들고 아래 코드를 붙여넣습니다.
+
+.. code-block:: C++
+
+  #include "rclcpp/rclcpp.hpp"
+  #include "example_interfaces/srv/add_two_ints.hpp"
+
+  #include <chrono>
+  #include <cstdlib>
+  #include <memory>
+
+  using namespace std::chrono_literals;
+
+  int main(int argc, char **argv)
+  {
+    rclcpp::init(argc, argv);
+
+    if (argc != 3) {
+        RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "usage: add_two_ints_client X Y");
+        return 1;
+    }
+
+    std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
+    rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
+      node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
+
+    auto request = std::make_shared<example_interfaces::srv::AddTwoInts::Request>();
+    request->a = atoll(argv[1]);
+    request->b = atoll(argv[2]);
+
+    while (!client->wait_for_service(1s)) {
+      if (!rclcpp::ok()) {
+        RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+        return 0;
+      }
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+    }
+
+    auto result = client->async_send_request(request);
+    // 결과를 기다립니다.
+    if (rclcpp::spin_until_future_complete(node, result) ==
+      rclcpp::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Sum: %ld", result.get()->sum);
+    } else {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service add_two_ints");
+    }
+
+    rclcpp::shutdown();
+    return 0;
+  }
+
+
+3.1 코드 분석
+~~~~~~~~~~~~~~~~~~~~
+
+서비스 노드와 유사하게 다음 코드는 노드를 생성하고 해당 노드에 대한 클라이언트를 만듭니다.
+
+.. code-block:: C++
+
+    std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
+    rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
+      node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
+
+다음으로 요청이 생성됩니다. 요청의 구조는 앞서 언급한 ``.srv`` 파일에 의해 정의됩니다.
+
+.. code-block:: C++
+
+  auto request = std::make_shared<example_interfaces::srv::AddTwoInts::Request>();
+  request->a = atoll(argv[1]);
+  request->b = atoll(argv[2]);
+
+``while`` 루프에서 클라이언트에게 1초 동안 네트워크에서 서비스 노드를 찾도록 합니다. 찾지 못하면 대기를 계속합니다.
+
+.. code-block:: C++
+
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+
+클라이언트가 취소되면(예: 터미널에 ``Ctrl+C`` 를 입력하는 경우), 인터럽트가 발생했음을 나타내는 오류 로그 메시지가 표시됩니다.
+
+.. code-block:: C++
+
+  RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+
+그런 다음 클라이언트가 요청을 보내고, 노드가 응답을 받거나 실패할 때까지 스핀합니다.
+
+3.2 실행 파일 추가
+~~~~~~~~~~~~~~~~~~
+
+새 노드에 대한 실행 파일과 대상을 추가하려면 ``CMakeLists.txt`` 로 돌아가세요.
+자동 생성된 파일에서 불필요한 보일러플레이트를 제거한 후 ``CMakeLists.txt`` 는 다음과 같아야 합니다.
+
+.. code-block:: console
+
+  cmake_minimum_required(VERSION 3.5)
+  project(cpp_srvcli)
+
+  find_package(ament_cmake REQUIRED)
+  find_package(rclcpp REQUIRED)
+  find_package(example_interfaces REQUIRED)
+
+  add_executable(server src/add_two_ints_server.cpp)
+  ament_target_dependencies(server rclcpp example_interfaces)
+
+  add_executable(client src/add_two_ints_client.cpp)
+  ament_target_dependencies(client rclcpp example_interfaces)
+
+  install(TARGETS
+    server
+    client
+    DESTINATION lib/${PROJECT_NAME})
+
+  ament_package()
+
+
+4 빌드 및 실행
+^^^^^^^^^^^^^^^
+
+빌드하기 전에 루트 워크스페이스(``ros2_ws``)에서 빠진 종속성을 확인하려면 ``rosdep`` 을 실행하는 것이 좋습니다:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      rosdep install -i --from-path src --rosdistro {DISTRO} -y
+
+
+루트 워크스페이스인 ``ros2_ws`` 로 돌아가서 새 패키지를 빌드합니다:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      colcon build --packages-select cpp_srvcli
+
+
+
+새 터미널을 열고 설정 파일을 소스화한 다음 서비스 노드를 실행합니다:
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      source install/setup.bash
+
+
+.. code-block:: console
+
+     ros2 run cpp_srvcli server
+
+터미널은 다음 메시지를 반환하고 대기합니다:
+
+.. code-block:: console
+
+    [INFO] [rclcpp]: Ready to add two ints.
+
+다른 터미널에서 ``ros2_ws`` 내에서 설정 파일을 다시 소스화하고 클라이언트 노드를 시작한 다음 두 정수를 입력하십시오(띄어쓰기로 구분):
+
+.. code-block:: console
+
+     ros2 run cpp_srvcli client 2 3
+
+예를 들어 ``2`` 와 ``3`` 을 선택한 경우 클라이언트는 다음과 같은 응답을 반환합니다:
+
+.. code-block:: console
+
+    [INFO] [rclcpp]: Sum: 5
+
+클라이언트와 서버 모두 종료하려면 모든 터미널에서 ``Ctrl+C`` 를 누릅니다.
+
+요약
+-------
+이 튜토리얼에서는 서비스를 통해 데이터를 요청하고 응답하는 두 개의 노드를 생성했습니다.
+이들의 종속성과 실행 파일을 패키지 구성 파일에 추가하여 빌드하고 실행하고, 서비스/클라이언트 시스템이 작동하는 것을 확인할 수 있었습니다.
+
+다음 단계
+----------
+
+지난 몇 가지 튜토리얼에서는 인터페이스를 활용하여 주제와 서비스 간에 데이터를 전달하는 방법을 학습했습니다.
+다음에는 :doc:`사용자 정의 인터페이스 <./8.create_msg_and_srv>` 를 생성하는 방법 을 배우게 될 것입니다.
+
+관련 콘텐츠
+---------------
+
+* C++로 서비스와 클라이언트를 작성하는 여러 가지 방법이 있습니다. `ros2/examples <https://github.com/ros2/examples/tree/humble/rclcpp/services>`_ 리포지토리의 ``minimal_service`` 와 ``minimal_client`` 패키지를 확인해보세요.

@@ -1,0 +1,237 @@
+``colcon`` 을 사용하여 패키지 빌드하기
+========================================
+
+**목표:** ``colcon`` 을 사용하여 ROS 2 워크스페이스를 빌드합니다.
+
+
+이 튜토리얼에서는 ``colcon`` 을 사용하여 ROS 2 워크스페이스를 생성하고 빌드하는 방법에 대해 간단하게 설명합니다.
+이것은 실용적인 튜토리얼로, 핵심 문서를 대체하기 위한 것이 아닙니다.
+
+배경
+----
+
+``colcon`` 은 ROS 빌드 도구인 ``catkin_make``, ``catkin_make_isolated``, ``catkin_tools``, ``ament_tools`` 의 반복 버전입니다.
+``colcon`` 의 디자인에 대한 자세한 정보는 이 `문서 <https://design.ros2.org/articles/build_tool.html>`__ 에서 확인할 수 있습니다.
+
+소스 코드는 `colcon GitHub 조직 <https://github.com/colcon>`__ 에서 찾을 수 있습니다.
+
+전제 조건
+-----------
+
+colcon 설치
+^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    sudo apt install python3-colcon-common-extensions
+
+
+ROS 2 설치
+^^^^^^^^^^
+
+샘플을 빌드하려면 ROS 2를 설치해야 합니다.
+
+:doc:`설치 지침 </courses/1.install_ros2_humble/3.install_ros2>` 을 따르세요.
+
+.. attention:: Debian 패키지에서 설치하는 경우, 이 튜토리얼은 :doc:`데스크톱 설치 </courses/1.install_ros2_humble/3.install_ros2>` 를 필요로 합니다.
+
+기초사항
+---------
+
+ROS 워크스페이스는 특정 구조를 갖춘 디렉터리입니다.
+일반적으로 ``src`` 하위 디렉터리가 있습니다.
+이 하위 디렉터리 내에서 ROS 패키지의 소스 코드가 위치합니다.
+일반적으로 디렉터리는 다른 파일 없이 시작합니다.
+
+colcon은 외부 빌드를 지원합니다.
+기본적으로 ``src`` 디렉터리와 동일한 수준의 다음 디렉터리를 생성합니다.
+
+* ``build`` 디렉터리는 중간 파일이 저장되는 곳입니다.
+  각 패키지마다 CMake가 호출되는 하위 폴더가 생성됩니다.
+* ``install`` 디렉터리는 각 패키지가 설치되는 곳입니다.
+  기본적으로 각 패키지는 별도의 하위 디렉터리에 설치됩니다.
+* ``log`` 디렉터리에는 각 colcon 실행에 대한 로깅 정보가 포함됩니다.
+
+.. note:: catkin의 ``devel`` 디렉터리가 없습니다.
+
+워크스페이스 생성
+^^^^^^^^^^^^^^^^
+
+먼저 워크스페이스를 포함할 디렉터리 (``ros2_ws``)를 생성합니다.
+
+
+.. code-block:: bash
+
+    mkdir -p ~/ros2_ws/src
+    cd ~/ros2_ws
+
+
+이 시점에서 워크스페이스는 하위 디렉터리 ``src`` 하나만 포함합니다.
+
+.. code-block:: bash
+
+    .
+    └── src
+
+    1 directory, 0 files
+
+일부 소스 추가
+^^^^^^^^^^^^^^^^
+
+``src`` 디렉터리에 `examples <https://github.com/ros2/examples>`__ 리포지토리를 복제해 보겠습니다.
+
+.. code-block:: bash
+
+    git clone https://github.com/ros2/examples src/examples -b humble
+
+이제 워크스페이스에 ROS 2 예제의 소스 코드가 있어야 합니다.
+
+.. code-block:: bash
+
+    .
+    └── src
+        └── examples
+            ├── CONTRIBUTING.md
+            ├── LICENSE
+            ├── rclcpp
+            ├── rclpy
+            └── README.md
+
+    4 directories, 3 files
+
+환경 소스
+^^^^^^^^^^
+
+예제 패키지에 대한 필수 빌드 종속성을 제공하기 위해 워크스페이스에 이미 있는 ROS 2 설치의 환경을 소스화하는 것이 중요합니다.
+이를 위해 바이너리 설치나 소스 설치에서 제공되는 설정 스크립트를 소스화해야 합니다 (자세한 내용은 :doc:`설치 </courses/1.install_ros2_humble/3.install_ros2>` 참조).
+이 환경을 **언더레이** 라고 합니다.
+
+워크스페이스인 ``ros2_ws`` 는 기존 ROS 2 설치 위에 있는 **오버레이** 입니다.
+일반적으로 소수의 패키지에서 반복 작업할 때 오버레이를 사용하는 것이 좋습니다.
+
+워크스페이스 빌드
+^^^^^^^^^^^^^^^^^
+
+
+워크스페이스 루트 디렉터리에서 ``colcon build`` 를 실행합니다.
+``ament_cmake`` 와 같은 빌드 유형은 ``devel`` 공간 개념을 지원하지 않으며 패키지를 설치해야 하는 개념을 지원하므로 colcon은 ``--symlink-install`` 옵션을 지원합니다.
+이를 통해 설치된 파일을 더 빠른 반복을 위해 ``source`` 공간 (예: Python 파일 또는 다른 컴파일되지 않은 리소스)을 변경하여 변경할 수 있습니다.
+
+
+.. code-block:: console
+
+    colcon build --symlink-install
+
+
+빌드가 완료되면 ``build``, ``install``, 그리고 ``log`` 디렉터리가 있어야 합니다.
+
+.. code-block:: bash
+
+    .
+    ├── build
+    ├── install
+    ├── log
+    └── src
+
+    4 directories, 0 files
+
+테스트 실행
+^^^^^^^^^^^
+
+우리가 빌드한 패키지에 대한 테스트를 실행하려면 다음을 실행합니다.
+
+.. code-block:: console
+
+    colcon test
+
+
+환경 소스
+^^^^^^^^^^
+
+colcon 빌드가 성공적으로 완료되면 출력물은 ``install`` 디렉터리에 있습니다.
+설치된 실행 파일이나 라이브러리를 사용하려면 경로 및 라이브러리 경로에 해당 항목을 추가해야 합니다.
+colcon은 패키지에서 내보낸 모든 bash 또는 쉘 명령을 제공하며 필요한 요소를 경로와 라이브러리 경로에 추가하는 bash/bat 파일을 생성합니다.
+
+.. code-block:: bash
+
+    source install/setup.bash
+
+
+데모 실행
+^^^^^^^^^^
+
+환경을 소스화한 후 colcon에 의해 빌드된 실행 파일을 실행할 수 있습니다.
+예제에서 구독자 노드를 실행해 보겠습니다.
+
+.. code-block:: bash
+
+    ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function
+
+다른 터미널에서 출판자 노드를 실행하겠습니다 (설정 스크립트를 소스화하지 않도록 주의하세요).
+
+.. code-block:: bash
+
+    ros2 run examples_rclcpp_minimal_publisher publisher_member_function
+
+출판자와 구독자에서 증가하는 숫자가 있는 메시지를 볼 수 있어야 합니다.
+
+직접 패키지 생성하기
+----------------------
+
+colcon은 `REP 149 <https://www.ros.org/reps/rep-0149.html>`__ (`format 2 <https://www.ros.org/reps/rep-0140.html>`__ 도 지원)에서 정의한 ``package.xml`` 사양을 지원합니다.
+
+colcon은 여러 빌드 유형을 지원합니다.
+권장 빌드 유형은 ``ament_cmake`` 및 ``ament_python`` 입니다.
+순수한 ``cmake`` 패키지도 지원됩니다.
+
+``ament_python`` 빌드 예제는 `ament_index_python 패키지 <https://github.com/ament/ament_index/tree/humble/ament_index_python>`__ 입니다. 여기서 setup.py가 주요 빌드 진입점 역할을 합니다.
+
+`demo_nodes_cpp 패키지 <https://github.com/ros2/demos/tree/humble/demo_nodes_cpp>`__ 와 같은 패키지는 ``ament_cmake`` 빌드 유형을 사용하며 CMake를 빌드 도구로 사용합니다.
+
+편리하게도 패키지 템플릿을 기반으로 새 패키지를 만들기 위한 ``ros2 pkg create`` 도구를 사용할 수 있습니다.
+
+.. note:: ``catkin`` 사용자에게는 이것이 ``catkin_create_package`` 와 동일합니다.
+
+``colcon_cd`` 설정하기
+----------------------
+
+``colcon_cd`` 명령을 사용하면 현재 셸의 작업 디렉터리를 패키지의 디렉터리로 빠르게 변경할 수 있습니다.
+예를 들어 ``colcon_cd some_ros_package`` 는 빠르게 ``~/ros2_ws/src/some_ros_package`` 디렉터리로 이동합니다.
+
+
+.. code-block:: console
+
+    echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
+    echo "export _colcon_cd_root=/opt/ros/humble/" >> ~/.bashrc
+
+
+
+설치 방법과 워크스페이스 위치에 따라 위의 지침이 다를 수 있으므로 자세한 내용은 `문서 <https://colcon.readthedocs.io/en/released/user/installation.html#quick-directory-changes>`__ 를 참조하세요.
+Linux 및 macOS에서는 시스템의 셸 시작 스크립트를 찾아서 추가한 소스 및 export 명령을 제거하세요.
+
+``colcon`` 탭 완성 설정하기
+-----------------------------
+
+``colcon`` 은 ``colcon-argcomplete`` 패키지가 설치되어 있는 경우 bash 및 bash와 유사한 셸에 대한 `명령 완성 <https://colcon.readthedocs.io/en/released/user/installation.html#enable-completion>`__ 을 지원합니다.
+
+
+
+.. code-block:: console
+
+    echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> ~/.bashrc
+
+
+
+설치 방법과 워크스페이스 위치에 따라 위의 지침이 다를 수 있으므로 자세한 내용은 `문서 <https://colcon.readthedocs.io/en/released/user/installation.html>`__ 를 참조하세요.
+Linux 및 macOS에서는 시스템의 셸 시작 스크립트를 찾아서 추가한 소스 명령을 제거하세요.
+
+팁
+----
+
+* 특정 패키지를 빌드하지 않으려면 디렉터리에 ``COLCON_IGNORE`` 라는 빈 파일을 두면 됩니다.
+* CMake 패키지에서 구성 및 빌드 테스트를 피하려면 다음을 전달할 수 있습니다: ``--cmake-args -DBUILD_TESTING=0``.
+* 패키지에서 특정 테스트 하나를 실행하려면 다음을 사용합니다.
+
+  .. code-block:: bash
+
+     colcon test --packages-select YOUR_PKG_NAME --ctest-args -R YOUR_TEST_IN_PKG

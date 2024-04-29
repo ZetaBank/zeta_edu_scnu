@@ -1,0 +1,359 @@
+간단한 service and client 작성 (Python)
+============================================
+
+**목표:** Python을 사용하여 서비스 및 클라이언트 노드를 생성하고 실행합니다.
+
+배경
+----------
+
+:doc:`Node </courses/2.tutorial_cli_ros2/3.node>` 가 :doc:`service </courses/2.tutorial_cli_ros2/5.service>` 를 사용하여 통신할 때, 데이터를 요청하는 노드를 클라이언트 노드라고 하고 요청에 응답하는 노드를 서비스 노드라고 합니다.
+요청과 응답의 구조는 ``.srv`` 파일에 의해 결정됩니다.
+
+여기서 사용하는 예제는 간단한 정수 덧셈 시스템입니다. 하나의 노드는 두 정수의 합을 요청하고 다른 노드는 결과를 응답합니다.
+
+
+사전 준비 사항
+-------------
+
+이전 튜토리얼에서는 :doc:`작업 공간을 만드는 방법 </courses/3.tutorial_client_libraries/2.create_workspace>` 및 :doc:`패키지를 만드는 방법 </courses/3.tutorial_client_libraries/3.create_package>` 을 배웠습니다.
+
+작업
+-----
+
+1 패키지 생성
+^^^^^^^^^^^^^^^^^^
+
+새 터미널을 열고 ROS 2 설치를 :doc:`소스로 지정 <courses/2.tutorial_cli_ros2/1.setting>` 하여 ``ros2`` 명령이 작동하도록합니다.
+
+이전 튜토리얼에서 만든 :ref:`이전 디렉토리 </courses/3.tutorial_client_libraries/2.create_workspace>` 에서 생성한 ``ros2_ws`` 디렉토리로 이동합니다.
+
+패키지는 워크스페이스의 루트가 아닌 ``src`` 디렉토리에서 생성해야 합니다.
+``ros2_ws/src`` 로 이동하고 새로운 패키지를 만듭니다.
+
+.. code-block:: console
+
+  ros2 pkg create --build-type ament_python --license Apache-2.0 py_srvcli --dependencies rclpy example_interfaces
+
+터미널에서 패키지 ``py_srvcli`` 가 생성되었음을 확인하는 메시지가 나타납니다.
+
+``--dependencies`` 인자는 ``package.xml`` 및 ``CMakeLists.txt`` 에 필요한 종속성 라인을 자동으로 추가합니다.
+``example_interfaces`` 는 요청과 응답을 구성하는 `.srv 파일 <https://github.com/ros2/example_interfaces/blob/humble/srv/AddTwoInts.srv>`__ 이 들어 있는 패키지입니다.
+
+.. code-block:: console
+
+    int64 a
+    int64 b
+    ---
+    int64 sum
+
+첫 두 줄은 요청의 매개변수이며, 대시 아래에는 응답이 있습니다.
+
+1.1 ``package.xml`` 업데이트
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+패키지 생성 시 ``--dependencies`` 옵션을 사용했으므로 종속성을 수동으로 ``package.xml`` 또는 ``CMakeLists.txt`` 에 추가할 필요가 없습니다.
+
+그러나 항상 ``package.xml`` 에 설명, 유지 관리자 이메일 및 이름, 라이선스 정보를 추가해야 합니다.
+
+.. code-block:: xml
+
+  <description>Python client server tutorial</description>
+  <maintainer email="you@email.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
+1.2 ``setup.py`` 업데이트
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``setup.py`` 파일에도 ``maintainer``, ``maintainer_email``, ``description`` 및 ``license`` 필드에 동일한 정보를 추가해야 합니다.
+
+.. code-block:: python
+
+  maintainer='Your Name',
+  maintainer_email='you@email.com',
+  description='Python client server tutorial',
+  license='Apache License 2.0',
+
+2 서비스 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+``ros2_ws/src/py_srvcli/py_srvcli`` 디렉토리 내에서 새 파일인 ``service_member_function.py`` 를 생성하고 다음 코드를 붙여넣습니다.
+
+.. code-block:: python
+
+  from example_interfaces.srv import AddTwoInts
+
+  import rclpy
+  from rclpy.node import Node
+
+
+  class MinimalService(Node):
+
+      def __init__(self):
+          super().__init__('minimal_service')
+          self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+
+      def add_two_ints_callback(self, request, response):
+          response.sum = request.a + request.b
+          self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
+
+          return response
+
+
+  def main():
+      rclpy.init()
+
+      minimal_service = MinimalService()
+
+      rclpy.spin(minimal_service)
+
+      rclpy.shutdown()
+
+
+  if __name__ == '__main__':
+      main()
+
+2.1. 코드 검토
+~~~~~~~~~~~~~~~~~~~~
+
+첫 번째 ``import`` 문은 ``example_interfaces`` 패키지에서 ``AddTwoInts`` 서비스 유형을 가져옵니다.
+다음 ``import`` 문은 ROS 2 Python 클라이언트 라이브러리를 가져오며 특히 ``Node`` 클래스를 가져옵니다.
+
+.. code-block:: python
+
+  from example_interfaces.srv import AddTwoInts
+
+  import rclpy
+  from rclpy.node import Node
+
+``MinimalService`` 클래스 생성자는 이름이 ``minimal_service`` 인 노드를 초기화합니다.
+그런 다음 서비스를 만들고 유형, 이름 및 콜백을 정의합니다.
+
+.. code-block:: python
+
+  def __init__(self):
+      super().__init__('minimal_service')
+      self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+
+서비스 콜백의 정의는 요청 데이터를 받아서 합산하고 합산 값을 응답으로 반환합니다.
+
+.. code-block:: python
+
+  def add_two_ints_callback(self, request, response):
+      response.sum = request.a + request.b
+      self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
+
+      return response
+
+마지막으로 메인 클래스는 ROS 2 Python 클라이언트 라이브러리를 초기화하고, 서비스 노드를 생성하여 서비스 노드를 만든 다음, 콜백을 처리하기 위해 노드를 회전합니다.
+
+2.2. 엔트리 포인트 추가
+~~~~~~~~~~~~~~~~~~~~~~
+
+``ros2 run`` 명령으로 노드를 실행하려면 ``setup.py`` (``ros2_ws/src/py_srvcli`` 디렉토리에 있음)에 엔트리 포인트를 추가해야 합니다.
+
+``'console_scripts':`` 괄호 사이에 다음 줄을 추가하십시오.
+
+.. code-block:: python
+
+  'service = py_srvcli.service_member_function:main',
+
+
+3 클라이언트 노드 작성
+^^^^^^^^^^^^^^^^^^^^^^^
+
+``ros2_ws/src/py_srvcli/py_srvcli`` 디렉토리 안에 ``client_member_function.py`` 라는 새 파일을 만들고 다음 코드를 붙여넣습니다.
+
+.. code-block:: python
+
+  import sys
+
+  from example_interfaces.srv import AddTwoInts
+  import rclpy
+  from rclpy.node import Node
+
+
+  class MinimalClientAsync(Node):
+
+      def __init__(self):
+          super().__init__('minimal_client_async')
+          self.cli = self.create_client(AddTwoInts, 'add_two_ints')
+          while not self.cli.wait_for_service(timeout_sec=1.0):
+              self.get_logger().info('service not available, waiting again...')
+          self.req = AddTwoInts.Request()
+
+      def send_request(self, a, b):
+          self.req.a = a
+          self.req.b = b
+          self.future = self.cli.call_async(self.req)
+          rclpy.spin_until_future_complete(self, self.future)
+          return self.future.result()
+
+
+  def main():
+      rclpy.init()
+
+      minimal_client = MinimalClientAsync()
+      response = minimal_client.send_request(int(sys.argv[1]), int(sys.argv[2]))
+      minimal_client.get_logger().info(
+          'Result of add_two_ints: for %d + %d = %d' %
+          (int(sys.argv[1]), int(sys.argv[2]), response.sum))
+
+      minimal_client.destroy_node()
+      rclpy.shutdown()
+
+
+  if __name__ == '__main__':
+      main()
+
+
+3.1 코드 살펴보기
+~~~~~~~~~~~~~~~~~~~
+
+서비스 코드와 마찬가지로 필요한 라이브러리를 먼저 ``import`` 합니다.
+
+.. code-block:: python
+
+  import sys
+
+  from example_interfaces.srv import AddTwoInts
+  import rclpy
+  from rclpy.node import Node
+
+``MinimalClientAsync`` 클래스 생성자는 ``minimal_client_async`` 이름의 노드를 초기화합니다.
+생성자 정의에서는 클라이언트와 서비스 노드의 타입과 이름이 같도록 클라이언트를 생성합니다.
+클라이언트와 서비스가 통신하려면 타입과 이름이 일치해야 합니다.
+생성자 내의 ``while`` 루프는 클라이언트와 일치하는 타입과 이름의 서비스를 1초마다 대기 상태를 확인합니다.
+마지막으로 ``AddTwoInts`` 요청 객체를 생성합니다.
+
+.. code-block:: python
+
+  def __init__(self):
+      super().__init__('minimal_client_async')
+      self.cli = self.create_client(AddTwoInts, 'add_two_ints')
+      while not self.cli.wait_for_service(timeout_sec=1.0):
+          self.get_logger().info('service not available, waiting again...')
+      self.req = AddTwoInts.Request()
+
+생성자 아래에는 요청을 보내고 응답을 받을 때까지 또는 실패할 때까지 요청을 보내는 ``send_request`` 메서드가 있습니다.
+
+.. code-block:: python
+
+  def send_request(self, a, b):
+      self.req.a = a
+      self.req.b = b
+      self.future = self.cli.call_async(self.req)
+      rclpy.spin_until_future_complete(self, self.future)
+      return self.future.result()
+
+마지막으로 ``main`` 메서드에서 ``MinimalClientAsync`` 객체를 생성하고 명령행 인수를 사용하여 요청을 보내고 결과를 로깅합니다.
+
+.. code-block:: python
+
+  def main():
+      rclpy.init()
+
+      minimal_client = MinimalClientAsync()
+      response = minimal_client.send_request(int(sys.argv[1]), int(sys.argv[2]))
+      minimal_client.get_logger().info(
+          'Result of add_two_ints: for %d + %d = %d' %
+          (int(sys.argv[1]), int(sys.argv[2]), response.sum))
+
+      minimal_client.destroy_node()
+      rclpy.shutdown()
+
+
+3.2 엔트리 포인트 추가
+~~~~~~~~~~~~~~~~~~~~~~~
+
+서비스 노드와 마찬가지로 클라이언트 노드를 실행하려면 엔트리 포인트를 추가해야 합니다.
+
+``setup.py`` 파일의 ``entry_points`` 필드는 다음과 같이 보여야 합니다.
+
+.. code-block:: python
+
+  entry_points={
+      'console_scripts': [
+          'service = py_srvcli.service_member_function:main',
+          'client = py_srvcli.client_member_function:main',
+      ],
+  },
+
+4 빌드 및 실행
+^^^^^^^^^^^^^^
+
+빌드하기 전에 먼저 작업 공간의 루트인 ``ros2_ws`` 에서 빈번한 의존성 확인을 위해 ``rosdep`` 를 실행하는 것이 좋습니다.
+
+.. tabs::
+
+   .. group-tab:: Linux
+
+      .. code-block:: console
+
+            rosdep install -i --from-path src --rosdistro humble -y
+
+
+작업 공간 루트인 ``ros2_ws`` 로 이동하고 새 패키지를 빌드합니다.
+
+.. code-block:: console
+
+  colcon build --packages-select py_srvcli
+
+새 터미널을 열고 작업 공간 내부의 설정 파일을 소스합니다.
+
+.. tabs::
+
+  .. group-tab:: Linux
+
+    .. code-block:: console
+
+      source install/setup.bash
+
+
+이제 서비스 노드를 실행합니다.
+
+.. code-block:: console
+
+  ros2 run py_srvcli service
+
+노드는 클라이언트의 요청을 대기합니다.
+
+다른 터미널을 열고 다시 ``ros2_ws`` 내부의 설정 파일을 소스합니다.
+클라이언트 노드를 시작하고 두 개의 정수를 공백으로 구분하여 입력하세요.
+
+.. code-block:: console
+
+  ros2 run py_srvcli client 2 3
+
+예를 들어 ``2`` 와 ``3`` 을 선택한 경우 클라이언트는 다음과 같은 응답을 받게 됩니다.
+
+.. code-block:: console
+
+  [INFO] [minimal_client_async]: Result of add_two_ints: for 2 + 3 = 5
+
+서비스 노드가 실행되고 있는 터미널로 돌아가면 요청을 수신할 때 로그 메시지가 게시된 것을 볼 수 있습니다.
+
+.. code-block:: console
+
+  [INFO] [minimal_service]: Incoming request
+  a: 2 b: 3
+
+노드를 중지하려면 서버 터미널에서 ``Ctrl+C`` 를 입력하세요.
+
+
+요약
+-----
+
+데이터를 서비스를 통해 요청하고 응답하는 두 개의 노드를 생성했습니다.
+의존성 및 실행 가능한 파일을 패키지 설정 파일에 추가하여 이들을 빌드하고 실행할 수 있도록 했으며, 서비스/클라이언트 시스템이 작동하는 것을 확인할 수 있었습니다.
+
+다음 단계
+----------
+
+지난 몇 가지 튜토리얼에서는 인터페이스를 활용하여 주제와 서비스 간에 데이터를 전달하는 방법을 학습했습니다.
+다음에는 :doc:`사용자 정의 인터페이스 <./8.create_msg_and_srv>` 를 생성하는 방법 을 배우게 될 것입니다.
+
+
+관련 컨텐츠
+---------------
+
+* Python으로 서비스와 클라이언트를 작성하는 여러 가지 방법이 있습니다. `ros2/examples <https://github.com/ros2/examples/tree/{humble/rclpy/services>`_ 리포지토리에서 ``minimal_client`` 및 ``minimal_service`` 패키지를 확인하세요.

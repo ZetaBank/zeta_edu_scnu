@@ -1,0 +1,38 @@
+Launch
+======
+
+ROS 2 Launch 파일을 사용하면 ROS 2 노드를 포함하는 여러 실행 파일을 동시에 시작하고 구성할 수 있습니다.
+
+.. toctree::
+   :hidden:
+
+   1.create_launch_files
+   2.launch_system
+   3.using_subtitutions
+   4.using_event_handlers
+   5.using_ros2_launch_for_large_projects
+
+#. :doc:`Launch 파일 만들기 <./1.create_launch_files>`.
+
+   한 번에 모든 노드와 그 구성을 시작하는 런치 파일을 만드는 방법을 배웁니다.
+
+#. :doc:`여러 노드를 시작하고 모니터링하기 <./2.launch_system>`.
+
+   런치 파일이 작동하는 방식에 대한 더 고급 개요를 얻습니다.
+
+#. :doc:`치환자 사용하기 <./3.using_subtitutions>`.
+
+   재사용 가능한 런치 파일을 설명할 때 더 많은 유연성을 제공하기 위해 치환자를 사용합니다.
+
+#. :doc:`이벤트 핸들러 사용하기 <./4.using_event_handlers>`.
+
+   프로세스의 상태를 모니터링하거나 런치 파일을 동적으로 수정하는 데 사용할 수 있는 복잡한 규칙 집합을 정의하는 데 이벤트 핸들러를 사용합니다.
+
+#. :doc:`대형 프로젝트 관리하기 <./5.using_ros2_launch_for_large_projects>`.
+
+   대형 프로젝트를 위해 런치 파일을 구조화하여 다양한 상황에서 최대한 재사용할 수 있도록 합니다.
+   매개변수, YAML 파일, 리매핑, 네임스페이스, 기본 인수 및 RViz 구성과 같은 다양한 런치 도구의 사용 예를 참조하세요.
+
+.. note::
+
+   ROS 1에서 오신 경우, 런치 파일을 ROS 2로 마이그레이션하는 데 도움이 되는 `ROS Launch 마이그레이션 가이드 <https://docs.ros.org/en/humble/How-To-Guides/Migrating-from-ROS1/Migrating-Launch-Files.html>`__ 를 사용할 수 있습니다.

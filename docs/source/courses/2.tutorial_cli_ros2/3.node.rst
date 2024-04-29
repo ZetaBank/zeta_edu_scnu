@@ -1,0 +1,184 @@
+노드 이해하기
+=============
+
+
+배경
+----
+
+1 ROS 2 그래프
+^^^^^^^^^^^^^^^
+
+다음 몇 개의 튜토리얼을 통해, ``ROS (2) 그래프`` 로 불리는 일련의 핵심 ROS 2 개념들에 대해 배울 것입니다.
+
+ROS 그래프는 동시에 데이터를 처리하는 ROS 2 요소들의 네트워크입니다.
+이는 모든 실행 가능한 파일과, 이들 사이의 연결들을 모두 매핑하고 시각화했을 때 포함됩니다.
+
+2 ROS 2에서의 노드
+^^^^^^^^^^^^^^^^^^
+
+ROS 내의 각 노드는 단일, 모듈화된 목적을 담당해야 합니다. 예를 들어, 바퀴 모터 제어나 레이저 거리 측정기에서 센서 데이터를 발행하는 것 등입니다.
+각 노드는 토픽, 서비스, 액션 또는 파라미터를 통해 다른 노드로부터 데이터를 송수신할 수 있습니다.
+
+.. image:: /_images/node/node_topic_service.gif
+
+전체 로봇 시스템은 많은 노드들이 협력하여 구성됩니다.
+ROS 2에서는 단일 실행 파일(C++ 프로그램, Python 프로그램 등)이 하나 이상의 노드를 포함할 수 있습니다.
+
+사전 준비
+---------
+
+이전 튜토리얼은 여기서 사용된 ``turtlesim`` 패키지를 설치하는 방법을 보여줍니다.
+
+항상, 새로운 터미널을 열 때마다 ROS 2를 source하는 것을 잊지 마세요.
+
+작업
+----
+
+1 ros2 run
+^^^^^^^^^^
+
+``ros2 run`` 명령어는 패키지에서 실행 파일을 실행합니다.
+
+.. code-block:: bash
+
+    ros2 run <package_name> <executable_name>
+
+turtlesim을 실행하려면, 새 터미널을 열고 다음 명령어를 입력하세요:
+
+.. code-block:: bash
+
+    ros2 run turtlesim turtlesim_node
+
+turtlesim 창이 열립니다, :doc:`이전 튜토리얼 </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 에서 보았던 것처럼.
+
+여기서, 패키지 이름은 ``turtlesim`` 이고 실행 파일 이름은 ``turtlesim_node`` 입니다.
+
+아직 노드 이름은 모릅니다. 
+
+``ros2 node list`` 를 사용하여 노드 이름을 찾을 수 있습니다.
+
+2 ros2 node list
+^^^^^^^^^^^^^^^^
+
+``ros2 node list`` 는 모든 실행 중인 노드의 이름을 보여줍니다.
+
+이는 노드와 상호 작용하고 싶을 때, 또는 많은 노드가 실행 중인 시스템을 가지고 있을 때 이름을 추적하는 데 특히 유용합니다.
+
+``turtlesim`` 이 다른 하나에서 여전히 실행 중인 동안 새 터미널을 열고 다음 명령어를 입력하세요:
+
+.. code-block:: bash
+
+    ros2 node list
+
+터미널은 노드 이름을 반환할 것입니다:
+
+.. code-block:: bash
+
+  /turtlesim
+
+다른 새 터미널을 열고 다음 명령어로 teleop 노드를 시작하세요:
+
+.. code-block:: bash
+
+    ros2 run turtlesim turtle_teleop_key
+
+여기서, 다시 ``turtlesim`` 패키지를 참조하지만, 이번에는 ``turtle_teleop_key`` 라는 실행 파일을 대상으로 합니다.
+
+``ros2 node list`` 를 실행한 터미널로 돌아가 다시 실행하세요.
+이제 두 개의 활성 노드 이름을 볼 수 있습니다:
+
+.. code-block:: bash
+
+  /turtlesim
+  /teleop_turtle
+
+2.1 리매핑
+~~~~~~~~~~
+
+`리매핑 <https://design.ros2.org/articles/ros_command_line_arguments.html#name-remapping-rules>`__ 은 노드 이름, 토픽 이름, 서비스 이름 등과 같은 기본 노드 속성을 사용자 정의 값으로 재할당할 수 있게 해줍니다.
+마지막 튜토리얼에서 ``turtle_teleop_key`` 에 리매핑을 사용하여 cmd_vel 토픽을 변경하고 **turtle2** 를 대상으로 했습니다.
+
+이제, ``/turtlesim`` 노드의 이름을 재할당해봅시다.
+새 터미널에서 다음 명령어를 실행하세요:
+
+.. code-block:: bash
+
+  ros2 run turtlesim turtlesim_node --ros-args --remap __node:=my_turtle
+
+turtlesim을 다시 호출하므로, 또 다른 turtlesim 창이 열릴 것입니다.
+하지만, 이제 ``ros2 node list`` 를 다시 실행한 터미널로 돌아가서 다시 실행하면, 세 개의 노드 이름을 볼 수 있습니다:
+
+.. code-block:: bash
+
+    /my_turtle
+    /turtlesim
+    /teleop_turtle
+
+3 ros2 node info
+^^^^^^^^^^^^^^^^
+
+이제 노드 이름을 알게 되었으니, 다음과 같이 더 많은 정보를 접근할 수 있습니다:
+
+.. code-block:: bash
+
+    ros2 node info <node_name>
+
+최신 노드인 ``my_turtle`` 을 검사하려면, 다음 명령어를 실행하세요:
+
+.. code-block:: bash
+
+    ros2 node info /my_turtle
+
+``ros2 node info`` 는 해당 노드와 상호 작용하는 구독자, 발행자, 서비스, 액션 즉, ROS 그래프 연결을 반환합니다.
+출력은 다음과 같아야 합니다:
+
+.. code-block:: bash
+
+  /my_turtle
+    Subscribers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+      /turtle1/cmd_vel: geometry_msgs/msg/Twist
+    Publishers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+      /rosout: rcl_interfaces/msg/Log
+      /turtle1/color_sensor: turtlesim/msg/Color
+      /turtle1/pose: turtlesim/msg/Pose
+    Service Servers:
+      /clear: std_srvs/srv/Empty
+      /kill: turtlesim/srv/Kill
+      /my_turtle/describe_parameters: rcl_interfaces/srv/DescribeParameters
+      /my_turtle/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+      /my_turtle/get_parameters: rcl_interfaces/srv/GetParameters
+      /my_turtle/list_parameters: rcl_interfaces/srv/ListParameters
+      /my_turtle/set_parameters: rcl_interfaces/srv/SetParameters
+      /my_turtle/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+      /reset: std_srvs/srv/Empty
+      /spawn: turtlesim/srv/Spawn
+      /turtle1/set_pen: turtlesim/srv/SetPen
+      /turtle1/teleport_absolute: turtlesim/srv/TeleportAbsolute
+      /turtle1/teleport_relative: turtlesim/srv/TeleportRelative
+    Service Clients:
+
+    Action Servers:
+      /turtle1/rotate_absolute: turtlesim/action/RotateAbsolute
+    Action Clients:
+
+이제 ``/teleop_turtle`` 노드에서 같은 명령어를 실행해보고, 그 연결이 ``my_turtle`` 과 어떻게 다른지 살펴보세요.
+
+다가오는 튜토리얼에서는 메시지 유형을 포함한 ROS 그래프 연결 개념에 대해 더 배울 것입니다.
+
+요약
+----
+
+노드는 로봇 시스템에서 단일, 모듈화된 목적을 서비스하는 기본적인 ROS 2 요소입니다.
+
+이 튜토리얼에서는 ``turtlesim`` 패키지에서 생성된 노드들을 ``turtlesim_node`` 와 ``turtle_teleop_key`` 실행 파일을 실행하여 사용했습니다.
+
+활성 노드 이름을 발견하기 위해 ``ros2 node list`` 를 사용하는 방법과 단일 노드를 내부 조사하기 위해 ``ros2 node info`` 를 사용하는 방법을 배웠습니다.
+이 도구들은 복잡한 실제 로봇 시스템에서 데이터 흐름을 이해하는 데 필수적입니다.
+
+다음 단계
+---------
+
+이제 ROS 2에서 노드를 이해했으므로, :doc:`토픽 튜토리얼 </courses/2.tutorial_cli_ros2/4.topic>` 로 넘어갈 수 있습니다.
+토픽은 노드를 연결하는 통신 유형 중 하나입니다.

@@ -1,0 +1,324 @@
+액션 이해하기
+=====================
+
+**목표:** ROS 2에서 action을 이해합니다.
+
+
+배경 정보
+----------
+
+Actions는 ROS 2의 통신 유형 중 하나로, 장기 실행 작업을 위해 설계되었습니다. 이들은 목표(goal), 피드백(feedback), 그리고 결과(result)로 구성됩니다.
+
+Actions는 주제(topics)와 서비스(services)를 기반으로 구축되었습니다. 기능적으로 서비스와 유사하지만, Actions은 취소될 수 있습니다. 또한 서비스와는 달리 단일 응답을 반환하는 대신 지속적인 피드백을 제공합니다.
+
+Actions는 클라이언트-서버 모델을 사용하며, 이는 :doc:`주제 튜토리얼 </courses/2.tutorial_cli_ros2/4.topic>` 에서 설명한 발행-구독 모델과 유사합니다. `액션 클라이언트` 노드는 `액션 서버` 노드에 목표를 보내고 해당 목표를 인증하고 피드백 및 결과 스트림을 반환합니다.
+
+.. image:: /_images/action/Action-SingleActionClient.gif
+
+전제 조건
+-------------
+
+이 튜토리얼은 이전 튜토리얼에서 다루었던 노드와 주제 등의 개념을 기반으로 합니다.
+
+이 튜토리얼은 :doc:`turtlesim package </courses/2.tutorial_cli_ros2/2.turtlesim_rqt>` 을 사용합니다.
+
+항상 새로 열리는 모든 터미널에서 ROS 2를 source 해 주세요.
+
+작업
+-----
+
+1 설정
+^^^^^^^
+
+``/turtlesim`` 및 ``/teleop_turtle`` 두 개의 turtlesim 노드를 시작합니다.
+
+새 터미널을 열고 다음 명령을 실행합니다.
+
+.. code-block:: console
+
+    ros2 run turtlesim turtlesim_node
+
+또 다른 터미널을 열고 다음 명령을 실행합니다.
+
+.. code-block:: console
+
+    ros2 run turtlesim turtle_teleop_key
+
+
+2 액션 사용
+^^^^^^^^^^^^^
+
+``/teleop_turtle`` 노드를 실행하면 다음과 같은 메시지가 터미널에 표시됩니다.
+
+.. code-block:: console
+
+    Use arrow keys to move the turtle.
+    Use G|B|V|C|D|E|R|T keys to rotate to absolute orientations. 'F' to cancel a rotation.
+
+두 번째 줄에 주목해 보겠습니다. 이것은 액션에 해당합니다.
+(첫 번째 지시사항은 이전 :doc:`주제 튜토리얼 </courses/2.tutorial_cli_ros2/4.topic>` 에서 설명한 ``cmd_vel`` 주제에 해당합니다.)
+
+문자 키 ``G|B|V|C|D|E|R|T`` 는 US QWERTY 키보드에서 ``F`` 키 주변에 "상자"를 형성합니다(US QWERTY 키보드를 사용하지 않는 경우 `이 링크 <https://upload.wikimedia.org/wikipedia/commons/d/da/KB_United_States.svg>`__  를 참고하세요). 각 키의 위치는 turtlesim의 방향과 해당 방향에 해당합니다. 예를 들어, ``E`` 는 거북이의 방향을 좌상단 모서리로 회전시킵니다.
+
+``/turtlesim`` 노드가 실행되고 있는 터미널에 주목하십시오. 이 키 중 하나를 누를 때마다 해당 키를 누르는 것은 ``/turtlesim`` 노드의 일부인 액션 서버에 목표(goal)를 전송하는 것입니다. 목표는 거북이를 특정 방향을 향해 회전시키는 것입니다. 거북이가 회전을 완료하면 목표의 결과를 전달하는 메시지가 표시되어야 합니다.
+
+.. code-block:: console
+
+    [INFO] [turtlesim]: Rotation goal completed successfully
+
+``F`` 키를 누르면 목표를 실행 중에 취소할 수 있습니다.
+
+``C`` 키를 누르고, 거북이가 회전을 완료하기 전에 ``F`` 키를 눌러 보세요. ``/turtlesim`` 노드가 실행되는 터미널에서 다음 메시지를 볼 수 있습니다.
+
+.. code-block:: console
+
+  [INFO] [turtlesim]: Rotation goal canceled
+
+클라이언트 측(teleop에서의 입력)이 목표를 중지할 수도 있지만 서버 측(``/turtlesim`` 노드)도 중지할 수 있습니다. 서버 측이 목표 처리를 중단하는 경우 목표를 "중단(abort)"한다고 합니다.
+
+``D`` 키를 누르고 첫 번째 회전이 완료되기 전에 ``G`` 키를 눌러 보세요. ``/turtlesim`` 노드가 실행되는 터미널에서 다음 메시지를 볼 수 있습니다.
+
+.. code-block:: console
+
+  [WARN] [turtlesim]: Rotation goal received before a previous goal finished. Aborting previous goal
+
+이 액션 서버는 첫 번째 목표를 중단하려고 선택했습니다. 이 서버는 새 목표를 받았기 때문에 첫 번째 목표를 중단하기로 선택했습니다. 이 서버는 새 목표를 거부하거나 첫 번째 목표를 완료한 후 두 번째 목표를 실행하도록 선택할 수도 있습니다. 모든 액션 서버가 현재 목표를 중단하기로 선택하지 않는다고 가정하지 마세요.
+
+3 ros2 node info
+^^^^^^^^^^^^^^^^
+
+특정 노드가 제공하는 액션 목록을 보려면, 이 경우 ``/turtlesim``, 새 터미널을 열고 다음 명령을 실행합니다.
+
+.. code-block:: console
+
+    ros2 node info /turtlesim
+
+이 명령은 ``/turtlesim``의 구독자(subscribers), 발행자(publishers), 서비스 서버(service servers), 액션 서버(action servers), 액션 클라이언트(action clients) 목록을 반환합니다.
+
+.. code-block:: console
+
+  /turtlesim
+    Subscribers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+      /turtle1/cmd_vel: geometry_msgs/msg/Twist
+    Publishers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+      /rosout: rcl_interfaces/msg/Log
+      /turtle1/color_sensor: turtlesim/msg/Color
+      /turtle1/pose: turtlesim/msg/Pose
+    Service Servers:
+      /clear: std_srvs/srv/Empty
+      /kill: turtlesim/srv/Kill
+      /reset: std_srvs/srv/Empty
+      /spawn: turtlesim/srv/Spawn
+      /turtle1/set_pen: turtlesim/srv/SetPen
+      /turtle1/teleport_absolute: turtlesim/srv/TeleportAbsolute
+      /turtle1/teleport_relative: turtlesim/srv/TeleportRelative
+      /turtlesim/describe_parameters: rcl_interfaces/srv/DescribeParameters
+      /turtlesim/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+      /turtlesim/get_parameters: rcl_interfaces/srv/GetParameters
+      /turtlesim/list_parameters: rcl_interfaces/srv/ListParameters
+      /turtlesim/set_parameters: rcl_interfaces/srv/SetParameters
+      /turtlesim/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+    Service Clients:
+
+    Action Servers:
+      /turtle1/rotate_absolute: turtlesim/action/RotateAbsolute
+    Action Clients:
+
+``/turtlesim`` 에 대한 ``/turtle1/rotate_absolute`` 액션은 ``Action Servers`` 아래에 있습니다. 이는 ``/turtlesim`` 이 ``/turtle1/rotate_absolute`` 액션에 응답하고 해당 액션에 대한 피드백을 제공한다는 것을 의미합니다.
+
+``/teleop_turtle`` 노드는 "Action Clients" 아래의 이름이 ``/turtle1/rotate_absolute`` 임을 나타내므로 해당 액션에 대한 목표(goal)를 보냅니다. 이를 보려면 다음을 실행하세요.
+
+.. code-block:: console
+
+    ros2 node info /teleop_turtle
+
+다음과 같은 결과가 반환됩니다.
+
+.. code-block:: console
+
+  /teleop_turtle
+    Subscribers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+    Publishers:
+      /parameter_events: rcl_interfaces/msg/ParameterEvent
+      /rosout: rcl_interfaces/msg/Log
+      /turtle1/cmd_vel: geometry_msgs/msg/Twist
+    Service Servers:
+      /teleop_turtle/describe_parameters: rcl_interfaces/srv/DescribeParameters
+      /teleop_turtle/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+      /teleop_turtle/get_parameters: rcl_interfaces/srv/GetParameters
+      /teleop_turtle/list_parameters: rcl_interfaces/srv/ListParameters
+      /teleop_turtle/set_parameters: rcl_interfaces/srv/SetParameters
+      /teleop_turtle/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+    Service Clients:
+
+    Action Servers:
+
+    Action Clients:
+      /turtle1/rotate_absolute: turtlesim/action/RotateAbsolute
+
+4 ros2 action list
+^^^^^^^^^^^^^^^^^^
+
+ROS 그래프에 있는 모든 액션을 식별하려면 다음 명령을 실행하세요.
+
+.. code-block:: console
+
+    ros2 action list
+
+다음과 같이 반환됩니다.
+
+.. code-block:: console
+
+    /turtle1/rotate_absolute
+
+현재 ROS 그래프에는 이것이 유일한 액션입니다. 이는 거북이의 회전을 제어하며 앞에서 ``ros2 node info <node_name>`` 명령을 사용하여 이 액션에 대한 액션 클라이언트와 액션 서버가 각각 ``/teleop_turtle`` 및 ``/turtlesim`` 의 일부임을 이미 알고 있습니다.
+
+4.1 ros2 action list -t
+~~~~~~~~~~~~~~~~~~~~~~~
+
+액션은 주제와 서비스와 유사하게 타입을 갖습니다. ``/turtle1/rotate_absolute`` 의 타입을 찾으려면 다음 명령을 실행하세요.
+
+.. code-block:: console
+
+    ros2 action list -t
+
+다음과 같이 반환됩니다.
+
+.. code-block:: console
+
+    /turtle1/rotate_absolute [turtlesim/action/RotateAbsolute]
+
+각 액션 이름 오른쪽의 대괄호 안에는 액션 타입 ``turtlesim/action/RotateAbsolute`` 가 있습니다(이 경우는 오직 ``/turtle1/rotate_absolute`` 만 있다.). 이것은 명령 줄이나 코드에서 액션을 실행할 때 필요합니다.
+
+5 ros2 action info
+^^^^^^^^^^^^^^^^^^
+
+다음 명령을 사용하여 ``/turtle1/rotate_absolute`` 액션을 자세히 살펴보세요.
+
+.. code-block:: console
+
+    ros2 action info /turtle1/rotate_absolute
+
+다음과 같이 반환됩니다.
+
+.. code-block:: console
+
+  Action: /turtle1/rotate_absolute
+  Action clients: 1
+      /teleop_turtle
+  Action servers: 1
+      /turtlesim
+
+이것은 우리가 이미 각 노드에 대한 ``ros2 node info`` 를 실행하여 알게 된 내용입니다. ``/teleop_turtle`` 노드에는 액션 클라이언트가 있고, ``/turtlesim`` 노드에는 ``/turtle1/rotate_absolute`` 액션의 액션 서버가 있습니다.
+
+6 ros2 interface show
+^^^^^^^^^^^^^^^^^^^^^
+
+자신이 액션 목표(goal)을 보내거나 실행하기 전에 액션 타입의 구조를 알아야 할 필요가 있습니다.
+
+액션 타입을 식별한 방법은 ``ros2 action list -t`` 명령을 실행할 때 입니다. 해당 액션 타입을 사용하여 다음 명령을 터미널에서 입력하세요.
+
+.. code-block:: console
+
+  ros2 interface show turtlesim/action/RotateAbsolute
+
+다음과 같이 반환됩니다.
+
+.. code-block:: console
+
+  # 원하는 방향(라디안) 
+  float32 theta
+  ---
+  # 시작 위치에서의 각 이동(라디안) 
+  float32 delta
+  ---
+  # 남은 회전(라디안) 
+  float32 remaining
+
+첫 번째 ``---`` 위의 메시지 섹션은 목표 요청(goal request)의 구조(데이터 타입 및 이름)입니다. 다음 섹션은 결과(result)의 구조이고, 마지막 섹션은 피드백(feedback)의 구조입니다.
+
+7 ros2 action send_goal
+^^^^^^^^^^^^^^^^^^^^^^^
+
+이제 다음 구문을 사용하여 명령 줄에서 액션 목표(goal)을 보내 보겠습니다.
+
+.. code-block:: console
+
+    ros2 action send_goal <action_name> <action_type> <values>
+
+``<values>`` 는 YAML 형식이어야 합니다.
+
+거북이 창을 주의 깊게 관찰하고 다음 명령을 터미널에 입력하세요.
+
+.. code-block:: console
+
+    ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.57}"
+
+거북이가 회전하는 것을 볼 수 있으며 다음과 같은 메시지가 터미널에 표시됩니다.
+
+.. code-block:: console
+
+  Waiting for an action server to become available...
+  Sending goal:
+     theta: 1.57
+
+  Goal accepted with ID: f8db8f44410849eaa93d3feb747dd444
+
+  Result:
+    delta: -1.568000316619873
+
+  Goal finished with status: SUCCEEDED
+
+모든 목표에는 고유한 ID가 있으며, 반환 메시지에서 표시됩니다. 또한 결과, 이름이 ``delta`` 인 필드를 볼 수 있으며, 이는 시작 위치로부터의 변위를 나타냅니다.
+
+이 목표의 피드백을 보려면 ``ros2 action send_goal`` 명령에 ``--feedback`` 을 추가하세요.
+
+.. code-block:: console
+
+    ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: -1.57}" --feedback
+
+터미널에서 다음 메시지가 반환됩니다.
+
+.. code-block:: console
+
+  Sending goal:
+     theta: -1.57
+
+  Goal accepted with ID: e6092c831f994afda92f0086f220da27
+
+  Feedback:
+    remaining: -3.1268222332000732
+
+  Feedback:
+    remaining: -3.1108222007751465
+
+  …
+
+  Result:
+    delta: 3.1200008392333984
+
+  Goal finished with status: SUCCEEDED
+
+목표가 완료될 때까지 남은 라디안인 피드백을 계속해서 받게됩니다.
+
+요약
+-------
+
+액션은 장기 실행 작업을 수행하고 주기적인 피드백을 제공하며 취소할 수 있는 서비스와 유사한 기능을 제공하는 것처럼 동작합니다.
+
+로봇 시스템은 탐색을 위해 액션을 사용할 것입니다. 액션 목표는 로봇에게 위치로 이동하도록 지시할 수 있습니다. 로봇이 위치로 이동하는 동안 업데이트(즉, 피드백)를 보낼 수 있으며, 목표 위치에 도달한 후 최종 결과 메시지를 보낼 수 있습니다.
+
+Turtlesim에는 회전하는 거북이를 제어하는 액션 서버가 있습니다. 이 튜토리얼에서는 액션이 무엇이며 어떻게 작동하는지에 대한 더 나은 이해를 위해 해당 액션을 자세히 살펴보았습니다.
+
+다음 단계
+----------
+
+이제 모든 핵심 ROS 2 개념을 다루었습니다. 이 세트의 마지막 몇 가지 튜토리얼에서는 ROS 2를 사용하는 데 도움이 되는 몇 가지 도구와 기술을 소개합니다. 먼저 :doc:`rqt_console </courses/2.tutorial_cli_ros2/8.rqt_console>` 로 시작하세요.
+
+관련 콘텐츠
+---------------
+
+ROS 2에서 액션의 설계 결정에 대한 자세한 내용은 `여기 <https://design.ros2.org/articles/actions.html>`__ 에서 확인할 수 있습니다.

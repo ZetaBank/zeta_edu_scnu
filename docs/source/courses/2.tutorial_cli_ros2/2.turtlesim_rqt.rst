@@ -1,0 +1,197 @@
+터틀심과 rqt
+============
+
+turtlesim 설치
+---------------
+
+처음 ROS 설치 할 때 full 버전으로 설치했으면 있을 것이다.
+
+그래도 혹시나 없을 수 있으니 설치 방법을 알아보자
+
+.. code-block:: console 
+
+   sudo apt update
+
+   sudo apt install ros-humble-turtlesim
+
+제대로 설치 되었는지 확인하는 법
+
+.. code-block:: console 
+
+   ros2 pkg executables turtlesim
+
+
+터미널에서 아래와 같이 출력되면 정상이다.
+
+.. code-block:: console
+
+   zeta@zeta-desktop:~$ ros2 pkg executables turtlesim
+   turtlesim draw_square
+   turtlesim mimic
+   turtlesim turtle_teleop_key
+   turtlesim turtlesim_node
+
+turtlesim 시작
+---------------
+
+ROS2에서 노드를 시행할 때는 ros2 run을 사용합니다. ROS1에서 rosrun을 실행한 것과는 다르다.
+
+.. code-block:: console 
+   
+   ros2 run turtlesim turtlesim_node
+
+ 
+
+`turtlesim` 은 실행할 노드가 있는 패키지의 이름을, `turtlesim_node` 는 실행할 노드의 이름을 뜻한다.
+
+여기서 노드란 가장 작은 단위의 실행 프로그램을 뜻한다.
+
+실행하면 파란 배경화면에 거북이가 나타난다.
+
+   .. image:: /_images/turtlesim_rqt/start.png
+
+|
+
+터미널에는 아래와 같이 나타난다.
+
+.. code-block:: console 
+   
+   zeta@zeta-desktop:~$ ros2 run turtlesim turtlesim_node
+   [INFO] [1706776777.723552185] [turtlesim]: Starting turtlesim with node name /turtlesim
+   [INFO] [1706776777.758590105] [turtlesim]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+
+`turtlesim_node` 에 대한 정보입니다. 두번째 라인은 거북이가 어디에 소환될지에 대한 정보를 담고 있습니다.
+
+
+turtlesim 사용해보기
+------------------------
+위 터미널은 그대로 둔 채로 새로운 터미널 창을 엽니다.
+
+그리고 거북이를 원격 조종하기 위한 노드를 실행합니다.
+
+.. code-block:: console 
+
+   ros2 run turtlesim turtle_teleop_key
+
+
+위 와 같은 창이 나오면 성공입니다. 여기서 방향키를 누르면 거북이가 그에 맞춰 움직입니다. 그리고 지나간 길에는 하얀색 길이 표시됩니다.
+
+ 
+
+주의: 거북이가 움직이지 않으면 teleop노드를 실행한 터미널은 클릭하여 활성화한 상태에서 방향키를 눌러주시면 됩니다.
+
+ 
+
+현재 실행중인 노드, 토픽, 서비스, 액션을 확인하고 싶다면 list명령을 통해 확인가능합니다.
+
+.. code-block:: console 
+
+   ros2 node list
+   ros2 topic list
+   ros2 service list
+   ros2 action list
+
+ 
+위와 관련된 개념들은 추후 계속 배울 것입니다.
+
+
+rqt 설치
+------------
+
+새로운 터미널을 열고 rqt를 설치합니다
+
+.. code-block:: console 
+
+   sudo apt update
+   sudo apt install ros-humble-rqt*
+
+ 
+
+rqt를 실행합니다.
+
+.. code-block:: console
+
+   rqt
+
+rqt  사용
+---------
+
+처음 실행하면 빈 화면이 나올 것입니다. 당황하지말고, plugins > Services > Service Caller를 상단 탭에서 선택합니다.
+
+주의: 만약 Services가 보이지 않는 다면 rqt를 종료하고 `rqt --force-discover` 로 rqt를 실행해 보시기 바랍니다.
+
+   .. image:: /_images/turtlesim_rqt/rqt_open.png
+
+|
+
+call 버튼 옆에 있는 내림 상자를 클릭하여 /spawn을 선택합니다.
+
+   .. image:: /_images/turtlesim_rqt/rqt_spawn.png
+
+|
+
+spawn서비스 사용해보기
+----------------------
+
+/spawn서비스를 사용하여 새로운 거북이를 소환해 보겠습니다. 거북이에게 이름도 지어주겠습니다. 
+저는 yongyong라는 이름으로 지어주도록 하겠습니다.
+name 옆에 expression 열을 더블클릭하면 변수를 바꿀 수 있습니다.
+그리고 이녀석을 (1,1) 지점에 소환하기위해 x, y값도 1.0, 1.0로 바꿔주도록 하겠습니다.
+
+   .. image:: /_images/turtlesim_rqt/rqt_spawn_call.png
+
+|
+
+주의: 만약 새로운 거북이 이름을  turtle1이라고 짓는다면 원래 거북이와 같은 이름이기 때문에 turtlesim_node가 실행된 터미널에서 에러 메시지를 볼 것입니다.
+
+거북이를 소환하기 위해 call 버튼을 클릭합니다.
+
+    .. image:: /_images/turtlesim_rqt/rqt_spawn_call_result.png
+
+|
+
+set_pen서비스 사용하기
+-------------------------
+
+이번에는 turtle1의 발자국의 속성을 바꿔보겠습니다.
+
+아까처럼 내림 상자에서 /turtle1/set_pen을 선택하고 width를 5로 바꾸고 r을 255로 바꾸겠습니다.
+
+이제 call버튼을 누르고 teleop_key노드가 실행된 터미널을 클릭해 활성화 한 다음 방향키를 눌러 발자국이 어떻게 바뀌는지 보겠습니다.
+
+    .. image:: /_images/turtlesim_rqt/rqt_setpen.png
+
+|
+
+r, g, b는 빨강, 초록, 파랑색을 뜻하고 width는 선의 굵기를 뜻하는 것이었습니다.
+
+Remapping
+----------
+
+이제 yongyong도 한번 움직여 보도록 하겠습니다.
+
+새 터미널 창을 열고
+
+.. code-block:: console
+
+   ros2 run turtlesim turtle_teleop_key --ros-args --remap turtle1/cmd_vel:=yongyong/cmd_vel
+
+ 
+
+를 실행한 후 방향키를 이용해 yongyong을 움직입니다.
+
+    .. image:: /_images/turtlesim_rqt/remapping.png
+
+|
+
+turtlesim 닫기
+-----------------
+
+실행된 노드를 닫으려면 노드가 실행된 터미널 창을 택한 후, ctrl+c 를 누르면 됩니다.
+
+
+정리
+----
+
+오늘은 turtlesim과 rqt 를 이용해 가장 기본적인 ROS2 유틸리티들을 실행해봤습니다.
+이번 튜토리얼은 개념적인 설명보다는 노드의 실행과 명령전달을 한번 해보는 것이 의의 였고 차차 이것들이 무엇을 뜻하는지 알아볼 예정입니다.
