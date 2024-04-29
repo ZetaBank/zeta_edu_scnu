@@ -1,0 +1,263 @@
+Code Explanation
+==================
+
+Overall Explanation
+--------------------
+
+-   Check the contents of the 01_04_Depth_Comparison.py file as follows.
+
+.. code-block:: python
+
+    import pyrealsense2 as rs
+    import numpy as np
+    import cv2
+
+    # Initialize the RealSense pipeline and configure streams
+    pipeline = rs.pipeline()
+    config = rs.config()
+    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+    pipeline.start(config)
+
+    while True:
+        # Wait for a set of frames
+        frames = pipeline.wait_for_frames()
+        depth_frame = frames.get_depth_frame()
+        color_frame = frames.get_color_frame()
+
+        # Convert frames to OpenCV format
+        depth_image = np.asanyarray(depth_frame.get_data())
+        color_image = np.asanyarray(color_frame.get_data())
+
+        # Convert depth image to a colormap
+        depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+
+        # Display the depth and color images together
+        combined_image = np.hstack((color_image, depth_colormap))
+        cv2.imshow("Color and Depth", combined_image)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    pipeline.stop()
+    cv2.destroyAllWindows()
+
+
+Structure Explanation - 1
+--------------------
+
+.. code-block:: python
+
+    import pyrealsense2 as rs
+    import numpy as np
+    import cv2
+
+- Here, the necessary libraries are imported. pyrealsense2 is the RealSense library, numpy is used for numerical operations, and cv2 is the OpenCV library for computer vision.
+
+.. code-block:: python
+    
+    # Initialize the RealSense pipeline and configure streams
+    pipeline = rs.pipeline()
+    config = rs.config()
+    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+    pipeline.start(config)
+
+- In this section, the RealSense pipeline is initialized. The rs.config() method is used to create a configuration for the pipeline. Two streams are enabled: the depth stream with a resolution of 640x480 pixels, format z16 (16-bit depth values), and a frame rate of 30 frames per second. Similarly, the color stream with the same resolution, format bgr8 (8-bit blue, green, red channels), and a frame rate of 30 frames per second is enabled.
+
+.. code-block:: python
+
+    while True:
+        # Wait for a set of frames
+        frames = pipeline.wait_for_frames()
+        depth_frame = frames.get_depth_frame()
+        color_frame = frames.get_color_frame()
+
+- This is the main loop of the program. It runs indefinitely and continuously captures frames from the camera. The pipeline.wait_for_frames() function blocks until a complete set of frames (depth and color) is available. The depth and color frames are then extracted from the set of frames.
+
+.. code-block:: python
+
+    # Convert frames to OpenCV format
+    depth_image = np.asanyarray(depth_frame.get_data())
+    color_image = np.asanyarray(color_frame.get_data())
+
+- Here, the obtained depth and color frames are converted into OpenCV-compatible formats using NumPy arrays. This step allows us to manipulate the frames using OpenCV functions.
+
+.. code-block:: python
+    
+    # Convert depth image to a colormap
+    depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+
+- The depth image is transformed into a colormap to visualize depth variations. The cv2.convertScaleAbs function scales the depth values and takes the absolute values. The cv2.applyColorMap function then applies a colormap (in this case, 'JET') to the image.
+
+.. code-block:: python
+    
+    # Display the depth and color images together
+    combined_image = np.hstack((color_image, depth_colormap))
+    cv2.imshow("Color and Depth", combined_image)
+
+- The color image and the depth colormap are horizontally stacked together to create a single combined image. This combined image is displayed in a window titled "Color and Depth" using the cv2.imshow function from OpenCV.
+
+.. code-block:: python
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+        
+- The program waits for a key press. If the pressed key is 'q', the loop is exited and the program terminates.
+
+.. code-block:: python
+
+    pipeline.stop()
+    cv2.destroyAllWindows()
+
+- After the loop, the RealSense pipeline is stopped to release the camera resources, and all OpenCV windows are closed using the cv2.destroyAllWindows() function.
+
+- In summary, this code sets up a RealSense camera, captures depth and color frames, converts them for OpenCV processing, applies a colormap to the depth data, and displays the combined result in a window. The loop continues until the user presses the 'q' key.
+
+Structure Explanation - 2
+--------------------
+
+.. code-block:: python
+
+    import os
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from IPython.display import clear_output
+    import pyrealsense2 as rs
+
+- This section imports the necessary libraries: os for interacting with the operating system, numpy for numerical operations, matplotlib.pyplot for visualization, and pyrealsense2 for working with RealSense cameras. Additionally, the clear_output function from IPython is imported.
+
+.. code-block:: python
+
+    pipe = rs.pipeline()
+    cfg = rs.config()
+    print("Pipeline is created")
+    print("Searching Devices..")
+    selected_devices = []
+
+- Here, a RealSense pipeline and configuration are created. The messages "Pipeline is created" and "Searching Devices.." are printed to indicate that the pipeline is set up and the code is about to detect available RealSense devices.
+
+.. code-block:: python
+
+    for d in rs.context().devices:
+        selected_devices.append(d)
+        print(d.get_info(rs.camera_info.name))
+    if not selected_devices:
+        print("No RealSense device is connected!")
+
+-  This loop iterates through the devices detected by the RealSense context. The names of the detected devices are printed. If no devices are detected, a message indicating that no device is connected is printed.
+
+.. code-block:: python
+
+    rgb_sensor = depth_sensor = None
+    for device in selected_devices:
+        print("Required sensors for device:", device.get_info(rs.camera_info.name))
+        for s in device.sensors:
+            if s.get_info(rs.camera_info.name) == 'RGB Camera':
+                print(" - RGB sensor found")
+                rgb_sensor = s
+            if s.get_info(rs.camera_info.name) == 'Stereo Module':
+                depth_sensor = s
+                print(" - Depth sensor found")
+
+-  In this section, the code iterates through the selected devices to find RGB and Depth sensors. If an RGB sensor is found, its information is printed, and the rgb_sensor variable is assigned the sensor object. Similarly, if a Depth sensor is found, its information is printed, and the depth_sensor variable is assigned.
+
+.. code-block:: python
+
+    colorizer = rs.colorizer()
+    profile = pipe.start(cfg)
+
+-  Here, a colorizer is created to add color to depth frames. The RealSense pipeline is started with the specified configuration.
+
+.. code-block:: python
+
+    fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(12, 4))
+    title = ["Depth Image", "RGB Image"]
+
+-  In this section, a matplotlib figure with two subplots is created for displaying frames. The title list holds titles for each subplot.
+
+.. code-block:: python
+
+    try:
+        while True:  # Enter a continuous loop for image display
+            frameset = pipe.wait_for_frames()
+
+            depth_frame = frameset.get_depth_frame()
+            color_frame = frameset.get_color_frame()
+
+            colorized_streams = []
+            if depth_frame:
+                colorized_streams.append(np.asanyarray(colorizer.colorize(depth_frame).get_data()))
+            if color_frame:
+                colorized_streams.append(np.asanyarray(color_frame.get_data()))
+
+            # Display colorized frames in subplots
+            for i, ax in enumerate(axs.flatten()):
+                if i >= len(colorized_streams):
+                    continue
+                plt.sca(ax)
+                plt.imshow(colorized_streams[i])
+                plt.title(title[i])
+            clear_output(wait=True)  # Clear previous frames from the display
+            plt.tight_layout()
+            plt.pause(0.1)  # Pause to control frame rate
+
+    except KeyboardInterrupt:
+        pass  # Exit the loop gracefully on keyboard interrupt
+
+    finally:
+        pipe.stop()  # Stop the RealSense pipeline
+        print("Done!")
+
+-  In this section, a loop continuously captures frames from the RealSense pipeline and displays them. The loop operates as follows:
+
+.. code-block:: python
+
+    while True:  # Enter a continuous loop for image display
+        frameset = pipe.wait_for_frames()
+
+        depth_frame = frameset.get_depth_frame()
+        color_frame = frameset.get_color_frame()
+
+        colorized_streams = []
+        if depth_frame:
+            colorized_streams.append(np.asanyarray(colorizer.colorize(depth_frame).get_data()))
+        if color_frame:
+            colorized_streams.append(np.asanyarray(color_frame.get_data()))
+
+        # Display colorized frames in subplots
+        for i, ax in enumerate(axs.flatten()):
+            if i >= len(colorized_streams):
+                continue
+            plt.sca(ax)
+            plt.imshow(colorized_streams[i])
+            plt.title(title[i])
+        clear_output(wait=True)  # Clear previous frames from the display
+        plt.tight_layout()
+        plt.pause(0.1)  # Pause to control frame rate
+
+- The loop continuously captures a frameset using pipe.wait_for_frames().
+
+- The depth and color frames are obtained from the frameset.
+
+- The colorized_streams list is populated with colorized depth and color frames. The colorized frames are obtained using the RealSense colorizer and converted to NumPy arrays.
+
+- A loop iterates through the subplots, displaying the colorized frames and setting the appropriate title for each subplot.
+
+- The clear_output(wait=True) function clears the previous frames from the display, and plt.pause(0.1) introduces a slight pause to control the frame rate.
+
+- The loop runs indefinitely until interrupted by a keyboard interrupt (Ctrl+C).
+
+.. code-block:: python
+
+    except KeyboardInterrupt:
+        pass  # Exit the loop gracefully on keyboard interrupt
+
+    finally:
+        pipe.stop()  # Stop the RealSense pipeline
+        print("Done!")
+
+- The except KeyboardInterrupt block handles a keyboard interrupt. If the user presses Ctrl+C, the loop is exited gracefully using the pass statement. The finally block ensures that the RealSense pipeline is stopped before the script exits, and a "Done!" message is printed.
+
+- This concludes the explanation of the provided code, which continuously displays colorized depth and color frames from a RealSense camera using Matplotlib.
+

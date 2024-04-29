@@ -1,0 +1,107 @@
+ROS C++ - Ⅰ
+================
+
+Comparing C and C++ Programming Rules
+^^^^^^^^^^^^^^^^
+
+- C and C++ are related programming languages, with C++ being an extension of C. While they share many concepts and syntax elements, C++ introduces additional features and paradigms, such as object-oriented programming (OOP). Here are some key differences:
+
+Object-Oriented Programming (OOP):
+
+    C++ supports OOP with features like classes, objects, inheritance, and polymorphism, allowing for more organized and modular code.
+    C does not directly support OOP; it relies on procedural programming.
+
+Classes and Objects:
+
+    C++ allows the creation of classes to encapsulate data and methods into objects.
+    C does not have classes or built-in support for objects.
+
+Standard Template Library (STL):
+
+    C++ provides the STL, which includes ready-to-use containers (like vectors, maps, and queues) and algorithms.
+    C does not have a built-in STL.
+
+Namespaces:
+
+    C++ has namespaces to avoid naming conflicts and provide better organization of code.
+    C does not have namespaces.
+
+Function Overloading:
+
+    C++ supports function overloading, which allows multiple functions with the same name but different parameter lists.
+    C does not support function overloading.
+
+Type Safety:
+
+    C++ offers stronger type safety through features like the static_cast operator and type-safe template classes.
+    C has fewer type safety features.
+
+Creating a ROS C++ Package
+^^^^^^^^^^^^^^^^
+
+- To create a ROS package using C++, follow these steps:
+
+    - Open a terminal and navigate to your ROS workspace directory.
+
+    - Create a new ROS package using the catkin_create_pkg command, specifying the package name and any dependencies. Include roscpp as a dependency for C++ programming:
+
+        .. code-block:: bash
+
+            catkin_create_pkg my_cpp_package roscpp rospy std_msgs
+            
+    - Navigate to the package directory:
+
+        .. code-block:: bash
+
+            cd my_cpp_package
+
+    - Create a src directory to store your C++ source code:
+        
+        .. code-block:: bash
+
+            mkdir src
+
+    - Inside the src directory, you can start writing your C++ nodes using ROS APIs and C++ programming.
+
+ROS C++ Build Settings
+^^^^^^^^^^^^^^^^
+
+- ROS uses Catkin as its build system. Here's how to configure your ROS C++ package's build settings:
+
+    - Open the CMakeLists.txt file located in your package directory.
+
+    - Add the following lines to find the required ROS packages and set the compiler flags:
+
+        .. code-block:: cmake
+
+            find_package(catkin REQUIRED COMPONENTS
+                roscpp
+                rospy
+                std_msgs
+            )
+
+            catkin_package()
+
+            include_directories(
+                ${catkin_INCLUDE_DIRS}
+            )
+
+    - For each C++ node you create, add an executable target in your CMakeLists.txt:
+
+        .. code-block:: cmake
+
+            add_executable(my_cpp_node src/my_cpp_node.cpp)
+            target_link_libraries(my_cpp_node ${catkin_LIBRARIES})
+
+    - Build your package using the following commands:
+
+        .. code-block:: bash
+            
+            catkin_make
+
+    - This command compiles your package's code and generates the necessary executables and libraries.
+
+    - Creating a ROS C++ package involves configuring CMake for your project, creating C++ nodes using ROS APIs, and using catkin_make to build your code.
+
+    - If your projects become more complex, you might need to handle additional dependencies, custom messages, and more sophisticated build configurations.
+

@@ -1,0 +1,13 @@
+UV Lamp
+====================================================
+
+By attaching a UV Lamp to the bottom of the robot as well as the UV Lamp attached to the endtool, dry disinfection can be performed while driving.
+
+------------------------------------------------------------------------------------------
+
+Floor UV Lamp
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Dry disinfection while driving using a UV Lamp attached to the floor
+
+.. thumbnail:: /_images/components/uv.jpg

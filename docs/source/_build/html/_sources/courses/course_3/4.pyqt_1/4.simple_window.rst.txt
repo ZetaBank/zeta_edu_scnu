@@ -1,0 +1,37 @@
+Getting Started with PyQt Programming
+=====================================
+
+.. code-block:: python
+   :caption: scripts/PYQT1/01_hello_world/main.py
+   :linenos:
+
+   import sys
+   from PyQt5 import QtWidgets
+
+   # Create QApplication object
+   app = QtWidgets.QApplication(sys.argv)
+   # Create and display the widget
+   button = QtWidgets.QPushButton("Hello World!")
+   button.show()
+   # Start the main loop
+   app.exec_()
+
+Understanding the PyQt Main Loop
+----------------------------------
+
+- Every GUI program has a central execution loop known as the event loop. In PyQt, this is provided by the ``'QApplication'`` object. The event loop continually polls for events such as user input, and it responds according to the respective handler.
+
+    - ``'QApplication(sys.argv)'``: To start a PyQt GUI application, a ``'QApplication'`` object must be created. ``sys.argv`` is responsible for passing command line arguments to the application.
+
+    - ``QPushButton("Hello World!")``: Creates a button widget. Here, "Hello World!" is the text displayed on the button.
+
+    - ``button.show()``: Displays the widget (in this case, the button) on the screen.
+
+    - ``app.exec_()``: Starts the main event loop. This method keeps the GUI application running by continually processing events.
+
+Creating a Simple Window
+------------------------
+
+- The example above demonstrates how to create the most basic GUI application using PyQt5.
+- When you run this program, a window containing a button with the text "Hello World!" will appear.
+- This window remains visible until the user clicks the close button on the window.

@@ -1,0 +1,74 @@
+
+.. code-block:: python
+    :caption: scripts/PYQT2/03_toggle_screens/main.py
+    :linenos:
+
+    # -*- coding: utf-8 -*-
+
+    import sys
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog, QVBoxLayout, QLabel, QWidget
+
+    class MainWindow(QMainWindow):
+        def __init__(self):
+            super(MainWindow, self).__init__()
+
+            self.init_ui()
+        
+        def init_ui(self):
+            self.button_modal = QPushButton("Open Modal Dialog", self)
+            self.button_modal.clicked.connect(self.show_modal)
+            self.button_modal.move(10, 10)
+
+            self.button_modeless = QPushButton("Open Modeless Dialog", self)
+            self.button_modeless.clicked.connect(self.show_modeless)
+            self.button_modeless.move(10, 50)
+
+        def show_modal(self):
+            self.modal_dialog = QDialog(self)
+            self.modal_dialog.setWindowTitle("Modal Dialog")
+
+            layout = QVBoxLayout()
+            label = QLabel("This is a Modal Dialog. You can't interact with the main window until you close this.")
+            layout.addWidget(label)
+
+            self.modal_dialog.setLayout(layout)
+            self.modal_dialog.exec_()
+
+        def show_modeless(self):
+            self.modeless_dialog = QDialog(self)
+            self.modeless_dialog.setWindowTitle("Modeless Dialog")
+
+            layout = QVBoxLayout()
+            label = QLabel("This is a Modeless Dialog. You can still interact with the main window.")
+            layout.addWidget(label)
+
+            self.modeless_dialog.setLayout(layout)
+            self.modeless_dialog.show()
+
+    if __name__ == '__main__':
+        app = QApplication(sys.argv)
+        mainWin = MainWindow()
+        mainWin.show()
+        sys.exit(app.exec_())
+
+
+Difference between exec_() and show()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. **Block** vs **Non-Block**:
+
+   - **exec_()**: blocking
+
+   - **show()**: non-blocking
+
+2. **Return Value**:
+
+   - **exec_()**: Has a return value (either QDialog.Accepted or QDialog.Rejected)
+
+   - **show()**: No return value
+
+3. **Use Cases**:
+
+   - **exec_()**: Waits for user's response
+
+   - **show()**: Provides information and doesn't necessarily await a user's decision

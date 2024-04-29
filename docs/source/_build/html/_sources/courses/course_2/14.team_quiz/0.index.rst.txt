@@ -1,0 +1,31 @@
+Team Quiz (AI)
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team Quiz: The human era is over!
+        </p>
+        <div class="line-block">
+            <div class="line">This is a team quiz session where each team solves a quiz.</div>
+        </div>
+        <ul>
+            <li>Let's use what we've learned so far to find the answer to the quiz.</li>
+            <li>It's time to find the answer to some of the quizzes below.</li>
+            <li>After answering the team quiz, there will be presentations by each team.</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+Topic: 
+    1. Tesla Video
+
+Evaluation Standard:
+    1. Write a report about what you felt after watching the video.
+
+    2. The report evaluation criteria are as follows.
+        - A+ : Write at least 20 pages
+        - A  : Write at least 15 pages
+        - B+ : Write at least 10 pages

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Image Recognition using AlexNet &mdash; ZetaBank - Instructor Version</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/toc_custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/toc_custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Handong Global University Version
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Robot Components &amp; ROS Training</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/1.hustar_purpose/0.index.html">Purpose of HuStar Lecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html">AI Robot Convergence Education</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#educational-ai-robot-contents">Educational AI Robot Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#autonomous-driving-sw">Autonomous Driving SW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#ai-training-example-contents">AI Training Example Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#diy-kit">DIY KIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#variety-of-maps">Variety of Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#simulation">Simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#per-student-login-system">Per-Student Login System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.ai_purpose/0.index.html#team-specific-robot-development-system">Team-Specific Robot Development System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/0.index.html">Future Convergence Talent</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/1.cooperation_and_communication.html">Functions of cooperation and communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/2.lecture_plan_and_evaluation_method.html">Lecture Plan and Evaluation Method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/2.lecture_plan_and_evaluation_method.html#lecture-plan">Lecture Plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/2.lecture_plan_and_evaluation_method.html#evaluation-method">Evaluation Method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/3.team_assignment_and_collaboration_program.html">Team Assignment and Collaboration Program</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/3.team_assignment_and_collaboration_program.html#team-assignment">Team Assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.future_convergence_talent/3.team_assignment_and_collaboration_program.html#collaboration-program">Collaboration Program</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/4.issue_analysis/0.index.html">Issue Analysis Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/5.robot_component/0.index.html">AI Robot Basic Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html">Hardware</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#ability-to-converge-artificial-intelligence-with-software-robots-and-content">Ability to converge artificial intelligence with software, robots, and content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#transformation-robot-to-respond-to-various-businesses">Transformation robot to respond to various businesses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#components-of-zetabot">Components of Zetabot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#critical-parts">Critical Parts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#block-diagram">Block Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/1.hardware.html#option-6-axis-robot-arm">Option: 6-axis robot arm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_component/2.ros1.html">ROS 1 (Jetson Nano)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/2.ros1.html#key-traits-of-ros-1-sculpting-the-robotic-landscape">Key Traits of ROS 1: Sculpting the Robotic Landscape</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_component/3.ros2.html">ROS 2 (Raspberry Pi)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/3.ros2.html#distinctive-traits-of-ros-2-shaping-the-future-of-robotics">Distinctive Traits of ROS 2: Shaping the Future of Robotics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_component/4.docker.html">Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/4.docker.html#docker-s-components-assembling-the-containerization-landscape">Docker’s Components: Assembling the Containerization Landscape</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_component/5.jupyterlab.html">JupyterLab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_component/5.jupyterlab.html#jupyterlab-s-distinctive-traits-shaping-the-interactive-experience">JupyterLab’s Distinctive Traits: Shaping the Interactive Experience</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/6.assembly/0.index.html">Assembly AI Robot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/6.assembly/1.bottom_layer.html">Assembly Bottom layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/6.assembly/2.middle_layer.html">Assembly Middle layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/6.assembly/3.top_layer.html">Assembly Top layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/6.assembly/4.realsense.html">Option : Intel RealSense D435</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/7.control_robot/0.index.html">Control AI Robot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/1.joystick.html">Joystick Operation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/1.joystick.html#how-to-control-robot-using-joystick">How to Control Robot Using Joystick</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html">Interface UI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html#overall">Overall</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html#performing-with-a-robot">Performing with a robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html#catching-monsters">Catching monsters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html#artificial-intelligence-education">Artificial Intelligence Education</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/2.ui.html#let-s-save-robots-and-the-earth">Let’s save robots and the earth</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/3.rms.html">RMS (Robot Management System)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/3.rms.html#how-to-connect">How to connect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/3.rms.html#how-to-control-the-robot">How to control the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/4.jupyter.html">JupterLab Access &amp; Run examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/4.jupyter.html#how-to-connect">How to connect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/4.jupyter.html#how-to-run-code">How to run code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/5.foldertree.html">Organize folders and code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/5.foldertree.html#overall">Overall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/7.control_robot/6.isaac_sight.html">Robot Sensor Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/6.isaac_sight.html#accessing-isaac-sight">Accessing Isaac Sight</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/7.control_robot/6.isaac_sight.html#checking-visuals">Checking Visuals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/8.ros_intro/0.index.html">ROS Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/8.ros_intro/0.index.html#ros-robot-operating-system-navigating-the-future-of-robotics">ROS (Robot Operating System): Navigating the Future of Robotics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/8.ros_intro/0.index.html#ros-components-assembling-the-robotics-ecosystem">ROS Components: Assembling the Robotics Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/8.ros_intro/0.index.html#the-future-of-ros-pioneering-robotic-advancements">The Future of ROS: Pioneering Robotic Advancements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/9.python_1/0.index.html">Python Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html">Features of Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html#python-a-language-of-intuitive-expression">Python: A Language of Intuitive Expression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html#simplicity-in-grammar-bridging-the-gap">Simplicity in Grammar: Bridging the Gap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html#enjoyable-programming-liberating-creativity">Enjoyable Programming: Liberating Creativity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html#the-power-of-open-source-freedom-to-create">The Power of Open Source: Freedom to Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/1.features.html#a-fast-paced-journey-life-is-too-short-you-need-python">A Fast-Paced Journey: “Life is too short, you need Python”</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html">Possibilities of Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#exploring-the-boundless-possibilities-of-python">Exploring the Boundless Possibilities of Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#artificial-intelligence-and-machine-learning-pioneering-the-future">Artificial Intelligence and Machine Learning: Pioneering the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#math-programming-the-power-of-numpy">Math Programming: The Power of Numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#data-analysis-unveiling-insights">Data Analysis: Unveiling Insights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#database-programming-accessing-and-organizing-data">Database Programming: Accessing and Organizing Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#internet-of-things-iot-innovating-connectivity">Internet of Things (IoT): Innovating Connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#web-programming-building-the-digital-landscape">Web Programming: Building the Digital Landscape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#gui-programming-visualizing-interaction">GUI Programming: Visualizing Interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#crafting-system-utilities-streamlining-operations">Crafting System Utilities: Streamlining Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/9.python_1/2.possibilities.html#synergizing-with-c-c-the-glue-language">Synergizing with C/C++: The Glue Language</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/9.python_1/3.installation_1.html">How to Install Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/9.python_1/4.installation_2.html">How to Install Visual Studio Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/10.python_2/0.index.html">Python Basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/10.python_2/3.python/1.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/1.explanation/1.index.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/1.explanation/1.index.html#control-statements">Control Statements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/1.explanation/1.index.html#functions-and-classes">Functions and Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/2.variable.html">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/3.control_statement.html">Control Statements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/4.function.html">Functions and Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/4.function.html#function">Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/4.function.html#class">Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/4.function.html#more-code-examples">More Code Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/10.python_2/3.python/2.follow_along/5.chatgpt.html">Python Coding with ChatGPT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/10.python_2/5.mission.html">Mission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/10.python_2/6.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/10.python_2/7.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/11.python_3/0.index.html">Python Advanced</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/12.team_quiz/0.index.html">Team Quiz (Robot)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ROS C++ Programming &amp; AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../1.team_quiz_presentation/0.index.html">Team Quiz Presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2.ros_python_1/0.index.html">ROS Python Control - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/1.index.html">ROS Topic Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/1.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/1.follow_along/2.publisher.html">ROS Topic Publisher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/1.follow_along/3.subscriber.html">ROS Topic Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/2.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/2.explanation/1.index.html#topic">Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/2.explanation/1.index.html#nodes">Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/2.explanation/1.index.html#publisher">Publisher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/3.ros_topic_control/2.explanation/1.index.html#subscriber">Subscriber</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/1.index.html">ROS Sensors Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/2.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/2.follow_along/2.imu.html">IMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/2.follow_along/3.lidar.html">LIDAR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/3.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/3.explanation/1.index.html#imu">IMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ros_python_1/4.robot_sensors/3.explanation/1.index.html#lidar">LIDAR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ros_python_1/5.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ros_python_1/5.mission.html#let-s-send-a-message-to-our-team-members">Let’s send a message to our team members!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ros_python_1/6.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ros_python_1/7.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../4.ros_1/0.index.html">ROS Environment - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../4.ros_1/0.index.html#ubuntu-18-04">Ubuntu 18.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../4.ros_1/0.index.html#ros-melodic">ROS Melodic</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../5.ros_2/0.index.html">C / C++ Programming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../5.ros_2/2.installation_1.html">How to Install GCC / G++ Compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../5.ros_2/3.installation_2.html">How to Run C++ Code in Visual Studio Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6.ros_3/0.index.html">ROS C++ - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../6.ros_3/0.index.html#comparing-c-and-c-programming-rules">Comparing C and C++ Programming Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../6.ros_3/0.index.html#creating-a-ros-c-package">Creating a ROS C++ Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../6.ros_3/0.index.html#ros-c-build-settings">ROS C++ Build Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../7.ros_4/0.index.html">ROS C++ - Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../7.ros_4/0.index.html#ros-publisher-and-subscriber-nodes-using-c">ROS publisher and subscriber nodes using C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../8.team_coop/0.index.html">Collaboration Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../8.ai_1/0.index.html">Artificial Intelligence - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../8.ai_1/0.index.html#uncertainty-in-ai">Uncertainty in AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../8.ai_1/0.index.html#machine-learning">Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../8.ai_1/0.index.html#supervised-learning">Supervised Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../8.ai_1/0.index.html#unsupervised-learning">Unsupervised Learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../9.ai_2/0.index.html">Artificial Intelligence - Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../9.ai_2/0.index.html#neural-networks-and-deep-learning">Neural Networks and Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../9.ai_2/0.index.html#cnns-and-visual-recognition">CNNs and Visual Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../9.ai_2/0.index.html#natural-language-processing-nlp">Natural Language Processing (NLP)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../0.index.html">AI Recognition - Ⅰ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../11.ai_obj_2/0.index.html">AI Object - Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/1.index.html">Object Detection with SSD-Mobilenet-v2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/3.explanation.html#ssd-mobilenet-v2">SSD-Mobilenet-v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/3.explanation.html#other-models-for-object-detection">Other models for Object Detection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/5.mission.html#writing-custom-detectnet-program">Writing Custom detectNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/5.mission.html#let-s-change-the-overlay">Let’s Change the Overlay!!!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../11.ai_obj_2/3.object_detect/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../12.team_quiz/0.index.html">Team Quiz (AI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../13.issue_analysis/0.index.html">Issue Analysis Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../14.ai_back_3/0.index.html">AI BackgroundNet - Ⅲ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../14.ai_back_3/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../14.ai_back_3/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/3.explanation.html#backgroundnet-model">BackgroundNet Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/3.explanation.html#challenges-and-solutions">Challenges and Solutions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../14.ai_back_3/4.coding_explanation.html">BackgroundNet Coding Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../14.ai_back_3/5.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/5.mission.html#writing-custom-background-removal-program">Writing Custom Background Removal Program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../14.ai_back_3/6.discussion.html">Discussion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../14.ai_back_3/6.discussion.html#group-discussion-points">Group Discussion Points</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.team_diy/0.index.html">Team DIY AI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../15.team_diy/0.index.html#let-s-take-a-hustar-commemorative-photo">Let’s take a HuStar commemorative photo!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../15.team_diy/0.index.html#rules">Rules</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">PyQT &amp; Robotic Deep AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/1.ai_tao_4/0.index.html">AI Tao - Ⅳ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/1.index.html">Tao Peoplenet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/3.explanation.html#dashcamnet">DashCamNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/2.tao_peoplenet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/1.index.html">Tao Dashcamnet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/3.explanation.html#peoplenet">PeopleNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/3.tao_dashcamnet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/1.index.html">Tao Facedetect Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/3.explanation.html#facedetect">FaceDetect</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/1.ai_tao_4/4.tao_facedetect/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/2.ai_pose_5/0.index.html">AI PoseNet - Ⅴ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/1.index.html">Body Pose Estimation with Pose-ResNet18-Body</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/3.explanation.html#pose-resnet18-body">Pose-ResNet18-Body</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/5.mission.html#writing-custom-posenet-program">Writing Custom poseNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/5.mission.html#let-s-change-the-overlay">Let’s Change the Overlay!!!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.ai_pose_5/2.pose/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/3.team_quiz/0.index.html">Team Quiz (AI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/4.ai_depth_6/0.index.html">AI DepthNet - Ⅵ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/1.index.html">Sematic Segmentation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html#cityscapes">CityScapes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html#outdoor-off-road">Outdoor (off-road)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html#segmenting-human-images">Segmenting Human Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html#variaty-objects-and-people">Variaty Objects and People</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/2.follow_along.html#in-doors">In-Doors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/3.explanation.html#fcn-resnet18">FCN-ResNet18</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/2.sematic_seg/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/1.index.html">Depth Estimation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/3.explanation.html#fcn-mobilenet">FCN-MobileNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.ai_depth_6/3.depth/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.ai_depth_6/4.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/4.pyqt_1/0.index.html">PyQT - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.pyqt_1/0.index.html#introduction-and-environment-setup">Introduction and Environment Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.pyqt_1/1.pyqt_introduction.html">Introduction PyQt5 and GUI Programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/1.pyqt_introduction.html#pyqt5-and-gui-programming">PyQt5 and GUI Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/1.pyqt_introduction.html#pyqt5-what-is-it">PyQt5: What is it?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/1.pyqt_introduction.html#features-of-pyqt5">Features of PyQt5</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.pyqt_1/2.basic_of_gui_and_event.html">Basics of GUI and Event-Driven Programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/2.basic_of_gui_and_event.html#fundamental-elements-of-gui-programming">Fundamental Elements of GUI Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/2.basic_of_gui_and_event.html#principles-of-event-driven-programming">Principles of Event-Driven Programming</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.pyqt_1/3.pyqt_setting.html">Setting up and Installing PyQt5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.pyqt_1/4.simple_window.html">Getting Started with PyQt Programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/4.simple_window.html#understanding-the-pyqt-main-loop">Understanding the PyQt Main Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.pyqt_1/4.simple_window.html#creating-a-simple-window">Creating a Simple Window</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/5.pyqt_2/0.index.html">PyQT - Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/5.pyqt_2/0.index.html#basic-widgets-and-user-interaction">Basic Widgets and User Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/5.pyqt_2/1.label_button/0.index.html">Creating Labels and Buttons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/1.label_button/1.empty.html">Empty Window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/1.label_button/2.label.html">Label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/1.label_button/3.button.html">Button</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/1.label_button/4.button_clicked.html">Button Clicked</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/5.pyqt_2/2.subwidget/0.index.html">Sub Widget Creation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/2.subwidget/1.many_widgets.html">Many widget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/2.subwidget/2.spin_box.html">Spin Box</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/5.pyqt_2/3.toggle_screens.html">Switching Screens: Utilizing the Stacked Widget</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/3.toggle_screens.html#detailed-analysis">Detailed Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/5.pyqt_2/4.toggle_images.html">Image Transition: Visualizing Screen Switching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/5.pyqt_2/4.toggle_images.html#detailed-analysis">Detailed Analysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/6.team_coop/0.index.html">Collaboration Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/7.pyqt_3/0.index.html">PyQT - Ⅲ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/7.pyqt_3/0.index.html#advanced-widgets-and-interaction">Advanced Widgets and Interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/7.pyqt_3/1.modal_modeless.html">Creating Modal and Modeless Dialogs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/7.pyqt_3/1.modal_modeless.html#modal-dialogs">Modal Dialogs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/7.pyqt_3/1.modal_modeless.html#modeless-dialogs">Modeless Dialogs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/7.pyqt_3/1.modal_modeless.html#difference-between-exec-and-show">Difference between exec_() and show()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/7.pyqt_3/2.dialog_box.html">Using Standard Dialogs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/8.pyqt_4/0.index.html">PyQT - Ⅳ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/9.team_quiz_presentation/0.index.html">Team Quiz Presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/10.issue_analysis/0.index.html">Issue Analysis Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/11.pyqt_5/0.index.html">PyQT - Ⅴ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/12.team_diy/0.index.html">Team DIY UI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Autonomous Driving &amp; Robot Arm</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/1.team_diy_presentation/0.index.html">Team DIY Project Presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/2.depth_1/0.index.html">AI Model Convergence Practice withe Depth Camera - Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/2.depth_1/2.coding/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/2.coding/1.compare_1.html">Compare Color Image and Depth Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/2.coding/2.compare_2.html">Compare Color Image and Depth Image via Widget</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/2.depth_1/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/3.code_explanation/1.index.html#overall-explanation">Overall Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/3.code_explanation/1.index.html#structure-explanation-1">Structure Explanation - 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/3.code_explanation/1.index.html#structure-explanation-2">Structure Explanation - 2</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/2.depth_1/4.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/4.mission.html#how-to-excute-the-python-file">How to Excute the Python File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/4.mission.html#python-file-description">Python File Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/4.mission.html#let-s-start-the-mission">Let’s Start the Mission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/2.depth_1/4.mission.html#advanced-mission">Advanced Mission</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/2.depth_1/5.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/3.depth_2/0.index.html">AI Model Convergence Practice withe Depth Camera - Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/3.depth_2/2.coding/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/3.depth_2/2.coding/1.ssd-mobilenet.html">Detecting object distance using Depth Camera and SSD-Mobilenet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/3.depth_2/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/3.depth_2/3.code_explanation/1.index.html#structure-explanation">Structure Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/3.depth_2/4.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/3.depth_2/4.mission.html#how-to-excute-the-python-file">How to Excute the Python File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/3.depth_2/4.mission.html#python-file-description">Python File Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/3.depth_2/4.mission.html#let-s-start-the-mission">Let’s Start the Mission</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/3.depth_2/5.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/4.robot_drive_1/0.index.html">Autonomous Driving Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/5.robot_drive_2/0.index.html">Autonomous Driving Application Knowhow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/6.robot_drive_3/0.index.html">Autonomous Driving Robot Part Ⅰ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/6.robot_drive_3/intro.html">Intro - Model C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/6.robot_drive_3/components.html">Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/components.html#front-side">Front Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/components.html#back-side">Back Side</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/components.html#top-view">Top View</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/index.html">Using GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Start.html">Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Bringup.html">Bringup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/M-LRF.html">M-LRF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/OP.html">OP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Navigation.html">Navigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/NaviRVIZ.html">NaviRVIZ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/WPCtrl.html">WPCtrl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/InitPos.html">InitPos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Motion%20Ctrl.html">Motion Ctrl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Run%20TeleOP.html">Run TeleOP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Sonar%20Sensor.html">Sonar Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Navigate%20Way%20Points.html">Navigate Way Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Navigate%20Trajectories.html">Navigate Trajectories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Parking%20C.S..html">Parking C.S.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Air%20Information.html">Air Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Air%20Purifier.html">Air Purifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Configuration.html">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Cam%20View.html">Cam View</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/RS%20View.html">RS View</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/AMCL%20Pos.html">AMCL Pos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/UVC.html">UVC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Control%20LED-bar.html">Control LED-bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Ready.html">Ready</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/Mapping.html">Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/6.robot_drive_3/gui/RosBoard.html">RosBoard</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/7.robot_drive_4/0.index.html">Autonomous Driving Robot Part Ⅱ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html">Node configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#path-planner">Path Planner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#scan">/scan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#tf">/tf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#mimetic-diagram">Mimetic Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#node-graph">Node Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/node.html#additional-explanation">Additional explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/7.robot_drive_4/autocharge.html">Automatic Charging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/autocharge.html#component">Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/autocharge.html#process">Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/autocharge.html#algorithm">Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/7.robot_drive_4/application.html">Service Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/application.html#app-screen">App Screen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/application.html#route-guidance-function-using-autonomous-driving">Route guidance function using autonomous driving</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/7.robot_drive_4/use.html">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/use.html#gwangju-biennale">Gwangju Biennale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/use.html#daegu-exco">Daegu Exco</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/use.html#daegu-exhibition">Daegu Exhibition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/7.robot_drive_4/use.html#daegu-city-hall-annex-cafe">Daegu City Hall Annex Cafe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/7.robot_drive_4/design.html">Design</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/8.issue_analysis/0.index.html">Issue Analysis Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../line.html">――――――――――――――――――――――</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/robot_arm_basic/0.index.html">Robot Arm Basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/robot_arm_basic/1.basics.html">Robot ARM Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/robot_arm_basic/2.forward_kinematics.html">Forward kinematics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/robot_arm_basic/3.inverse_kinematics.html">Inverse kinematics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/9.robot_arm_1/0.index.html">Basic Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/9.robot_arm_1/2.basic_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/2.basic_control/2.before_starting.html">Theory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/2.basic_control/3.moving_arm.html">Moving the Robot Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/2.basic_control/4.motor_angle.html">Read Servo Motor Angle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/2.basic_control/5.motor_cont.html">Controlling Servo Motors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/9.robot_arm_1/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/3.code_explanation/1.index.html#overall-explanation">Overall Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/3.code_explanation/1.index.html#robot-arm-movements">Robot arm Movements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/3.code_explanation/1.index.html#basic-movements">Basic Movements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/3.code_explanation/1.index.html#reading-the-current-angle-of-the-servo">Reading the Current Angle of the Servo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html#mission-lib-custom-library">mission_lib custom Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html#event-name-custom-library">event_name custom Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/9.robot_arm_1/4.mission/1.index.html#pick-up-an-object-and-place-it-somewhere-else">Pick up an object and place it somewhere else!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/9.robot_arm_1/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/9.robot_arm_1/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/10.robot_arm_2/0.index.html">Intermediate Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/10.robot_arm_2/2.intermediate_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/2.intermediate_control/2.dancing_arm.html">Dancing with the Robot Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/2.intermediate_control/3.gripper_control.html">Gripper Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/2.intermediate_control/4.teaching_arm.html">Robot Arm teaching</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/10.robot_arm_2/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/3.code_explanation/1.index.html#teaching-the-robot-arm">Teaching the Robot Arm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html#mission-lib-pnp-custom-library">mission_lib_pnp custom Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html#event-name-pnp-custom-library">event_name_pnp custom Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/10.robot_arm_2/4.mission/1.index.html#pick-up-objects-and-place-them-automatically">Pick up objects and place them automatically!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/10.robot_arm_2/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/10.robot_arm_2/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/11.robot_arm_3/0.index.html">Advanced Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/11.robot_arm_3/2.advanced_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/2.advanced_control/2.track_color.html">Tracking a Color with the Robotic Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/2.advanced_control/3.tracking_face.html">Tracking a Face with the Robotic Arm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/11.robot_arm_3/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/3.code_explanation/1.index.html#overall-explanation">Overall Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/3.code_explanation/1.index.html#tracking-a-color">Tracking a Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/3.code_explanation/1.index.html#tracking-a-face">Tracking a Face</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/2.circle.html">Draw a Circle with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/2.circle.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/2.circle.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/2.circle.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/3.square.html">Draw a Square with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/3.square.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/3.square.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/3.square.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/4.triangle.html">Draw a Triangle with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/4.triangle.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/4.triangle.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/11.robot_arm_3/4.mission/4.triangle.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/11.robot_arm_3/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/11.robot_arm_3/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/12.team_diy/0.index.html">Team DIY Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/12.team_diy/2.sound/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/12.team_diy/2.sound/2.sound.html">Dancing With Music!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/12.team_diy/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/12.team_diy/3.code_explanation/1.index.html#sound">Sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html#time-and-arm-lib-library">time and Arm_Lib Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html#os-library">os Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_4/12.team_diy/4.mission/1.index.html#make-your-robot-dance-to-the-music">Make Your Robot Dance to the Music!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/12.team_diy/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/12.team_diy/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_4/13.team_diy_presentation/0.index.html">Team DIY Project Presentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/13.team_diy_presentation/0.index.html#a-dance-competition-is-held">A Dance Competition is Held!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_4/13.team_diy_presentation/0.index.html#rules">Rules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Handong Global University Version</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">AI Image Recognition using AlexNet</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/courses/course_2/10.ai_rec_1/3.alexnet/1.index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ai-image-recognition-using-alexnet">
+<h1>AI Image Recognition using AlexNet<a class="headerlink" href="#ai-image-recognition-using-alexnet" title="Permalink to this heading"></a></h1>
+<p class="linemarker linemarker-5">Here are the contents for this section:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.explanation.html">Overall Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.coding_explanation.html">Coding Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.mission.html">Mission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.discussion.html">Discussion</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17821189-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-17821189-2', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

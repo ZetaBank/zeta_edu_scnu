@@ -1,0 +1,22 @@
+Discussion
+=============
+
+Python is an easy, simple, yet feature-rich, interpreted language.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li>Why should we learn Python?</li>
+            <li>
+                Why has Python become a popular programming language?
+                <ul>
+                    <li>Python supports powerful modules such as numpy, matplotlib, and pandas that are specialized for machine learning. Let's discuss what their characteristics and strengths are.</li>
+                    <li>If there are other useful modules, let's find out together.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>

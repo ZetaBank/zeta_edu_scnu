@@ -1,0 +1,22 @@
+Discussion
+=============
+
+
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li> 
+                Cooperation between robots and humans in industrial settings.
+                <ul>
+                    <li>An industry where robots and humans work together to reduce human risk and help.</li>
+                    <li>Problems that can arise when robots collaborate with humans and ways to improve and overcome them.</li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>

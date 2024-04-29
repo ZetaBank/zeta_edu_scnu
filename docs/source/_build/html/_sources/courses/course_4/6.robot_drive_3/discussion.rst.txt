@@ -1,0 +1,45 @@
+Team Quiz (AI)
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team Quiz: AI
+        </p>
+        <div class="line-block">
+            <div class="line">This is a team quiz session where each team solves a quiz.</div>
+        </div>
+        <ul>
+            <li>Let's use what we've learned so far to find the answer to the quiz.</li>
+            <li>It's time to find the answer to some of the quizzes below.</li>
+            <li>After answering the team quiz, there will be presentations by each team.</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+Topic: 
+    1. AI essential questions
+        1. How AI systems handle complex decisions under uncertain circumstances, and how can techniques such as probabilistic modeling be applied to the autonomous driving field of robots?
+        2. What is meta-learning, where AI systems learn how to learn, and how can this approach lead to the development of more adaptive and faster learning algorithms?
+        3. How can AI use supervised learning to predict and prevent potential errors, and what role can it play in forecasting, maintenance, early disease diagnosis and risk mitigation?
+        4. What is AI's ability to discover hidden patterns and structures in data through unsupervised learning and discuss applications in the areas of market analysis, anomaly detection, etc.?
+        5. What are the roles of layers, neurons, in the way neural networks simulate the interconnected structures of the brain, and what are the similarities between how humans and machines learn?
+        6. What is the mechanism of a convolutional neural network (CNN) and how it processes visual information layer by layer to recognize objects, faces and scenes?
+        7. How can natural conversations and emotionally intelligent interactions be created in the mechanism of AI-based chatbots?
+
+    2. AI choice questions
+        1. Is there a way to apply DetectNet to situations beyond human detection, such as counting people in crowded areas or tracking animals for wildlife research?
+        2. The importance of SegNet in semantic segmentation, where AI assigns a class label to each pixel in an image, and examples of how it can be applied to things like medical imaging, urban planning, and scene recognition?
+        3. Is there a way to extend PoseNet's technology to estimate not only pose, but also depth information, contributing to 3D scene reconstruction and mixed reality experiences?
+        4. In the problem of accurately segmenting a foreground subject in a complex background, how exactly does BackgroundNet's architecture solve this problem?
+        5. What is DepthNet's role in estimating depth in 2D images so that artificial intelligence can detect the distance of an object from a camera, and how it can be applied to places like robotics, autonomous vehicles and 3D modeling?
+
+Evaluation Standard:
+    1. Choose one AI essential question and one AI choice question to submit your report.
+
+    2. The report evaluation criteria are as follows.
+        - A+ : Write at least 20 pages
+        - A  : Write at least 15 pages
+        - B+ : Write at least 10 pages

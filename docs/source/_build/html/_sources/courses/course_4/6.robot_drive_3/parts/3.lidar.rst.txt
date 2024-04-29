@@ -1,0 +1,50 @@
+Safety Features
+====================================================
+
+A safety area is set around the robot, and all operations are paused when an object is detected within the area during robot arm operation.
+
+Areas are visualized and shown using red and green lasers.
+
+------------------------------------------------------------------------------------------
+
+LiDAR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is a front lidar and a rear lidar, and the detection range of the two lidar is combined to detect a 360-degree range.
+
+.. thumbnail:: /_images/components/lidar.png
+
+------------------------------------------------------------------------------------------
+
+Safety area setting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since lidar's detection range is very wide, a safety area is set aside to narrow the range.
+
+Set the robot to react only when an object is detected inside the safety area.
+
+.. thumbnail:: /_images/components/sick.png
+
+------------------------------------------------------------------------------------------
+
+Safety area visualization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When a safety area is visible, pedestrians can first recognize and act on it.
+
+- Object Not Detected inside area : GREEN
+- Object Detected inside area : RED
+
+.. thumbnail:: /_images/components/detect.png
+
+------------------------------------------------------------------------------------------
+
+Safety PLC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Because it is a robot that works in harmony with people, it is exposed to various situations.
+
+Control all situations related to safety by using Safety PLC.
+
+.. thumbnail:: /_images/components/plc.png
+

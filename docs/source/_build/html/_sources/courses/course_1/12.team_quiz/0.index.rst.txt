@@ -1,0 +1,54 @@
+Team Quiz (Robot)
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team Quiz: Robot
+        </p>
+        <div class="line-block">
+            <div class="line">This is a team quiz session where each team solves a quiz.</div>
+        </div>
+        <ul>
+            <li>Let's use what we've learned so far to find the answer to the quiz.</li>
+            <li>It's time to find the answer to some of the quizzes below.</li>
+            <li>After answering the team quiz, there will be presentations by each team.</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+Topic: 
+    1. Components of the robot.
+        1. How can robots be used in educational settings to engage students, teach coding and programming, and provide personalized learning experiences?
+        2. How will transportation systems and urban planning change with the development of self-driving technologies such as self-driving cars and drones?
+        3. Is there a way to combine robotics and art, using robots to create new forms of artistic expression, such as interactive installations and kinetic sculptures?
+        4. How will robots contribute to space exploration in space exploration, such as planetary probes and autonomous satellites?
+        5. How will robotics be applied in the medical field, including robotic aids, prosthetics and rehabilitation devices for individuals with mobility impairments?
+        6. How can robots and automation be applied to tasks such as growing, harvesting, and monitoring crop health to improve production efficiency and growing conditions in agriculture?
+        7. What are the potential implications for robotics and industrial automation given the current state of ROS 2 applications and how ROS 2 might shape these sectors?
+        8. How will the integration of fifth generation (5G) communication technologies affect robotics and the ROS ecosystem?
+        9. What are some examples of use of ROS in medical robotics and applications, such as surgical assistance, medical image analysis, and patient monitoring?
+        10. What is the role and application of ROS in drone technology, drone control, autonomous flight, environmental awareness, etc.?
+
+    2. Robot assembly status by team.
+        Complete the assembly of the robot within the time limit of 2 hours and draw a circle using the joystick!
+        
+        Tips:
+            1. Check if each function of the robot is working properly.
+            2. Check that the motor is working properly, the camera and lidar are working well, and there are no abnormalities in the sensors.
+            3. Check once again that the screws are not assembled or are not loose.
+
+Evaluation Standard:
+    1. Choose two topics to submit your report.
+
+    2. The report evaluation criteria are as follows.
+        - A+ : Write at least 20 pages
+        - A  : Write at least 15 pages
+        - B+ : Write at least 10 pages
+
+    3. The assembly evaluation criteria are as follows.
+        - A+ : Assembly and operation completed within 1 hour and 30 minutes
+        - A  : Assembly and operation completed within 2 hours
+        - B+ : Assembly and operation completed in more than 2 hours

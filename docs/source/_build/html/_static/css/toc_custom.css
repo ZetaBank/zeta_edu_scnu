@@ -1,0 +1,17 @@
+/* Import the default.css file */
+@import url("default.css");
+
+/* Change the color of the caption text in the TOC */
+.wy-menu span.caption-text {
+    color: #04589C;
+}
+
+/* Change the background of the search bar and top navigation */
+.wy-side-nav-search, .wy-nav-top {
+    background: #04589C;
+}
+
+/* Remove the icon before the admonition title */
+.rst-content .custom .admonition-title:before {
+    content: none; /* Empty content to remove the icon */
+}

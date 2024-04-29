@@ -1,0 +1,31 @@
+Team DIY AI
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team DIY AI: Create Your AI
+        </p>
+        <div class="line-block">
+            <div class="line">This is about creating AI with your team members.</div>
+        </div>
+        <ul>
+            <li>Let's create AI freely with team members.</li>
+            <li>It's a time to reflect on the thoughts of the team members and your own thoughts.</li>
+            <li>Now, let's share our thoughts with our team members!</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+Let's take a HuStar commemorative photo!
+----------------
+- Let's take a commemorative photo with the members using the AI BackgroundNet we have learned so far.
+- If you have something to commemorate HuStar, even better!
+- Let's take a cool picture that you can brag to your friends!
+|
+Rules
+----------------
+- Group members gather and take pictures together.
+- The background is free to choose.

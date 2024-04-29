@@ -1,0 +1,22 @@
+Collaboration Program
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Collaboration Program: 
+        </p>
+        <div class="line-block">
+            <div class="line">This is a project where teams work together to accomplish missions and challenges.</div>
+        </div>
+        <ul>
+            <li>Let's work together with your teammates to achieve your goal.</li>
+            <li>It's time to work with your team to formulate a strategy and achieve your goals.</li>
+            <li>There may even be rewards for great results!</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+1. Draw, Mission, Siege

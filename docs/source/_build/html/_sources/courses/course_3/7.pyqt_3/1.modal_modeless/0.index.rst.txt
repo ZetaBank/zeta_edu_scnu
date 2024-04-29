@@ -1,0 +1,20 @@
+Creating Modal and Modeless Dialogs
+===================================
+
+Modal Dialogs
+-------------
+
+- The user cannot interact with the main window until the dialog is closed.
+  
+- Typically used for critical information or decisions that require the user's focus.
+
+Modeless Dialogs
+----------------
+
+- Even if the dialog is open, the user can interact with the main window simultaneously.
+
+
+.. toctree:: 
+
+    1.default
+    2.update_size

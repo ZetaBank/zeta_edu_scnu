@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Project &mdash; ZetaBank - Instructor Version</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/toc_custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\css\lightbox.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/toc_custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2\dist\js\lightbox-plus-jquery.min.js"></script>
+        <script src="../../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Discussion" href="../5.discussion.html" />
+    <link rel="prev" title="Code Explanation" href="../3.code_explanation/1.index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Instructors Version
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Nano Degree Program</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../0.intro/introduction.html">Experience the Technology of the Future and Coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../0.intro/explanation.html">Overall Lecture Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../0.intro/coding_ex.html">Coding Practice for Experience</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../0.intro/robot_ex.html">Robot Coding Practice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../0.intro/mission.html">Introductory Mission</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Experience new AI robot technology</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/1.index.html">Experience new AI robot technology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/2.robot_control/1.index.html">Robot Controls Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/2.introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/8.joystick.html">How to operate using the joystick</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/8.joystick.html#diy-mini-robot">DIY / MINI Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/8.joystick.html#arm-robot">ARM Robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/1.index.html">ROS Topic Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/1.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/1.follow_along/2.publisher.html">ROS Topic Publisher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/1.follow_along/3.subscriber.html">ROS Topic Subscriber</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/2.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/2.explanation/1.index.html#topic">Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/2.explanation/1.index.html#nodes">Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/2.explanation/1.index.html#publisher">Publisher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/3.ros_topic_control/2.explanation/1.index.html#subscriber">Subscriber</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/1.index.html">ROS Sensors Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/2.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/2.follow_along/2.imu.html">IMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/2.follow_along/3.lidar.html">LIDAR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/3.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/3.explanation/1.index.html#imu">IMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/2.robot_control/4.robot_sensors/3.explanation/1.index.html#lidar">LIDAR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/5.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/5.mission.html#accessing-isaac-sight">Accessing Isaac Sight</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/2.robot_control/5.mission.html#checking-visuals">Checking Visuals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/6.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/2.robot_control/7.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/1.index.html">AI Image Recognition Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/2.introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/1.index.html">AI Image Recognition using GoogleNet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/3.explanation.html#googlenet">GoogleNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/4.coding_explanation.html">Coding Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/5.mission.html">Mission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/3.googlenet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/1.index.html">AI Image Recognition using AlexNet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/3.explanation.html#alexnet">AlexNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/4.coding_explanation.html">Coding Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/5.mission.html">Mission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/4.alexnet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/5.googlenet_alexnet.html">How are GoogleNet and AlexNet?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/6.do_it_together.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/6.do_it_together.html#writing-python-program-as-a-team">Writing Python Program as a Team</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/3.ai_image_recognition/7.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/4.slam_navigation/1.index.html">SLAM and Navigation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/2.introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/3.basic.html">Basic Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/3.basic.html#map">Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/3.basic.html#pose-of-robot">Pose of Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/3.basic.html#sensing">Sensing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/3.basic.html#path-calculation-and-driving">Path Calculation and Driving</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/4.theory.html">Theory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-1.slam_theory.html">Slam  Theory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-1.slam_theory.html#particle-filter">Particle filter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-2.navigation_theory.html">Navigation Theory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-2.navigation_theory.html#costmap">Costmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-2.navigation_theory.html#amcl">AMCL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/4-2.navigation_theory.html#dynamic-window-approach-dwa">Dynamic Window Approach (DWA)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/index.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission1.html">How to do the Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission1.html#constructing-a-map-as-a-team">Constructing a Map (as a Team)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission1.html#mapping-the-constructed-map">Mapping the Constructed Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission1.html#executing-navigation">Executing Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission1.html#team-competition">Team Competition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission2.html">Other Mission Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission2.html#get-coordinate-information-send-to-desired-coordinate">Get coordinate information, Send to desired coordinate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/4.slam_navigation/mission/mission2.html#map-examples">Map Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/6.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/4.slam_navigation/7.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/1.index.html">Basic Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/2.basic_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/2.basic_control/2.before_starting.html">Before Starting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/2.basic_control/3.moving_arm.html">Moving the Robot Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/2.basic_control/4.motor_angle.html">Read Servo Motor Angle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/2.basic_control/5.motor_cont.html">Controlling Servo Motors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/3.code_explanation/1.index.html#overall-explanation">Overall Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/3.code_explanation/1.index.html#robot-arm-movements">Robot arm Movements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/3.code_explanation/1.index.html#basic-movements">Basic Movements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/3.code_explanation/1.index.html#reading-the-current-angle-of-the-servo">Reading the Current Angle of the Servo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html#mission-lib-custom-library">mission_lib custom Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html#event-name-custom-library">event_name custom Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/4.mission/1.index.html#pick-up-an-object-and-place-it-somewhere-else">Pick up an object and place it somewhere else!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_1/5.robot_arm_ex/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">New approach to beginner coding education</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_2/1.index.html">New concept experience! Introductory course for beginners in coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/1.index.html">Pose/Gesture Estimation &amp; Object Detect Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/1.index.html">Body Pose Estimation with Pose-ResNet18-Body</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/3.explanation.html#pose-resnet18-body">Pose-ResNet18-Body</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/5.mission.html#writing-custom-posenet-program">Writing Custom poseNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/5.mission.html#let-s-change-the-overlay">Let’s Change the Overlay!!!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/2.pose/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/1.index.html">Object Detection with SSD-Mobilenet-v2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/3.explanation.html#ssd-mobilenet-v2">SSD-Mobilenet-v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/3.explanation.html#other-models-for-object-detection">Other models for Object Detection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/5.mission.html#writing-custom-detectnet-program">Writing Custom detectNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/5.mission.html#let-s-change-the-overlay">Let’s Change the Overlay!!!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/3.object_detect/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/2.ai_pose_detect/4.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_2/3.robot_control_move/1.index.html">ROS Command Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/3.robot_control_move/2.follow_along/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/2.follow_along/2.command.html">ROS Command Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/2.follow_along/3.server.html">ROS Service Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/2.follow_along/4.client.html">ROS Service Client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html">Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#ros-command-line">ROS Command Line</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#rosnode-command-line-tool">1. <code class="docutils literal notranslate"><span class="pre">rosnode</span></code> command line tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#rostopic-command-line-tool">2. <code class="docutils literal notranslate"><span class="pre">rostopic</span></code> command line tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#pm2-command-line-tool">3. <code class="docutils literal notranslate"><span class="pre">pm2</span></code> command line tool</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#ros-service">ROS Service</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#service-proxies">2. Service proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#calling-services">3. Calling services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/3.robot_control_move/3.explanation/1.index.html#providing-services">4. Providing Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/3.robot_control_move/4.mission.html">Mission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/4.mission.html#accessing-isaac-sight">Accessing Isaac Sight</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/3.robot_control_move/4.mission.html#checking-visuals">Checking Visuals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/3.robot_control_move/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/3.robot_control_move/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/1.index.html">Intermediate Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/2.intermediate_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/2.intermediate_control/2.dancing_arm.html">Dancing with the Robot Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/2.intermediate_control/3.gripper_control.html">Gripper Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/2.intermediate_control/4.teaching_arm.html">Robot Arm teaching</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/3.code_explanation/1.index.html#teaching-the-robot-arm">Teaching the Robot Arm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html#mission-lib-pnp-custom-library">mission_lib_pnp custom Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html#event-name-pnp-custom-library">event_name_pnp custom Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/4.mission/1.index.html#pick-up-objects-and-place-them-automatically">Pick up objects and place them automatically!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_2/5.robot_arm_ex/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">AI Robot Application &amp; Utilization Academy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/1.index.html">AI Robot Application and Utilization Academy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/1.index.html">Driving the Robot Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/2.follow_along.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/2.follow_along.html#movement-instructions">Movement Instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/2.follow_along.html#movement-with-odometry-information">Movement with Odometry Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/3.explanation.html">Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/3.explanation.html#odometry-information">Odometry Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#robot-movement">Robot Movement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#initialization">Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#sending-commands">Sending commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#combining-the-movement-instructions-to-a-single-python-function">Combining the movement instructions to a single python function</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#odometry-information">Odometry Information</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#odometry-calculation">Odometry calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/4.coding_explanation.html#starting-the-calculation">Starting the Calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/5.mission.html">Mission Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/2.robot_driving_ros/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/1.index.html">sematic seg &amp; Depth estimation Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/1.index.html">Sematic Segmentation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html">Follow Along!</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html#cityscapes">CityScapes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html#outdoor-off-road">Outdoor (off-road)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html#segmenting-human-images">Segmenting Human Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html#variaty-objects-and-people">Variaty Objects and People</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/2.follow_along.html#in-doors">In-Doors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/3.explanation.html#fcn-resnet18">FCN-ResNet18</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/2.sematic_seg/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/1.index.html">Depth Estimation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/3.explanation.html#fcn-mobilenet">FCN-MobileNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/3.depth/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/3.ai_segmentation_depth/4.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/1.index.html">Advanced Robot Arm Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/2.advanced_control/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/2.advanced_control/2.track_color.html">Tracking a Color with the Robotic Arm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/2.advanced_control/3.tracking_face.html">Tracking a Face with the Robotic Arm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/3.code_explanation/1.index.html#overall-explanation">Overall Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/3.code_explanation/1.index.html#tracking-a-color">Tracking a Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/3.code_explanation/1.index.html#tracking-a-face">Tracking a Face</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/1.index.html">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/2.circle.html">Draw a Circle with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/2.circle.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/2.circle.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/2.circle.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/3.square.html">Draw a Square with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/3.square.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/3.square.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/3.square.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/4.triangle.html">Draw a Triangle with the Robot Arm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/4.triangle.html#libraries-used-for-this-mission">Libraries used for this Mission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/4.triangle.html#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/4.mission/4.triangle.html#draw-a-picture-with-a-robot-arm">Draw a picture with a robot arm!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../course_3/4.robot_arm_ex/6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Future Industry: AI Robot Academy</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1.index.html">Experience the future industry! AI Robot Academy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2.ai_tao/1.index.html">AI Model Refinement Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/1.index.html">Tao Peoplenet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/3.explanation.html#dashcamnet">DashCamNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/2.tao_peoplenet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/1.index.html">Tao Dashcamnet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/3.explanation.html#peoplenet">PeopleNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/3.tao_dashcamnet/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/1.index.html">Tao Facedetect Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/2.follow_along.html">Follow Along!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/3.explanation.html">Overall Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/3.explanation.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/3.explanation.html#facedetect">FaceDetect</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/4.coding_explanation.html">Coding Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/4.coding_explanation.html#major-functionalities">Major Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/4.coding_explanation.html#minor-functionalities">Minor Functionalities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/5.mission.html">Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/5.mission.html#writing-custom-segnet-program">Writing Custom segNet Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/5.mission.html#executing-the-custom-program">Executing the Custom Program</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../2.ai_tao/4.tao_facedetect/6.discussion.html">Discussion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../1.index.html">AI Robot Competition Project</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../2.sound/1.index.html">Follow Along!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2.sound/2.sound.html">Dancing With Music!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../3.code_explanation/1.index.html">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../3.code_explanation/1.index.html#sound">Sound</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mission Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#libraries-used-for-this-mission">Libraries used for this Mission</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#time-and-arm-lib-library">time and Arm_Lib Library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#os-library">os Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lets-start-the-mission">Lets Start the Mission!!!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#make-your-robot-dance-to-the-music">Make Your Robot Dance to the Music!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../5.discussion.html">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../6.qa.html">Q&amp;A session</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Instructors Version</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../1.index.html">AI Robot Competition Project</a></li>
+      <li class="breadcrumb-item active">Mission Project</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/lecture_courses/course_4/3.robot_competition_ex/4.mission/1.index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mission-project">
+<h1>Mission Project<a class="headerlink" href="#mission-project" title="Permalink to this heading"></a></h1>
+<div style="background: #ffe5b4" class="admonition note custom">
+    <p style="background: #ffbf00" class="admonition-title">
+        Project Name: Make Your Robot Dance to the Music!
+    </p>
+    <div class="line-block">
+        <div class="line"><strong>-</strong> This mission is a <strong>group project.</strong></div>
+        <div class="line"><strong>-</strong> Within your team, create a custom robot arm control system.</div>
+        <div class="line"><strong>-</strong> System should be able to: </div>
+        <div class="line">&emsp;<strong>2.</strong> Controls that would allow the robot arm to move and pick up objects.</div>
+        <div class="line">&emsp;<strong>3.</strong> Ability to play and stop the music while operating above tasks.</div>
+        <div class="line"><strong>-</strong> It is recommended that the final code be on the Leaders computer. (Simultaneous commands to the robot must be avoided!)</div>
+    </div>
+</div><section id="libraries-used-for-this-mission">
+<h2>Libraries used for this Mission<a class="headerlink" href="#libraries-used-for-this-mission" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-24">Here are the libraries needed for our Mission.</p>
+<section id="time-and-arm-lib-library">
+<h3>time and Arm_Lib Library<a class="headerlink" href="#time-and-arm-lib-library" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p class="linemarker linemarker-30">To control the robot arm we will import:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p class="linemarker linemarker-32">time library for delays on robot arm.</p></li>
+<li><p class="linemarker linemarker-33">Arm_Lib library for controlling the robot arm.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">Arm_Lib</span> <span class="kn">import</span> <span class="n">Arm_Device</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-library">
+<h3>os Library<a class="headerlink" href="#os-library" title="Permalink to this heading"></a></h3>
+<ul>
+<li><p class="linemarker linemarker-44">To control the music we will import:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p class="linemarker linemarker-46">os library to publish ROS topic</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section id="lets-start-the-mission">
+<h2>Lets Start the Mission!!!<a class="headerlink" href="#lets-start-the-mission" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-57">Open the mission folder and open the mission-dance.ipynb file.</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-59">mission-dance.ipynb</p></li>
+</ul>
+<a class=""
+               data-lightbox="group-a65f2620-f73c-45ab-a473-00c393958e40"
+               href="../../../../_images/mission_dance1.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../../../_images/mission_dance1.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt=""/>
+                </a><ul class="simple">
+<li><p class="linemarker linemarker-63">To control the robot arm from code, don’t forget to shut down the docker container. See <a class="reference external" href="https://zeta-edu-lecture.readthedocs.io/en/latest/lecture_courses/course_1/5.robot_arm_ex/2.basic_control/2.before_starting.html">here</a>.</p></li>
+<li><p class="linemarker linemarker-65">First, import in the necessary libraries.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">Arm_Lib</span> <span class="kn">import</span> <span class="n">Arm_Device</span>
+
+<span class="n">Arm</span> <span class="o">=</span> <span class="n">Arm_Device</span><span class="p">()</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-76">Initialize the Arm Device.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Arm</span><span class="o">.</span><span class="n">Arm_serial_servo_write6</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-82">Check out what music you can choose from.</p></li>
+</ul>
+<a class=""
+               data-lightbox="group-61e7e90b-84ea-4800-8487-8b49729c9f60"
+               href="../../../../_images/gui_dance11.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../../../_images/gui_dance11.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt=""/>
+                </a><div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!ls /root/scripts/sensor/arm_sounds
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-90">Select the music you want by changing the data of the play_specific topic.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rostopic pub -1 /play_specific std_msgs/String &quot;data: </span><span class="se">\&#39;</span><span class="s1">/root/scripts/sensor/arm_sounds/music_1.mp3</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-96">You can stop the music if you wish.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rostopic pub -1 /play_specific std_msgs/String &quot;data: </span><span class="se">\&#39;</span><span class="s1">stop</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-102">Be sure to delete the robot after running the code.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">del</span> <span class="n">Arm</span>
+</pre></div>
+</div>
+</section>
+<section id="make-your-robot-dance-to-the-music">
+<h2>Make Your Robot Dance to the Music!<a class="headerlink" href="#make-your-robot-dance-to-the-music" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-111">Now let the robot dance to the music you want. Don’t forget to add sleep() code between robot movements.</p>
+<a class=""
+               data-lightbox="group-463183b4-25b0-4210-9805-dd1a4a091dea"
+               href="../../../../_images/gui_dance21.png"
+               title=""
+               data-title=""
+               
+               ><img src="../../../../_images/gui_dance21.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt=""/>
+                </a><p class="linemarker linemarker-116">(<strong>IMPORTANT</strong>)
+- The servo’s operating angle is 0-180 degrees, but in practice, collisions may occur due to the operating range between each joint.
+- Code with crashes and injuries in mind.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../3.code_explanation/1.index.html" class="btn btn-neutral float-left" title="Code Explanation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../5.discussion.html" class="btn btn-neutral float-right" title="Discussion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-17821189-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-17821189-2', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+Team DIY Project Presentation
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team DIY Project: Presentation
+        </p>
+        <div class="line-block">
+            <div class="line">This is a project where teams work together to accomplish missions and challenges.</div>
+        </div>
+        <ul>
+            <li>Let's work together with your teammates to achieve your goal.</li>
+            <li>It's time to work with your team to formulate a strategy and achieve your goals.</li>
+            <li>There may even be rewards for great results!</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+A Dance Competition is Held!
+----------------
+- A dance competition was held to decorate the end of the lecture.
+- It is an opportunity to fully demonstrate the coding skills accumulated while attending lectures.
+- Now, Let's make your robot dance!
+|
+Rules
+----------------
+- Set the order for each group.
+- When it is your group's turn, play prepared code and music.

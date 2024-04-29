@@ -1,0 +1,86 @@
+How to Install GCC / G++ Compiler
+======================
+
+.. thumbnail:: /_images/cpp_install/cpp1.png
+
+1. Go to the MinGW-W64 download page.
+
+<https://sourceforge.net/projects/mingw-w64/files/>
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp2.png
+
+2. Click the 'x86_64-posix-seh' download link.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp3.png
+
+3. 'x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z' file will be downloaded.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp4.png
+
+4. Unzip it to the file name folder.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp5.png
+
+5. Go into the file name folder.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp6.png
+
+6. Move the entire mingw64 folder to 'C:\\'.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp7.png
+
+7. Find and enter the 'Edit System Environment Variables' menu.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp8.png
+
+8. Click the 'Environment Variables' menu.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp9.png
+
+9. Find the 'Path' variable in 'System Variables' and click 'Edit'.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp10.png
+
+10. Click 'New'.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp11.png
+
+11. Enter 'C:\\mingw64\\bin' and click 'OK'.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp12.png
+
+12. Open a Windows Terminal or cmd window.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp13.png
+
+13. Type 'g++ --version' and press Enter.
+
+|
+
+.. thumbnail:: /_images/cpp_install/cpp14.png
+
+14. If you see the results above, the installation has been completed successfully.

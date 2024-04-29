@@ -1,0 +1,24 @@
+Discussion
+=============
+
+The FaceDetect system allows us to detect and recognize faces in different environments, lighting conditions, and poses.
+Through our examples, we were able to see how the system can be applied to a variety of different applications.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p> 
+        <ul>
+            <li> 
+                How can the FaceDetect model be extended or improved to recognize facial expressions or emotions, and what potential applications could benefit from these additional features?
+            </li>
+            <li>
+                What challenges might arise when integrating FaceDetect into a real-time video surveillance system, and how can these challenges be overcome to ensure optimal performance?
+            </li>
+            <li>
+                In the context of privacy concerns, how can the FaceDetect model be used ethically, and what precautions or limitations should be implemented to ensure responsible use?
+            </li>
+        </ul>
+    </div>

@@ -1,0 +1,11 @@
+Follow Along!
+===========================
+
+Here are the follow along contents:
+
+.. toctree:: 
+
+    2.before_starting
+    3.moving_arm
+    4.motor_angle
+    5.motor_cont

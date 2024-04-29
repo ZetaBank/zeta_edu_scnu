@@ -1,0 +1,34 @@
+Discussion
+=============
+
+The DashCamNet system allows us to detect and recognize various objects such as cars, persons, road signs, and bicycles in different environments.
+Through our examples, we were able to see how the system can be applied to a variety of different applications.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p> 
+        <ul>
+            <li> 
+                Considering the limitations of DashcamNet, what improvements or additional features could be implemented to enhance its performance and broaden its applications?
+            </li>
+            <li>
+                How would you adapt the DashcamNet model to better suit a specific use case or environment? 
+                <ul>
+                    <li>
+                        To adapt the DashcamNet model for a specific use case, you would need to fine-tune it with data relevant to that task.
+                        For instance, if you wanted to optimize the model for detecting objects in a non-US traffic scenario, you would need to collect and label dashcam videos from that region. Fine-tuning the model with this data would improve its performance and make it more suitable for the specific context.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                What potential issues or challenges might arise when using DashcamNet in real-world scenarios, such as varying lighting conditions or different traffic patterns?
+                How can these challenges be addressed to ensure optimal performance?
+            </li>
+        </ul>
+    </div>
+
+
+

@@ -1,0 +1,46 @@
+Setting up and Installing PyQt5
+===============================
+
+1. Install VSCode.
+
+    `VSCode Download Link <https://code.visualstudio.com/download>`_
+
+2. Install Python version 2.7.17.
+
+    `Python 2.7.17 Download Link <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_
+
+    Reason for using this version: Same Python version as Jetson Nano.
+
+3. Upgrade pip.
+
+    Open the command prompt and run:
+    
+    .. code-block:: bash
+
+       pip2 install --upgrade pip
+
+4. Install PyQt5.
+
+    In the command prompt, run:
+
+    .. code-block:: bash
+
+       pip2 install python-qt5
+
+5. Install the 'python' and 'qt for python' extensions in VSCode.
+
+6. Verify the installation.
+
+    In the command prompt, run:
+
+    .. code-block:: bash
+
+       python2
+
+    And then:
+
+    .. code-block:: python
+
+       import PyQt5
+
+    If there are no errors, the installation was successful.

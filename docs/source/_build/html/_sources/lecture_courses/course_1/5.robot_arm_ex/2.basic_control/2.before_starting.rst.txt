@@ -1,0 +1,59 @@
+====================
+Before Starting
+====================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow along: Before Starting
+        </p>
+        <div class="line-block">
+            <div class="line">Here are the things to keep in mind before starting the robot arm training.</div>
+        </div>
+        <ul>
+            <li>Make sure the robotic arm container is properly shutting down.</li>
+            <li>If the robot arm does not move, check whether the robot arm container is working.</li>
+            <li>When you want to control the robot arm again with the controller, don't forget to turn on the robot arm container.</li>
+
+        </ul>
+        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        
+    </div>
+
+
+.. raw:: html
+
+    <hr>
+
+-   Open Browser and connect to "10.42.0.1:5000".
+
+
+.. thumbnail:: /_images/ai_training/arm_disable_1.png
+
+
+-   Currently, the robot arm can only be moved with a controller.
+
+
+-   We need to shut down the container that controls the robot arm controller in order to control the robot arm with code.
+
+
+-   Click the "zetabankhub/edu:melodic-dofbot-" in green text.
+
+
+.. thumbnail:: /_images/ai_training/arm_disable_2.png
+
+
+-   If the container is in RUNNING state, press stop and wait for a while.
+
+
+-   The "zetabankhub/edu:melodic-dofbot-" text turns white when the container is shutting down.
+
+
+.. thumbnail:: /_images/ai_training/arm_disable_3.png
+
+
+-   Now, let's use jupyterhub to control the robot arm using code.
+
+
+-   Conversely, if you want to control the robot wave using the controller, you can start the "zetabankhub/edu:melodic-dofbot-" container.

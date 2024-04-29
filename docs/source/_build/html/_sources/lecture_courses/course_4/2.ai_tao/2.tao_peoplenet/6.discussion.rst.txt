@@ -1,0 +1,32 @@
+Discussion
+=============
+
+The PeopleNet system allows us to detect and recognize people in various environments. Through our examples, we were able to see how the system can be applied to a variety of different applications.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p> 
+        <ul>
+            <li> 
+                If you could enhance the PeopleNet system, what additional features or applications would you like to incorporate?
+            </li>
+            <li>
+                How would you train your PeopleNet model for a specific use case? 
+                <ul>
+                    <li>
+                        When creating a machine learning model, we need a model architecture and data to train the said architecture.
+                        Depending on the application, we may import a pre-trained PeopleNet model but fine-tune it with our own data for our specific task.
+                        For example, for detecting and tracking people in a retail environment, we would need multiple surveillance videos that are labeled by professionals to train our model.
+                        This would help the model to better recognize people in a specific context and improve its overall performance.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                What potential ethical concerns or privacy issues might arise when using PeopleNet in certain scenarios, and how can they be addressed?
+            </li>
+        </ul>
+    </div>
+

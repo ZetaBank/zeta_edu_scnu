@@ -1,0 +1,73 @@
+How to Run C++ Code in Visual Studio Code
+======================
+
+.. thumbnail:: /_images/cpp_install/vs1.png
+
+1. Open Visual Studio Code.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs2.png
+
+2. Go to the 'Extensions' tab, search for c++ and install the 'C/C++ Extension Pack'.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs3.png
+
+3. Create a 'hello_world.cpp' file, write the code below, and save it.
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+
+    using namespace std;
+
+    int main()
+    {
+        vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
+
+        for (const string& word : msg)
+        {
+            cout << word << " ";
+        }
+        cout << endl;
+    }
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs4.png
+    
+4. Click 'Run Build Task' in the 'Terminal' tab. <Shortcut key: Control + Shift + B>
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs5.png
+
+5. Build using g++.exe.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs6.png
+
+6. If the above message appears in the terminal, the build is successful.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs7.png
+
+7. You can also see that an .exe file with the same name as the .cpp file has been created.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs8.png
+
+8. Open a new terminal <Shortcut key: Control + Shift + \`> and run the '.\\hello_world.exe' file.
+
+|
+
+.. thumbnail:: /_images/cpp_install/vs9.png
+
+9. If you get the above result, you have successfully run the example code.

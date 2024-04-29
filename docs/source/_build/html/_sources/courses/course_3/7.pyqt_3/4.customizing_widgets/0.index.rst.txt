@@ -1,0 +1,15 @@
+Customizing Widget Appearance
+-----------------------------
+
+With PyQt5, you can define the style of a widget using the ``setStyleSheet()`` method.
+
+A syntax similar to CSS is employed to set attributes for each widget. For instance, one can define background color, border thickness, padding, font size, and color.
+
+
+
+.. toctree:: 
+
+    1.many_widgets
+    2.spin_box
+
+

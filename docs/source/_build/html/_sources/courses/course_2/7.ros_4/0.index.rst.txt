@@ -1,0 +1,137 @@
+ROS C++ - Ⅱ
+================
+
+ROS publisher and subscriber nodes using C++
+^^^^^^^^^^^^^^^^
+
+Step 1: Set Up Your ROS Workspace
+- Before you create nodes, make sure you have a ROS workspace set up. If you don't have one, you can create it using the following commands:
+
+    .. code-block:: bash
+
+        mkdir -p ~/catkin_ws/src
+        cd ~/catkin_ws/
+        catkin_make
+
+Step 2: Create a ROS Package
+
+- Inside the src directory of your ROS workspace, create a new ROS package. Replace my_cpp_package with your desired package name:
+
+    .. code-block:: bash
+
+        cd ~/catkin_ws/src
+        catkin_create_pkg my_cpp_package roscpp std_msgs
+
+Step 3: Create the Publisher Node
+
+- Navigate to your package directory:
+    .. code-block:: bash
+
+        cd ~/catkin_ws/src/my_cpp_package
+
+- Create a source file for the publisher node. For example, publisher_node.cpp:
+    .. code-block:: cpp
+
+        #include <ros/ros.h>
+        #include <std_msgs/String.h>
+
+        int main(int argc, char** argv) {
+            // Initialize ROS
+            ros::init(argc, argv, "publisher_node");
+
+            // Create a ROS node handle
+            ros::NodeHandle nh;
+
+            // Create a publisher for the "my_topic" topic
+            ros::Publisher pub = nh.advertise<std_msgs::String>("my_topic", 10);
+
+            // Set the publishing rate
+            ros::Rate rate(1);
+
+            // Main loop
+            while (ros::ok()) {
+                // Create a message
+                std_msgs::String msg;
+                msg.data = "Hello, ROS Publisher!";
+                
+                // Publish the message
+                pub.publish(msg);
+
+                // Sleep to maintain the publishing rate
+                rate.sleep();
+            }
+
+            return 0;
+        }
+
+Step 4: Create the Subscriber Node
+
+- Create another source file for the subscriber node. For example, subscriber_node.cpp:
+    .. code-block:: cpp
+
+        #include <ros/ros.h>
+        #include <std_msgs/String.h>
+
+        // Callback function to process incoming messages
+        void messageCallback(const std_msgs::String::ConstPtr& msg) {
+            ROS_INFO("Received: %s", msg->data.c_str());
+        }
+
+        int main(int argc, char** argv) {
+            // Initialize ROS
+            ros::init(argc, argv, "subscriber_node");
+
+            // Create a ROS node handle
+            ros::NodeHandle nh;
+
+            // Create a subscriber for the "my_topic" topic with the callback function
+            ros::Subscriber sub = nh.subscribe("my_topic", 10, messageCallback);
+
+            // Spin to receive messages
+            ros::spin();
+
+            return 0;
+        }
+
+Step 5: Update CMakeLists.txt
+
+- Open the CMakeLists.txt file in your package directory and add the following lines to configure the build for both the publisher and subscriber nodes:
+
+    .. code-block:: cmake
+
+        add_executable(publisher_node src/publisher_node.cpp)
+        target_link_libraries(publisher_node ${catkin_LIBRARIES})
+
+        add_executable(subscriber_node src/subscriber_node.cpp)
+        target_link_libraries(subscriber_node ${catkin_LIBRARIES})
+
+Step 6: Build and Run
+
+- Build your package using catkin_make:
+
+    .. code-block:: bash
+
+        cd ~/catkin_ws
+        catkin_make
+
+- Source the setup script:
+
+    .. code-block:: bash
+
+        source devel/setup.bash
+
+- Now you can run the publisher and subscriber nodes in separate terminal windows:
+
+    - Terminal 1 (for the publisher node):
+
+        .. code-block:: 
+            
+            rosrun my_cpp_package publisher_node
+
+    - Terminal 2 (for the subscriber node):
+
+        .. code-block:: bash
+
+            rosrun my_cpp_package subscriber_node
+
+- You should see the subscriber printing the messages published by the publisher.

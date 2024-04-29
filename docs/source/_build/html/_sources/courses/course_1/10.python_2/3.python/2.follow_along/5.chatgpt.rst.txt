@@ -1,0 +1,116 @@
+Python Coding with ChatGPT
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow along: Python Coding with ChatGPT
+        </p>
+        <div class="line-block">
+            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+        </div>
+        <ul>
+            <li>Create a new *.ipynb file Jupyter Notebook</li>
+            <li>Fill in the content below in the newly created file</li>
+            <li>Follow and Execute the example codes</li>
+        </ul>
+        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        
+    </div>
+
+.. raw:: html
+
+
+1. Open a browser and access the ChatGPT site.
+
+<https://chat.openai.com>
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt1.png
+
+2. Log in to the ChatGPT site. If you do not have an account, create an account.
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt2.png
+
+3. Enter the desired prompt in the 'send a message' window.
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt3.png
+
+4. When you have finished entering, click the 'send' button.
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt4.png
+
+5. Wait a moment and you will see ChatGPT's answer.
+
+|
+
+
+.. thumbnail:: /_images/chatgpt/chatgpt5.png
+
+6. Click the button next to it to see what we've talked about so far.
+
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt6.png
+
+7. Now, let's write the desired code with the help of ChatGPT.
+
+|
+
+.. thumbnail:: /_images/chatgpt/chatgpt7.png
+
+8. Here is the code we wrote with the help of ChatGPT.
+
+.. code-block:: python
+
+    def add(a, b):
+        return a + b
+
+    def subtract(a, b):
+        return a - b
+
+    def multiply(a, b):
+        return a * b
+
+    def divide(a, b):
+        if b != 0:
+            return a / b
+        else:
+            return "Error: Division by zero"
+
+    # 사용자로부터 입력 받기
+    a = float(input("첫 번째 숫자 입력: "))
+    b = float(input("두 번째 숫자 입력: "))
+
+    # 각 사칙연산 수행
+    print(f"{a} + {b} = {add(a, b)}")
+    print(f"{a} - {b} = {subtract(a, b)}")
+    print(f"{a} * {b} = {multiply(a, b)}")
+    print(f"{a} / {b} = {divide(a, b)}")
+
+|
+
+9. Now, let's write the code in earnest with the help of ChatGPT.
+
+    Examples:
+
+        1. Chatbot Basics: Write a Python code to create a simple chatbot that greets the user and responds to a few predefined questions.
+
+        2. Number Guessing Game: Develop a program using Python where the computer selects a random number, and the user has to guess it. Provide hints like "higher" or "lower" based on user input.
+
+        3. Image Recognition: Use a Python library like OpenCV to build a basic image recognition program that can distinguish between images containing cats and dogs.
+
+        4. Calculator with AI: Create a calculator in Python that performs basic arithmetic operations and answers questions like "What's the square root of 25?" using appropriate math functions.
+
+        5. Language Translation: Write a Python script that contains a dictionary of English words and their translations. Convert a user-entered sentence from English to another language using this dictionary.
+
+        6. Sentiment Analysis: Develop a simple sentiment analysis program in Python that takes a user's input (text) and determines sentiment as positive, negative, or neutral based on predefined keywords.

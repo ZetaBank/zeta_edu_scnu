@@ -1,0 +1,29 @@
+Single Thread
+---------------
+
+.. code-block:: python
+    :caption: scripts/PYQT5/03_thread/01_single_thread/main.py
+
+    # -*- coding: utf-8 -*-
+
+    import time
+
+    def print_numbers():
+        for i in range(1, 11):
+            print("Number {}".format(i))
+            time.sleep(0.5)
+
+    def print_letters():
+        for letter in 'abcdefghij':
+            print("Letter {}".format(letter))
+            time.sleep(1)
+
+    # 함수 순차 실행
+    print_numbers()
+    print_letters()
+
+    print("Done!")
+
+In this example, two functions, ``print_numbers`` and ``print_letters``, are called sequentially to print numbers and letters.
+
+- Each function prints numbers or characters at specified time intervals, and this example demonstrates sequential execution.

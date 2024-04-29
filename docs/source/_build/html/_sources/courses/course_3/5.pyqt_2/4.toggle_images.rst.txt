@@ -1,0 +1,101 @@
+Image Transition: Visualizing Screen Switching
+---------------------------------------------------
+
+- ``Image Transition``: Learn how to visualize screen transitions using images.
+
+- The principle for image transition remains the same as screen transition. The difference is that each page includes an image (set on a ``QLabel`` via ``QPixmap``).
+
+- The ``create_page`` function takes an image path and button text as input to create a page. This function uses the provided image path to create a ``QPixmap`` object and sets it on a ``QLabel`` widget to display the image.
+
+.. code-block:: python
+    :caption: scripts/PYQT2/03_toggle_screens/main.py
+    :linenos:
+
+    import sys
+    from PyQt5.QtGui import QPixmap
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QStackedWidget, QLabel
+
+    class MainWindow(QMainWindow):
+        def __init__(self):
+            super(MainWindow, self).__init__()
+
+            # Create the stacked widget
+            self.stack = QStackedWidget()
+
+            # Create some sample pages with images
+            self.page1 = self.create_page("images/twinkle_bocchi.png", "Go to Ai")
+            self.page2 = self.create_page("images/twinkle_ai.jpg", "Go to Anay")
+            self.page3 = self.create_page("images/twinkle_anya.jpg", "Go to Bocchi")
+
+            # Add pages to the stacked widget
+            self.stack.addWidget(self.page1)
+            self.stack.addWidget(self.page2)
+            self.stack.addWidget(self.page3)
+
+            # Set the current widget to be page 1
+            self.stack.setCurrentWidget(self.page1)
+
+            # Set the stacked widget as the central widget of the window
+            self.setCentralWidget(self.stack)
+
+        def create_page(self, image_path, button_text):
+            page = QWidget()
+            layout = QVBoxLayout(page)
+
+            pixmap = QPixmap(image_path)
+            image_label = QLabel(page)
+            image_label.setPixmap(pixmap)
+            layout.addWidget(image_label)
+
+            btn = QPushButton(button_text, page)
+            layout.addWidget(btn)
+
+            if button_text == "Go to Bocchi":
+                btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.page1))
+            elif button_text == "Go to Ai":
+                btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.page2))
+            elif button_text == "Go to Anay":
+                btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.page3))
+            
+            return page
+
+    if __name__ == '__main__':
+        app = QApplication(sys.argv)
+        mainWin = MainWindow()
+        mainWin.show()
+        sys.exit(app.exec_())
+
+- Lambda functions are used to define the slot connected upon a button click. This method ensures a button click can transition to a specific page.
+
+- ``Displaying Images``: A ``QPixmap`` object is created to load the image, which is then set on a ``QLabel`` widget for display.
+
+- ``Lambda Functions``: In PyQt, lambda functions can be utilized to pass arguments to a specific function or to define a simple logic during a signal-slot connection.
+
+Detailed Analysis
+~~~~~~~~~~~~~~~~~~~~~~
+
+1. Creating the stacked widget:
+   
+   .. code-block:: python
+
+      self.stack = QStackedWidget()
+
+2. Creating pages with images: Use the ``create_page`` method to create a page with an image and a button.
+   
+   .. code-block:: python
+
+      self.page1 = self.create_page("images/twinkle_bocchi.png", "Go to Ai")
+
+3. Loading and displaying images: Use ``QPixmap`` to load the image and set it on a ``QLabel`` for display.
+   
+   .. code-block:: python
+
+      pixmap = QPixmap(image_path)
+      ...
+      image_label.setPixmap(pixmap)
+
+4. Connecting button click events: Lambda functions are used to connect each button to the logic that switches to its respective page.
+   
+   .. code-block:: python
+
+      btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.page1))

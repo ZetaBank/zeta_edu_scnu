@@ -1,0 +1,35 @@
+Q&A session
+=============
+
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Question and Answer Session
+        </p>
+        Do you have any questions for the lecturer? This may include questions that arose during the discussion points or questions that you have. 
+        
+        Sample Questions:
+        <ul>
+            <li>How can TAO PeopleNet be adapted to improve its accuracy in detecting and tracking people in challenging scenarios, such as crowded environments or varying lighting conditions?</li>
+            <li>What are some potential applications of TAO DashCamNet in the fields of transportation, smart cities, and public safety, and how can the model be tailored to better suit these use cases?</li>
+            <li>Considering the privacy concerns surrounding facial recognition technology, what measures can be taken to ensure the responsible and ethical use of TAO FaceDetect in various applications?</li>
+        </ul>
+    </div>
+
+
+
+.. raw:: html
+
+    <div style="background: #EDCAED" class="admonition note custom">
+        <p style="background: #EE82EE" class="admonition-title">
+            ChatGPT Exploration
+        </p>
+
+        <ul>
+            We've explored the capabilities of TAO PeopleNet, TAO DashCamNet, and TAO FaceDetect earlier.
+        </ul>
+            Now, let's engage with Conversational AI to discuss the potential advancements, challenges, and the role of AI in shaping the future of object detection, tracking, and facial recognition technologies.
+        </ul>
+    </div>

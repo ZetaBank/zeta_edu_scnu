@@ -1,0 +1,15 @@
+Code Explanation
+==================
+
+With our follow along examples, we were able to move our robot arm with precision as well as produce music with our 
+integrated speaker within the zetabot. The instructional codes have been compile into a jupyter notebook for the 
+ease of use. 
+This section will explain the libraries used for the *follow along* section. 
+
+
+Sound
+-------------------------------
+
+For our dancing robot demonstration, we published an array of integer to ROS Topic called ``/play_specific``. 
+
+The ``play_specific`` topic publishes messages to the play_sound node. You can play a sound file by entering the absolute path of the sound file.

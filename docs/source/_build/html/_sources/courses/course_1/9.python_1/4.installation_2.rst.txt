@@ -1,0 +1,20 @@
+How to Install Visual Studio Code
+======================
+
+.. thumbnail:: /_images/python/python3.png
+
+1. Download Visual Studio Code for Windows from the download page of the official Visual Studio Code website.
+
+<https://code.visualstudio.com/download/>
+
+|
+
+.. thumbnail:: /_images/python/python4.png
+
+2. Proceed with the installation by selecting the desired option. Recommended options are pictured above.
+
+|
+
+.. thumbnail:: /_images/python/python5.png
+
+3. Install the Visual Studio Code plugin for Python.

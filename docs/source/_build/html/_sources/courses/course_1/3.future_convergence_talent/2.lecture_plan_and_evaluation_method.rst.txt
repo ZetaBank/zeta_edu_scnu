@@ -1,0 +1,18 @@
+Lecture Plan and Evaluation Method
+================
+
+Lecture Plan
+----------------
+
+Week 1: Robot components and ROS basic training: Assembled AI robot
+
+Week 2: ROS C++ programming and AI
+
+Week 3: PyQT and robotics deep AI
+
+Week 4: Robot autonomous driving application and robot arm
+
+|
+
+Evaluation Method
+----------------

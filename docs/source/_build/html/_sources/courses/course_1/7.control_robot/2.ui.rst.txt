@@ -1,0 +1,82 @@
+Interface UI
+=========================
+
+.. raw:: html
+
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow Along: About Interface UI
+        </p>
+        <div class="line-block">
+            <div class="line"><strong>-</strong> This is a description of the UI and various contents.</div>
+            <div class="line"><strong>-</strong> Know the content and purpose of each item. </div>
+        </div>
+    </div>
+
+.. raw:: html
+
+Overall
+-----------------------
+
+.. thumbnail:: /_images/ui/ui_base.png
+
+- The entire UI is like the picture above.
+
+- You can enjoy various entertainment projects through the UI.
+
+- The first is 'Performing with a robot'.
+
+- The Second is 'Catching monsters'.
+
+- The third is 'Artificial Intelligence Education'.
+
+- Finally, 'Let's save robots and the earth'.
+
+- You can enter sub-menus by clicking each button.
+
+Performing with a robot
+-----------------------
+
+.. thumbnail:: /_images/ui/ui2-1.png
+
+- Click the 'Performing with a robot' button.
+
+.. thumbnail:: /_images/ui/ui2-2.png
+
+- After waiting for a while, click the 'start' button and the robot arm will dance to the music.
+
+Catching monsters
+-----------------------
+
+.. thumbnail:: /_images/ui/ui1-1.png
+
+- Click the 'Catching monsters' button.
+
+.. thumbnail:: /_images/ui/ui1-2.png
+
+- A timer of 3 minutes for each individual, 2 minutes for each team, and 1 minute for the team is given in order of each button.
+
+- Enjoy catching monsters at the click of a button that suits the situation.
+
+Artificial Intelligence Education
+-----------------------
+
+.. thumbnail:: /_images/ui/ui3.png
+
+- Click the 'Artificial Intelligence Education' button.
+
+.. thumbnail:: /_images/ui/ui2-2.png
+
+- After waiting for a while, press the 'start' button to close the UI window, and AI training is ready to run.
+
+Let's save robots and the earth
+-----------------------
+
+.. thumbnail:: /_images/ui/ui4.png
+
+- Click the 'Let's save robots and the earth' button.
+
+.. thumbnail:: /_images/ui/ui2-2.png
+
+- After waiting for a while, press the 'start' button to start the relay race.
+
