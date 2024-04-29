@@ -25,7 +25,7 @@ AI 로봇 융합형 인재 교육
     edu/edu_1/trends
 
 .. toctree:: 
-    :caption: AI 로봇의 구성
+    :caption: DAY 1
     :maxdepth: 1
     :hidden:
     :titlesonly: 
@@ -34,7 +34,7 @@ AI 로봇 융합형 인재 교육
     edu/edu_2/software/index
     
 .. toctree:: 
-    :caption: Break Time
+    :caption: DAY 2
     :maxdepth: 1
     :hidden:
     :titlesonly: 
@@ -42,7 +42,7 @@ AI 로봇 융합형 인재 교육
     edu/edu_3/break/index
 
 .. toctree:: 
-    :caption: AI 로봇 조립과 자율주행
+    :caption: DAY 3
     :maxdepth: 1
     :hidden:
     :titlesonly: 
@@ -51,7 +51,7 @@ AI 로봇 융합형 인재 교육
     edu/edu_4/control
 
 .. toctree:: 
-    :caption: 마무리하기
+    :caption: DAY 4
     :maxdepth: 1
     :hidden:
     :titlesonly: 
