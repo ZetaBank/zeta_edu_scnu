@@ -39,8 +39,12 @@ AI 로봇 융합형 인재 교육
     :hidden:
     :titlesonly: 
 
+    edu/edu_2/basic
+    edu/edu_2/rosintro1
     edu/edu_2/hardware/index
     edu/edu_2/software/index
+    edu/edu_2/making/index
+    edu/edu_2/control
 
 .. toctree:: 
     :caption: DAY 3
