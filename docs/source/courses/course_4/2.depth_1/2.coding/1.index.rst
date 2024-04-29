@@ -1,0 +1,9 @@
+Follow Along!
+===========================
+
+Here are the follow along contents:
+
+.. toctree:: 
+
+    1.compare_1
+    2.compare_2

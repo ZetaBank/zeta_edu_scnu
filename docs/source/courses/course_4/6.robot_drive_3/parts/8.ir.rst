@@ -1,0 +1,24 @@
+IR Camera
+====================================================
+
+It is used for the robot's automatic charging function.
+
+------------------------------------------------------------------------------------------
+
+IR Camera
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Located on the back of the robot under the lidar
+- Used to check IR Marker of charging station
+- Adjust the position of the robot for charging using the identified IR marker and the ultrasonic sensor at the bottom of the rear
+
+.. thumbnail:: /_images/components/ircam.png
+
+------------------------------------------------------------------------------------------
+
+IR Marker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Located inside the charging station and required for automatic charging function
+
+.. thumbnail:: /_images/components/irstation.png

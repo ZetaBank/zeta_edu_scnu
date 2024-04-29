@@ -8,7 +8,7 @@ Team Quiz (Robot)
             Team Quiz: Robot
         </p>
         <div class="line-block">
-            <div class="line">This is a team quiz session where each team solves a quiz.</div>
+            <div class="line">This is a team problem solving session where each team solves a quiz.</div>
         </div>
         <ul>
             <li>Let's use what we've learned so far to find the answer to the quiz.</li>

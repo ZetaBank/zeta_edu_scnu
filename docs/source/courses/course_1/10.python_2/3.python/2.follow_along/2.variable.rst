@@ -1,0 +1,64 @@
+Variables
+======================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow along: Python Variables
+        </p>
+        <div class="line-block">
+            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+        </div>
+        <ul>
+            <li>Create a new *.ipynb file Jupyter Notebook</li>
+            <li>Fill in the content below in the newly created file</li>
+            <li>Follow and Execute the example codes</li>
+        </ul>
+        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        
+    </div>
+
+.. raw:: html
+
+- Specifies variables of various types.
+
+.. code-block:: python
+    
+    # Integer Variable
+    age = 25
+
+    # Floating-Point Variable
+    height = 5.9
+
+    # String Variable
+    name = "John"
+
+    # Boolean Variable
+    is_student = True
+
+    # List Variable (a collection of values)
+    fruits = ["apple", "banana", "orange"]
+
+    # Tuple Variable (similar to a list but immutable)
+    coordinates = (10, 20)
+
+    # Dictionary Variable (key-value pairs)
+    person = {"name": "Alice", "age": 30, "is_student": False}
+
+    # Set Variable (a collection of unique values)
+    grades = {90, 85, 78, 92}
+
+- Print out the various variables created.
+
+.. code-block:: python
+
+    # Outputting the Values
+    print("Integer Variable:", age)
+    print("Floating-Point Variable:", height)
+    print("String Variable:", name)
+    print("Boolean Variable:", is_student)
+    print("List Variable:", fruits)
+    print("Tuple Variable:", coordinates)
+    print("Dictionary Variable:", person)
+    print("Set Variable:", grades)

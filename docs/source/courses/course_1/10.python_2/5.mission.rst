@@ -1,0 +1,199 @@
+Mission
+=========
+
+.. raw:: html
+
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Project Name: Fill in the Blanks Below
+        </p>
+        <div class="line-block">
+            <div class="line"><strong>-</strong> This mission is an <strong>indivisual project</strong></div>
+            <div class="line"><strong>-</strong> Write the code for the problem below and see if it works.</div>
+            <div class="line"><strong>-</strong> Fill in the '□' blanks below. </div>
+        </div>
+    </div>
+
+.. raw:: html
+
+1. Test 1: Hello World!
+    
+    - Let's print the sentence "Hello World!"
+
+    - Complete the code so that you can print the sentence "Hello World!" to the terminal.
+
+    .. code-block:: python
+
+        # Print a Sentence "Hello World!"
+
+        def hello_world():
+            # Print "Hello World!"
+            □
+
+        # Run the function
+        hello_world()
+
+|
+
+2. Test 2: Guess the Number
+
+    - Guess the number the computer came up with!
+
+    - This code is an up-down game where the computer finds a randomly assigned number.
+
+    - Complete the code that satisfies the up and down conditions of the number thought by the computer.
+
+    .. code-block:: python
+
+        import random
+
+        def guess_the_number():
+            # Generate a random target number between 1 and 100
+            target_number = random.randint(1, 100)
+            attempts = 0
+
+            while True:
+                # Get the user's guess
+                user_guess = int(input("Guess the number between 1 and 100: "))
+                attempts += 1
+
+                # Compare user's guess with the target number
+                if □:
+                    print("Too low! Try again.")
+                elif □:
+                    print("Too high! Try again.")
+                else:
+                    # User guessed the correct number
+                    print(f"Congratulations! You guessed the number in {attempts} attempts.")
+                    break
+
+        # Run the function to start the guessing game
+        guess_the_number()
+
+|
+
+3. Test 3: Guess the Digits
+
+    - Let’s complete the code to find the digits of a number!
+
+    - ex) 4 -> 1 digit, 100 -> 3 digits, 7777 -> 4 digits
+
+    - Complete the method for adding 1 to the digit condition.
+
+    .. code-block:: python
+
+        def count_digits(number):
+            if number == 0:
+                return 1  # Special case for the number 0 (which has 1 digit)
+            
+            count = 0  # Initialize a count to track the number of digits
+            
+            # Loop to count digits by repeatedly dividing the number by 10
+            while number > 0:
+                count += 1         # Increment the digit count
+                number □ 10      # Remove the least significant digit by integer division
+            
+            return count  # Return the total count of digits
+
+        # Get input from the user
+        input_str = input("Enter a positive integer: ")
+
+        # Check if the input is a positive integer
+        if input_str.isdigit():
+            input_number = int(input_str)
+            
+            # Check for non-positive input
+            if input_number <= 0:
+                print("Please enter a positive integer.")
+            else:
+                # Calculate the number of digits using the count_digits function
+                num_digits = count_digits(input_number)
+                print(f"The number {input_number} has {num_digits} digits.")
+        else:
+            print("Invalid input. Please enter a positive integer.")
+
+|
+
+4. Test 4: Calculate Factorial
+
+    - factorial: Simply represented as n!, it means multiplying all natural numbers from 1 to n. ex) 3! = 1*2*3.
+
+    - This code takes numeric input from the user and calculates the factorial.
+
+    - Complete the return value that completes the factorial.
+
+    .. code-block:: python
+
+        def factorial(n):
+            # Base case: Factorial of 0 and 1 is 1
+            if n == 0 or n == 1:
+                return □
+            else:
+                # Recursive case: Factorial of n is n times factorial of (n - 1)
+                return □
+
+        # Get input from the user
+        num = int(input("Enter a number: "))
+
+        # Call the factorial function to calculate the factorial of the input number
+        result = factorial(num)
+
+        # Print the result
+        print(f"The factorial of {num} is {result}")
+
+|
+
+5. Test 5: Rock, Paper, Scissors Game
+
+    - Let's play rock-paper-scissors with the computer.
+
+    - Complete the conditions that fit the rock-paper-scissors situation.
+
+    .. code-block:: python
+
+        # Rock, Paper, Scissors battle
+
+        import random
+
+        # Function to determine the winner of the game
+        def determine_winner(player_choice, computer_choice):
+            if player_choice == computer_choice:
+                return "It's a tie!"
+            elif (□) or \
+                (□) or \
+                (□):
+                return "You win!"
+            else:
+                return "Computer wins!"
+
+        def main():
+            # Print the welcome message and game instructions
+            print("Welcome to Rock-Paper-Scissors!")
+            print("Enter 'r' for rock, 'p' for paper, 's' for scissors, or 'q' to quit.")
+            
+            choices = ["r", "p", "s"]  # Possible choices for the game
+            
+            while True:
+                player_choice = input("Your choice: ").lower()
+                
+                # Check if the player wants to quit
+                if player_choice == "q":
+                    print("Thanks for playing!")
+                    break
+                
+                # Check if the player's choice is valid
+                if player_choice in choices:
+                    computer_choice = random.choice(choices)  # Randomly select computer's choice
+                    
+                    print(f"You chose: {player_choice}")
+                    print(f"Computer chose: {computer_choice}")
+                    
+                    result = determine_winner(player_choice, computer_choice)  # Determine the winner
+                    print(result)  # Display the result of the game
+                else:
+                    print("Invalid choice. Please enter 'r', 'p', 's', or 'q' to quit.")
+
+        if __name__ == "__main__":
+            main()  # Run the main game loop
+
+|

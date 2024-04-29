@@ -1,0 +1,72 @@
+Move Rectangle
+-------------------
+
+
+
+.. code-block:: python
+    :caption: scripts/PYQT4/01_key_pressed/02_move_rectangle/main.py:
+
+    import sys
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsView, QGraphicsScene
+    from PyQt5.QtCore import Qt, QRectF
+    from PyQt5.QtGui import QBrush, QPen
+
+    class RectangleMover(QMainWindow):
+        def __init__(self):
+            super(RectangleMover, self).__init__()
+
+            self.init_ui()
+
+        def init_ui(self):
+            self.setWindowTitle('Move Rectangle with ASWD')
+
+            self.setGeometry(100, 100, 800, 600)
+
+            self.view = QGraphicsView(self)
+            self.scene = QGraphicsScene(self)
+            self.view.setScene(self.scene)
+
+            self.rectangle = self.scene.addRect(QRectF(0, 0, 50, 50), QPen(), QBrush(Qt.blue))
+            self.view.setSceneRect(0, 0, 800, 600)
+
+        def keyPressEvent(self, event):
+            if event.key() == Qt.Key_A:  # Move left
+                self.rectangle.setPos(self.rectangle.x() - 10, self.rectangle.y())
+            elif event.key() == Qt.Key_D:  # Move right
+                self.rectangle.setPos(self.rectangle.x() + 10, self.rectangle.y())
+            elif event.key() == Qt.Key_W:  # Move up
+                self.rectangle.setPos(self.rectangle.x(), self.rectangle.y() - 10)
+            elif event.key() == Qt.Key_S:  # Move down
+                self.rectangle.setPos(self.rectangle.x(), self.rectangle.y() + 10)
+
+    if __name__ == '__main__':
+        app = QApplication(sys.argv)
+        window = RectangleMover()
+        window.show()
+        sys.exit(app.exec_())
+
+
+This example moves a rectangle up, down, left, or right when the user presses the A, S, W, or D key, respectively.
+
+- ``RectangleMover`` class draws a blue rectangle on ``QGraphicsView`` and moves the rectangle based on user keyboard input.
+  
+- ``keyPressEvent`` detects keyboard events and moves the rectangle in the corresponding direction.
+
+1. ``QGraphicsView`` is a widget that visualizes 2D graphic items and allows interaction with users.
+
+2. ``QGraphicsScene`` acts as a container storing 2D graphic items, essentially serving as the 'canvas' for these items.
+
+3. The ``setScene()`` method connects the ``QGraphicsScene`` to the ``QGraphicsView``.
+
+4. ``self.scene.addRect(...)``:
+   - ``self.scene`` is a ``QGraphicsScene`` object. It acts as a container holding graphic items. To visually display these graphic items, you need ``QGraphicsView``.
+   - ``addRect`` is a method of ``QGraphicsScene``, which adds a rectangle graphic item and returns a reference to that item.
+
+5. ``QRectF(0, 0, 50, 50)``:
+   - ``QRectF`` is a PyQt class representing a rectangle. In this case, it depicts a rectangle with the top-left corner at (0, 0) and a width and height of 50 units.
+
+6. ``QPen()``:
+   - The ``QPen`` class defines the style of the line. The default ``QPen`` is used here, so the rectangle's border will be drawn in the default style.
+
+7. ``QBrush(Qt.blue)``:
+   - The ``QBrush`` class defines the style and color to fill a shape. As it's set to ``Qt.blue``, the inside of the rectangle will be filled with blue.

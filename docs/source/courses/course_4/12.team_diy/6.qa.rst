@@ -1,0 +1,18 @@
+Q&A session
+=============
+
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Question and Answer Session
+        </p>
+        Do you have any questions for the lecturer. This may include questions that arose during the discussion points, or questions that you have. 
+        
+        Sample Questions:
+        <ul>
+            <li>Can robot and humans form familial or intimate relationships while sharing the same living space?</li>
+            <li>When robots and humans share daily life together, how can the gap between human emotional needs and robots' limited emotional expression be overcome?</li>
+        </ul>
+    </div>

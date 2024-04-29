@@ -1,0 +1,84 @@
+BackgroundNet Coding Explanation
+=================================
+
+Major Functionalities
+----------------------
+
+For our background subtraction task, we use NVIDIA's Python program called ``backgroundnet.py``.
+ The program performs three major functions:
+
+1.  It manages input streams whether it is an image, a video or a camera.
+2.  It manages network inference on the said input stream.
+3.  It manages output stream along with overlaying results from the model. 
+
+With our python program, the user must specify 
+
+1.  The input stream medium. (whether to input an image, a video or a camera)
+2.  Which model network to use for the inference. 
+3.  The output stream medium. (whether to output an image, a video or a camera)
+
+
+-   In our ``background_camera.ipynb``, we first initialize the PATH for our input and output images.
+-   We set up Jupyter environment variables with ``env`` as well as Python variables.
+
+    .. code-block:: python
+
+        %env DISPLAY=:0
+        %env PROGRAM_PATH=/home/zeta/jetson-inference/build/aarch64/bin
+        %env INPUT_PATH=/home/zeta/jetson-inference/build/aarch64/bin/images
+        %env OUTPUT_PATH=/home/zeta/jetson-inference/build/aarch64/bin/images/test
+
+        input_path='/home/zeta/jetson-inference/build/aarch64/bin/images'
+        output_path='/home/zeta/jetson-inference/build/aarch64/bin/images/test'
+
+    By setting up environment variables, we can call upon these PATH variables, when we wish to run a shell command 
+    within our jupyter notebook. 
+
+-   After choosing and initializing the name of our input images we can see that the ``IMAGE_NAME`` variable is also being 
+    set to be an environment variable. 
+
+-   When we execute our python program (backgroundnet.py), we can see the three parameters the user has set up
+
+    .. code-block:: python
+
+        !python3 $PROGRAM_PATH/backgroundnet.py --network=u2net $INPUT_PATH/$IMAGE_NAME $OUTPUT_PATH/$OUTPUT_NAME1
+
+    With ``!python3 $PROGRAM_PATH/backgroundnet.py`` as our activation function, we have:
+    
+    1.  ``--network=u2net``: to specify which network we wished to use.
+    2.  ``$INPUT_PATH/$IMAGE_NAME``: to specify our input image location.
+    3.  ``$OUTPUT_PATH/$OUTPUT_NAME``: to specify our output image location. 
+
+
+-   Jupyter notebook allows us view images within our browser environment. For this we have used IPython library with display module. 
+
+    .. code-block:: python
+
+        from IPython.display import Image
+    
+    -   To view the images simply specify the location of the image. For example, to view the result of our inference:
+
+        .. code-block:: python 
+
+           Image(filename=output_path+'/background_remove.jpg') 
+
+
+Minor Functionalities
+----------------------
+
+There are optional flags or parameters you may set up for your ``backgroundnet.py`` program.
+These parameters may control the replacement of the background.
+
+There are 2 minor functionalities you may edit:
+
+1.  ``--network``: This parameter allows us to choose which network we wish to use. (for this case, the default is "u2net")
+2.  ``--replace``: This parameter allows us to specify an image filename to use for background replacement.
+
+
+For example, to replace the background with a specific image, you can use the following command:
+
+    .. code-block:: python
+
+        !python3 $PROGRAM_PATH/backgroundnet.py --network=u2net --replace=$INPUT_PATH/Ulleung_0.jpg $INPUT_PATH/$IMAGE_NAME $OUTPUT_PATH/$OUTPUT_NAME2
+
+In this command, the ``--replace=$INPUT_PATH/Ulleung_0.jpg`` parameter specifies the image to be used as the new background.

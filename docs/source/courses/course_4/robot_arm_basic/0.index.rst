@@ -1,0 +1,12 @@
+Robot Arm Basics
+===========
+
+
+Here are the contents for this section:
+
+
+.. toctree:: 
+
+    1.basics
+    2.forward_kinematics
+    3.inverse_kinematics

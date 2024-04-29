@@ -1,0 +1,53 @@
+Midterm Team Testing
+================
+We appreciate your hard work in conducting the training program. To assess your abilities and further enhance teamwork, we will be conducting a midterm team testing.
+The midterm team testing is divided into <Optional Test>, <Mandatory Test>, and <Advanced Test>.
+Please refer to the specific instructions for each question and submit your reports in PowerPoint format.
+
+<Optional Test>: In teams, please select one question from each of the following topics (Python 1 question, Depth Camera 1 question, ROS 1 question) and submit reports, totaling 3 questions.
+    1. Python
+        1. Innovation and Applications of Speech Recognition Technology Using Python: What are the latest developments and practical applications of speech recognition technology using Python?
+        2. Educational Value of Robot Programming Using Python: How does using Python help students learn robot programming?
+        3. Possibilities of Python in University Education: What are the concrete implementation strategies for Python in university education programs?
+        4. Network Programming for 5G Communication with Python: How can Python be used in conjunction with 5G communication for high-speed data transfer and network programming?
+        5. Industrial Impact of Combining Python and Artificial Intelligence: What is the current status and impact of combining Python and AI technologies in various industries?
+        6. Big Data Analysis and Predictive Modeling with Python: How is Python used for big data analysis and predictive modeling?
+        7. Quantitative Investment Outlook with Python in Finance: What are the performance and future trends of quantitative investment strategies using Python in the finance sector?
+        8. Sustainable Development Direction of the Python Community: How is the Python community growing sustainably?
+
+    2. Depth Camera
+        1. Advancements in Depth Camera Technology and VR/AR: How is Depth Camera technology influencing the development of virtual reality and augmented reality?
+        2. Applications of Depth Camera in Robot Vision: How can Depth Camera be used to enhance robot vision and environmental perception?
+        3. Enhancing Drone Safety with Depth Camera during Flight: How can Depth Camera be used to improve safety during drone flight?
+        4. Relevance and Applications of Depth Camera in the Medical Field: How is Depth Camera technology being utilized in the medical field?
+        5. Environmental Perception for Autonomous Vehicles Using Depth Camera: How do autonomous vehicles use Depth Camera to detect their surroundings?
+        6. Innovative Applications of Depth Camera in the Construction Industry: How is Depth Camera technology applied in the construction industry?
+        7. Relevance of Depth Camera in Military and Security Applications: How is Depth Camera technology applied in military and security sectors?
+        8. Potential of Real-Time 3D Scanning Using Depth Camera: How can Depth Camera be used to advance real-time 3D scanning technology?
+
+    3. ROS
+        1. Current Status and Future of Autonomous Vehicles Using ROS: What is the current status and future development direction of autonomous vehicles using ROS?
+        2. Role of ROS in Smart Factories and Collaborative Robot Production: How is ROS utilized in smart factories and collaborative robot production?
+        3. Importance of ROS in Multi-Robot Systems: How do multi-robot systems cooperate using ROS?
+        4. Logistics and Warehouse Automation Using ROS: How can ROS be used to implement logistics and warehouse automation?
+        5. Future of Agricultural Automation and Smart Farms Using ROS: How can ROS advance agricultural automation and smart farming?
+        6. Development of AI-Based Algorithms for Robots Using ROS: How can ROS be used to develop AI algorithms for robots?
+        7. Market Trends for ROS as a Robot Operating System: How is ROS evolving as a robot operating system in the market?
+        8. Partnership between ROS and the Industrial Robot Manufacturing Industry: How do ROS and the industrial robot manufacturing industry collaborate?
+
+<Mandatory Test>: In teams, please select one question from the following list, ensuring that teams do not choose the same topic, and submit reports.
+    1. Python and Quantum Computing: How is Python integrated with quantum computing for scientific and engineering applications, and what innovations are anticipated in machine learning and artificial intelligence?
+    2. Robotics and Biomechanics: How are biomechanics principles applied to improve the motion capabilities and efficiency of robots in design and control?
+    3. Future Prospects of Depth Camera Art in Entertainment: How does real-time interactive art through Depth Camera create unique interactions between artworks and audiences in the entertainment industry, and what are the future possibilities and innovations in this field?
+
+<Advanced Test>: In teams, please submit a report of at least 5 chapters with diagrams for each of the following topics.
+    1. Robot Hardware
+        1. AI Robot DIY Kit Hardware Configuration: Divide the AI robot DIY kit into power, control, devices, and propulsion components and provide related explanations.
+        2. Components of Intelligent Robots: Divide intelligent robots into motors, robot sensors, control systems, and communication systems, and describe each part.
+    2. Introduction to ROS
+        1. Explain 5 out of 7 different functions related to robots, such as robot geometry library, robot description language, diagnostic system, sensing, and navigation.
+        2. Describe 4 out of 5 sensing and perception libraries used in robotics, such as SLAM, object detection, navigation, and sensor fusion.
+        3. Explain why matrix operations are necessary in robotics and where they are applied.
+    3. ROS Commands
+        1. Explain the 4 communication methods in ROS and provide related code examples.
+        2. Describe 10 ROS commands and provide related code examples.

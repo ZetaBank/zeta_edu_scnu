@@ -1,0 +1,22 @@
+
+Data Model
+============
+
+Using Table, List Data Models and View Widgets
+------------------------------------------------
+
+- In PyQt5, the MVC (Model-View-Controller) pattern is employed to handle data models.
+
+- This pattern divides the functionality of a user interface into three separate segments – model, view, and controller, enabling the independent development of each part.
+
+- PyQt5's ``QAbstractTableModel`` and ``QAbstractListModel`` are classes that implement the model segment of this pattern.
+
+  - ``QAbstractTableModel`` is used to represent a 2-dimensional data structure, i.e., data composed of rows and columns.
+
+  - ``QAbstractListModel`` represents a 1-dimensional data structure, like a list or an array consisting of consecutive items.
+
+
+.. toctree:: 
+
+    1.table_view
+    2.list_view

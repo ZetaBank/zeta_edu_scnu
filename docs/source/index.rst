@@ -1,148 +1,64 @@
-ZetaBank Lecture
+AI 로봇 융합교육
 ===================
 
-
-Welcome to ZetaBank Educational Program!
-
-To foster future talent, we from ZetaBank provides the Philosophy of Education.
-
-.. raw:: html
-
-    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
-        <iframe src="https://www.youtube.com/embed/7_u3JyOqbPo" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-    </div>
-
-|
+.. thumbnail:: /_images/education/intro.PNG
+      :width: 800
+      :height: 500
 
 .. raw:: html
 
-    <div>
-        <h2>The Future Convergence Curriculum Philosophy of ZetaBank</h2>
-    </div>
+교육 목표
+^^^^^^^^^^^^^^^
+1. 현재 로봇이 사용되고 있는 분야와 지향하는 미래에 대해 알아봅시다.
 
-1. We provide educational skills that promote students thinking skills with cutting-edge technology such as Big Data, Artificial Intelligence, Virtualization, Robotics, Autonomous Driving.
+2. 로봇은 어떻게 구성되어 상세히 알아봅시다.
 
-2. We believe that better machine-human interaction is the future of technology.
+3. 로봇 체험을 통해 로봇을 조립하고, 제어해봅시다.
 
-3. We promote the convergence of educational majors.
-
-
-.. raw:: html
-    
-    <div>
-        <h2>Overall Lecture Plan</h2>
-    </div>
-
-
-Education based on information cramming:
-
-   .. image:: _images/intro/cramming.jpg
-      :width: 250
-|
-
-In Education Provided by ZetaBank:
-
-- We Provide Self-Learning Opportunities:
-
-  .. image:: _images/intro/zeta_edu.jpg
-   :width: 250
-|
-
-- We Provide Communication and Cooperation Training:
-
-  .. image:: _images/intro/zeta_edu2.jpg
-   :width: 250
-
-.. toctree::
-    :caption: Zeta2 Robot Hardware
-    :hidden:
-
-
-.. toctree::
-    :caption: Robot Hardware and ROS 2 Installation 
-    :hidden:
-
-    courses/1.install_ros2_humble/1.robot_hardware_spec
-    courses/1.install_ros2_humble/2.robot_hardware_check
-    courses/1.install_ros2_humble/3.robot_making
-    courses/1.install_ros2_humble/1.robot_setup
-    courses/1.install_ros2_humble/2.pc_setup
-    courses/1.install_ros2_humble/3.install_ros2
-    courses/1.install_ros2_humble/4.robot_assemble_competition
-
+4. 팀 미션을 통해 커뮤니케이션 능력과 단합력을 향상시킵니다.
 
 .. toctree:: 
-    :caption: ROS 2 CLI Tutorial
+    :caption: AI 로봇 미래 동향과 교육
+    :maxdepth: 1
     :hidden:
-    
-    courses/2.tutorial_cli_ros2/1.setting
-    courses/2.tutorial_cli_ros2/2.turtlesim_rqt
-    courses/2.tutorial_cli_ros2/3.node
-    courses/2.tutorial_cli_ros2/4.topic
-    courses/2.tutorial_cli_ros2/5.service
-    courses/2.tutorial_cli_ros2/6.parameters
-    courses/2.tutorial_cli_ros2/7.action
-    courses/2.tutorial_cli_ros2/8.rqt_console
-    courses/2.tutorial_cli_ros2/9.launching_node
-    courses/2.tutorial_cli_ros2/10.recording
-    courses/2.tutorial_cli_ros2/11.robot_hardware_spec_quiz
+    :titlesonly: 
+
+    edu/edu_1/timetable
+    edu/edu_1/team
+    edu/edu_1/trends
 
 .. toctree:: 
-    :caption: ROS 2 Client libraries Tutorial
+    :caption: AI 로봇의 구성
+    :maxdepth: 1
     :hidden:
+    :titlesonly: 
+
+    edu/edu_2/hardware/index
+    edu/edu_2/software/index
     
-    courses/3.tutorial_client_libraries/1.colcon
-    courses/3.tutorial_client_libraries/2.create_workspace
-    courses/3.tutorial_client_libraries/3.create_package
-    courses/3.tutorial_client_libraries/4.writing_a_simple_cpp_pub_and_sub
-    courses/3.tutorial_client_libraries/5.writing_a_simple_py_pub_and_sub
-    courses/3.tutorial_client_libraries/6.writing_a_simple_cpp_service_and_client
-    courses/3.tutorial_client_libraries/7.writing_a_simple_py_service_and_client
-    courses/3.tutorial_client_libraries/8.create_msg_and_srv
-    courses/3.tutorial_client_libraries/9.implementing_custom_interface
-    courses/3.tutorial_client_libraries/10.using_parameters_cpp
-    courses/3.tutorial_client_libraries/11.using_parameters_py
-    courses/3.tutorial_client_libraries/12.using_ros2doctor
-    courses/3.tutorial_client_libraries/13.personal_package
+.. toctree:: 
+    :caption: Break Time
+    :maxdepth: 1
+    :hidden:
+    :titlesonly: 
+
+    edu/edu_3/break/index
 
 .. toctree:: 
-    :caption: ROS 2 Intermediate
+    :caption: AI 로봇 조립과 자율주행
+    :maxdepth: 1
     :hidden:
-    
-    courses/4.intermediate_ros2/1.rosdep
-    courses/4.intermediate_ros2/2.create_action
-    courses/4.intermediate_ros2/3.writing_a_cpp_action
-    courses/4.intermediate_ros2/4.writing_a_py_action
-    courses/4.intermediate_ros2/5.launch/0.index
-    courses/4.intermediate_ros2/6.tf2/0.index
-    courses/4.intermediate_ros2/7.intermediate_mission
+    :titlesonly: 
 
-
+    edu/edu_4/making/index
+    edu/edu_4/control
 
 .. toctree:: 
-    :caption: Zeta2 Robot Packages
+    :caption: 마무리하기
+    :maxdepth: 1
     :hidden:
-    
-    courses/5.robot_start/1.zeta2_bringup
-    courses/5.robot_start/2.zeta2_autonomous
+    :titlesonly: 
 
+    edu/edu_5/reverse
+    edu/edu_5/finish
 
-.. toctree:: 
-    :caption: Navigation2 Packages
-    :hidden:
-    
-    courses/6.navigation2/1.nav2_start
-    courses/6.navigation2/2.nav2_planners
-    courses/6.navigation2/3.nav2_planners_navfn
-    courses/6.navigation2/4.nav2_planners_smac
-    courses/6.navigation2/5.nav2_planners_theta
-    courses/6.navigation2/6.nav2_controllers
-    courses/6.navigation2/7.nav2_controllers_dwb
-    courses/6.navigation2/8.nav2_controllers_regulated_pp
-    courses/6.navigation2/9.nav2_controllers_mppi
-    courses/6.navigation2/10.nav2_controllers_rotation_shim
-    courses/6.navigation2/11.nav2_controllers_graceful
-    courses/6.navigation2/12.simple_commander_api
-    courses/6.navigation2/13.nav2_conclusion
-    courses/6.navigation2/14.parameter_mission
-    courses/6.navigation2/15.navigation_project

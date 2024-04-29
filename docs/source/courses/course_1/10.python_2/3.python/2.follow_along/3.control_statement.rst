@@ -1,0 +1,144 @@
+Control Statements
+======================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow along: Control Statements
+        </p>
+        <div class="line-block">
+            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+        </div>
+        <ul>
+            <li>Create a new *.ipynb file Jupyter Notebook</li>
+            <li>Fill in the content below in the newly created file</li>
+            <li>Follow and Execute the example codes</li>
+        </ul>
+        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        
+    </div>
+
+.. raw:: html
+
+- If control statement
+
+.. code-block:: python
+    
+    # If Statement
+    temperature = 25
+
+    if temperature > 30:
+        print("It's hot outside.")
+    elif temperature > 20:
+        print("The weather is pleasant.")
+    else:
+        print("It's a bit chilly.")
+
+- For loop
+
+.. code-block:: python
+
+    # For Loop
+    fruits = ["apple", "banana", "orange"]
+
+    print("Fruits:")
+    for fruit in fruits:
+        print(fruit)
+
+- While loop
+
+.. code-block:: python
+
+    # While Loop
+    count = 0
+    while count < 5:
+        print("Count:", count)
+        count += 1
+
+- For loop with range
+
+.. code-block:: python
+
+    # Range Function
+    print("Even Numbers:")
+    for num in range(0, 10, 2):
+        print(num)
+
+- For loop with break statement
+
+.. code-block:: python
+
+    # Break Statement
+    print("Break Example:")
+    for number in range(10):
+        if number == 5:
+            break
+        print(number)
+
+- For loop with continue statement
+
+.. code-block:: python
+
+    # Continue Statement
+    print("Continue Example:")
+    for num in range(10):
+        if num % 2 == 0:
+            continue
+        print(num)
+
+- For loop with nested loop
+
+.. code-block:: python
+
+    # Nested Loop
+    print("Nested Loop Example:")
+    for i in range(3):
+        for j in range(2):
+            print(i, j)
+
+
+.. code-block:: python
+
+    # Output:
+    # It's a bit chilly.
+
+    # Fruits:
+    # apple
+    # banana
+    # orange
+
+    # Count: 0
+    # Count: 1
+    # Count: 2
+    # Count: 3
+    # Count: 4
+
+    # Even Numbers:
+    # 0
+    # 2
+    # 4
+    # 6
+    # 8
+
+    # Break Example:
+    # 0
+    # 1
+    # 2
+    # 3
+    # 4
+
+    # Continue Example:
+    # 1
+    # 3
+    # 5
+    # 7
+    # 9
+
+    # Nested Loop Example:
+    # 0 0
+    # 0 1
+    # 1 0
+    # 1 1
+    # 2 0
+    # 2 1

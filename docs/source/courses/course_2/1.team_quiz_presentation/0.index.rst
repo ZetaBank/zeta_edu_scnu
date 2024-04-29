@@ -1,0 +1,22 @@
+Team Quiz Presentation
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team Quiz Presentation: Robot
+        </p>
+        <div class="line-block">
+            <div class="line">This is a team quiz presentation where each team announces their answers.</div>
+        </div>
+        <ul>
+            <li>Let's see if our answer is correct.</li>
+            <li>It's time for each team to present their hard-earned answers.</li>
+            <li>There may even be a reward if you get the right answer!</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+1. Let's present Robot quiz by team.

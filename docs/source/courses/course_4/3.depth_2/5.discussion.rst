@@ -1,0 +1,22 @@
+Discussion
+=============
+
+Realsense lets you do a lot of things with your camera. We only did basic work using Realsense through the lecture.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li> 
+                Gaming and Entertainment: Immersive Experiences with Realsense
+                <ul>
+                    <li>How does Realsense's gesture control elevate interactive gaming experiences and player engagement?</li>
+                    <li>What potential challenges exist in implementing Realsense technology for facial recognition in gaming?</li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>

@@ -1,0 +1,25 @@
+Empty Window
+-------------
+
+.. code-block:: python
+   :caption: scripts/PYQT2/01_main_widget/01_empty/main.py
+   :linenos:
+
+   from PyQt5.QtWidgets import (
+       QMainWindow, QApplication
+   )
+
+   class MainWindow(QMainWindow, object):
+       def __init__(self, parent=None):
+           super(MainWindow, self).__init__(parent)
+
+   if __name__ == "__main__":
+       app = QApplication([])
+       mainWindow = MainWindow()
+       mainWindow.show()
+       app.exec_()
+
+- This example only displays a basic window based on ``QMainWindow``.
+- No special widgets or elements are added.
+- ``QMainWindow`` is the primary window class in PyQt5.
+- Various widgets, toolbars, menubars, status bars, etc. can be added to it.

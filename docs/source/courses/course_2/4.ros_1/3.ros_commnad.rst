@@ -1,0 +1,158 @@
+ROS Command Line - Ⅱ
+================
+
+ROS Shell Command
+^^^^^^^^^^^^^^^^
+
+a. roscore (Type: Launch Command):
+- Function: Starts the ROS master, which is the central coordination point for all ROS nodes in a system.
+
+.. code-block:: bash
+
+    **Example**: Open a terminal and run the following command to start the ROS master.
+    ```
+    roscore
+
+    ```
+
+b. rosrun (Type: Launch Command):
+- Function: Runs a specific node from a ROS package.
+
+.. code-block:: bash
+
+    **Example**: Suppose you have a package named `my_robot_pkg` and you want to run a node named `controller_node` from it.
+    ```
+    rosrun my_robot_pkg controller_node
+    ```
+
+c. roslaunch (Type: Launch Command):
+- Function: Launches complex ROS systems composed of multiple nodes and configuration files.
+
+.. code-block:: bash
+
+    **Example**: If you have a launch file named `my_robot.launch` that launches several nodes for a robot simulation:
+    ```
+    roslaunch my_robot_pkg my_robot.launch
+    ```
+
+d. rostopic (Type: Information Command):
+- Function: Provides information about ROS topics.
+
+.. code-block:: bash
+
+    **Example**: To list all available topics:
+    ```
+    rostopic list
+    ```
+
+e. rosservice (Type: Information Command):
+- Function: Gives information about ROS services.
+
+.. code-block:: bash
+
+    **Example**: To list all available services:
+    ```
+    rosservice list
+    ```
+
+f. rosparam (Type: Configuration Command):
+- Function: Manages parameters on the ROS parameter server.
+
+.. code-block:: bash
+
+    **Example**: To set a parameter named `max_speed` to a value of `5.0`:
+    ```
+    rosparam set max_speed 5.0
+    ```
+
+g. rosbag (Type: Data Recording and Playback Command):
+- Function: Records and plays back ROS topic data.
+
+.. code-block:: bash
+
+    **Example**: To record data from specific topics into a bag file named `data.bag`:
+    ```
+    rosbag record -O data.bag /topic1 /topic2
+    ```
+
+ROS Execution Command
+^^^^^^^^^^^^^^^^
+
+Type: Launch Command (e.g., rosrun, roslaunch)
+
+Function: Execution commands are used to start and run ROS nodes and launch files. These commands initiate the execution of software components that perform specific tasks within a robotic system.
+
+rosrun:
+
+Function: Runs a specific node from a ROS package.
+
+Example: Suppose you have a package named my_robot_pkg containing a node named controller_node. To run the controller node, use the following command:
+
+.. code-block:: bash
+
+    rosrun my_robot_pkg controller_node
+
+roslaunch:
+
+Function: Launches complex ROS systems composed of multiple nodes and configuration files.
+
+Example: Let's say you have a launch file named robot_simulation.launch in the package my_robot_pkg, which launches a simulation environment along with multiple nodes. Use the following command:
+
+.. code-block:: bash
+
+    roslaunch my_robot_pkg robot_simulation.launch
+
+ROS Information Command
+^^^^^^^^^^^^^^^^
+
+Type: Information Command (e.g., rostopic, rosservice)
+
+Function: Information commands provide insights into different aspects of the ROS system, such as topics, services, and parameters. They allow users to examine and interact with the runtime behavior and configuration of ROS nodes.
+
+rostopic:
+
+Function: Provides information about ROS topics, including listing available topics, publishing messages to topics, and subscribing to topics to view messages.
+
+Examples:
+
+To list all available topics:
+
+.. code-block:: bash
+    
+    rostopic list
+
+To publish a message to a topic named /robot_status:
+
+.. code-block:: bash
+
+    rostopic pub /robot_status std_msgs/String "data: 'operational'"
+
+To subscribe and view messages on a topic named /sensor_data:
+
+.. code-block:: bash
+
+    rostopic echo /sensor_data
+
+rosservice:
+
+Function: Provides information about ROS services, including listing available services, calling services with specific arguments, and viewing service definitions.
+
+Examples:
+
+To list all available services:
+
+.. code-block:: bash
+
+    rosservice list
+
+To call a service named /reset_robot:
+
+.. code-block:: bash
+
+    rosservice call /reset_robot
+
+To view the details of a service named /move_robot:
+
+.. code-block:: bash
+
+    rosservice info /move_robot

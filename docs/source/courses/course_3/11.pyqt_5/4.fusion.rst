@@ -1,0 +1,268 @@
+Combining PYQT GUI
+======================
+
+ChatServer
+------------------
+.. code-block:: python
+    :caption: scripts/PYQT5/04_fusion/01_main_server.py
+
+    # -*- coding: utf-8 -*-
+
+    import sys
+    import socket
+    import threading
+    from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QLabel
+
+    class ChatServer(QWidget):
+        def __init__(self):
+            super(ChatServer, self).__init__()
+
+            self.initUI()
+
+            self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.server.bind(('0.0.0.0', 8080))
+            self.server.listen(300)
+
+            self.clients = []
+
+            self.running = False
+
+
+        def initUI(self):
+            self.log_window = QTextEdit(self)
+            self.log_window.setReadOnly(True)
+
+            self.status_label = QLabel('Server is stopped', self)
+
+            self.start_button = QPushButton('Start Server', self)
+            self.start_button.clicked.connect(self.toggle_server)
+
+            layout = QVBoxLayout()
+            layout.addWidget(self.status_label)
+            layout.addWidget(self.log_window)
+            layout.addWidget(self.start_button)
+
+            self.setLayout(layout)
+
+        def closeEvent(self, event):
+            self.running = False
+            if self.server:
+                self.server.close()
+            event.accept()
+
+        def toggle_server(self):
+            if self.running:
+                # 서버 종료
+                self.running = False
+                self.server.close()  # 이 부분에서 서버 종료 처리를 하면 좋습니다.
+                self.start_button.setText("Start Server")
+                self.log_window.append('Server stopped!')
+                self.status_label.setText('Server is stopped.')
+
+            else:
+                # 서버 시작
+                self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.server.bind(('0.0.0.0', 8080))
+                self.server.listen(300)
+                
+                self.running = True
+                self.thread = threading.Thread(target=self.accept_connections)
+                self.thread.daemon = True  # 주 스레드가 종료될 때 함께 종료됩니다.
+                self.thread.start()
+
+                self.start_button.setText("Stop Server")
+                self.log_window.append('Server started!')
+                self.status_label.setText('Server is running...')
+
+        def accept_connections(self):
+            while self.running:
+                try:
+                    client_socket, addr = self.server.accept()
+                    self.clients.append(client_socket)
+                    self.log_window.append('Accepted connection from {}'.format(addr))
+                    thread = threading.Thread(target=self.handle_client, args=(client_socket,))
+                    thread.start()
+                except:
+                    pass
+
+
+        def handle_client(self, client_socket):
+            while self.running:  # self.running을 추가하여 서버가 실행 중일 때만 클라이언트를 처리
+                try:
+                    msg = client_socket.recv(1024).decode('utf-8')
+                    if not msg:  # 클라이언트가 연결을 끊었거나 메시지를 보내지 않은 경우
+                        break
+                    self.broadcast(msg, client_socket)
+                    self.log_window.append('Received message: {}'.format(msg))
+                except:
+                    self.clients.remove(client_socket)
+                    client_socket.close()
+                    break  # 연결이 끊어진 경우 루프를 종료
+
+        def broadcast(self, msg, sending_client):
+            for client in self.clients:
+                if client != sending_client:
+                    try:
+                        client.send(msg.encode('utf-8'))
+                    except:
+                        client.close()
+                        self.clients.remove(client)
+
+    app = QApplication(sys.argv)
+    server_window = ChatServer()
+    server_window.show()
+    sys.exit(app.exec_())
+
+
+
+Overview:
+    The ``ChatServer`` class is a simple chat server application. It provides a graphical user interface using PyQt and can communicate with multiple clients at the same time.
+
+Server Initialization:
+    * Socket Creation: It uses a TCP socket bound to the address '0.0.0.0' and port 8080. This address sets up all available network interfaces to be in a listening state.
+    * Concurrent Connections: It's set to handle up to 300 simultaneous connections.
+    * Client List: The ``self.clients`` list tracks the sockets of all currently connected clients.
+
+UI Components:
+    * Log Window: Displays the server's activities and client messages.
+    * Status Label: Shows the server's current status.
+    * Server Start Button: It doesn't actually start the server but is included for demonstration purposes.
+
+Multithreading:
+    * The server uses the ``threading`` module to accept connections from clients and handle each client in separate threads. This ensures the server can handle multiple tasks at the same time and keeps the UI responsive.
+
+Message Broadcasting:
+    * The ``broadcast`` function sends messages to all connected clients.
+    * The message sender is excluded from the recipients' list.
+
+Client Handling:
+    * Connection Acceptance: The ``accept_connections`` function waits for new client connections. Upon establishment, it prints the client's information in the log window and starts a separate thread to handle the client.
+    * Communication with Clients: The ``handle_client`` function manages communication with connected clients. It receives messages from the client, logs them, and then sends the message to all other clients.
+
+Error Handling:
+    * Exception Handling: Most network operations can raise exceptions. Errors occurring during communication with clients are caught and handled, and the connection to the problematic client is terminated.
+
+Server Shutdown Procedures:
+    * Server Shutdown: Within the ``toggle_server`` function, if the server is already running, it closes the server socket, thus shutting down the server.
+    * Safe Termination: The ``closeEvent`` function is defined to safely terminate server connections when the window is closed.
+
+
+ChatClient
+------------------
+
+.. code-block:: python
+    :caption: scripts/PYQT5/04_fusion/02_client.py
+    
+    # -*- coding: utf-8 -*-
+
+    import sys
+    import socket
+    import threading
+    from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton, QLabel, QLineEdit, QMessageBox
+    from PyQt5.QtCore import pyqtSignal
+
+    class ChatClient(QWidget):
+        received_msg_signal = pyqtSignal(str)
+
+        def __init__(self):
+            super(ChatClient, self).__init__()
+
+            self.initUI()
+            
+            self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client.connect(('127.0.0.1', 8080))
+            self.client.settimeout(1)
+
+            self.running = True
+            self.thread = threading.Thread(target=self.receive_message)
+            self.thread.daemon = True
+            self.thread.start()
+
+        def initUI(self):
+            self.setWindowTitle('Chat Client')
+
+            layout = QVBoxLayout()
+
+            self.output_window = QTextEdit(self)
+            self.output_window.setReadOnly(True)
+            layout.addWidget(self.output_window)
+
+            self.input_line = QLineEdit(self)
+            self.input_line.returnPressed.connect(self.send_message)
+            layout.addWidget(self.input_line)
+
+            self.send_button = QPushButton('Send', self)
+            self.send_button.clicked.connect(self.send_message)
+            layout.addWidget(self.send_button)
+
+            # Connect the signal to slot
+            self.received_msg_signal.connect(self.display_received_message)
+
+            self.setLayout(layout)
+
+        def send_message(self):
+            msg = self.input_line.text()
+            self.client.send(msg.encode('utf-8'))
+            self.output_window.append("You: {}".format(msg))
+            self.input_line.clear()
+
+        def receive_message(self):
+            while self.running: 
+                try:
+                    msg = self.client.recv(1024).decode('utf-8')
+                    if not msg:  # 소켓이 종료되면 빈 문자열을 반환합니다.
+                        break
+                    self.received_msg_signal.emit(msg)
+                except socket.timeout:  # 타임아웃 예외를 처리합니다.
+                    continue
+                except:
+                    self.received_msg_signal.emit("An error occurred!")
+                    self.client.close()
+                    break
+
+
+        def display_received_message(self, msg):
+            self.output_window.append("Received: {}".format(msg))
+
+        def closeEvent(self, event):
+            reply = QMessageBox.question(self, 'Confirm Exit', 'Are you sure you want to exit the client?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+            if reply == QMessageBox.Yes:
+                self.running = False
+                self.client.close()
+                self.thread.join(2)  # Wait for the receive_message thread to finish
+                event.accept()
+            else:
+                event.ignore()
+
+    if __name__ == "__main__":
+        app = QApplication(sys.argv)
+        chat_window = ChatClient()
+        chat_window.show()
+        sys.exit(app.exec_())
+
+
+
+Overview:
+    The ``ChatClient`` class is a simple chat client application that communicates with the server.
+
+Client Initialization:
+    * Socket Creation and Connection: It creates a TCP socket with intentions to connect to the server IP address '127.0.0.1' and port 8080.
+    * Socket Timeout: It has a 1-second timeout, ensuring the main thread doesn't block while waiting for data.
+
+UI Components:
+    * Output Window: Shows the chat history with the server.
+    * Input Line: A space where users can type their messages.
+    * Send Button: Sends the typed message to the server.
+
+Threading:
+    * It runs the ``receive_message`` function in a separate thread. This ensures continuous message reception from the server and keeps the main thread responsive.
+
+Signal & Slot:
+    * Uses the PyQt signal-slot mechanism to update the UI safely in the main thread when a message is received. It's a way of safely transmitting data between threads.
+
+Message Reception:
+    * When a message is received, it emits the ``received_msg_signal`` to update the UI in the main thread.
+
+Exception Handling:
+    * It has various exception-handling codes to handle situations that might arise during network operations.

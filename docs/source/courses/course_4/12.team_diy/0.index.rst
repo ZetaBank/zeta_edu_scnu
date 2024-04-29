@@ -1,0 +1,14 @@
+Team DIY Project
+===========
+
+
+Here are the contents for this section:
+
+
+.. toctree:: 
+
+    2.sound/1.index
+    3.code_explanation/1.index
+    4.mission/1.index
+    5.discussion
+    6.qa

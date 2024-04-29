@@ -1,0 +1,56 @@
+Forward kinematics
+===========
+
+- Forward kinematics in the context of robotic arms is a fundamental concept that deals with determining the position and orientation of the robot's end effector (tool or hand) in the robot's workspace based on the joint angles or lengths. This concept is crucial for understanding where the end effector is located as the robot's joints move. In this detailed explanation, we will delve into the key concepts and theories behind forward kinematics for robotic arms.
+
+1. Configuration Space:
+
+    - To understand forward kinematics, it's important to define the concept of configuration space. Configuration space represents all possible joint configurations of the robot arm. In a planar robotic arm with two rotational joints, each joint's angle represents a dimension in the configuration space.
+
+2. Denavit-Hartenberg Parameters:
+
+    - The Denavit-Hartenberg (DH) parameters are a set of rules and conventions used to model the kinematics of robotic arms. These parameters define the relationship between adjacent joints and the position and orientation of the end effector. There are four main DH parameters for each joint:
+
+    - a (Link Length): The distance along the common normal between the Zᵢ and Zᵢ₊₁ axes. It represents the distance between the joint axes.
+
+    - α (Link Twist): The angle about the common normal between the Zᵢ and Zᵢ₊₁ axes. It represents the twist or rotation between the joint axes.
+
+    - d (Link Offset): The offset along the Zᵢ axis to the common normal. It represents the distance between the joint axes along the common normal.
+
+    - θ (Joint Angle): The angle between the Xᵢ and Xᵢ₊₁ axes. It represents the joint angle that determines the position of the end effector.
+
+3. Homogeneous Transformation Matrices:
+
+    - Homogeneous transformation matrices are used to describe the transformation from one coordinate system to another, such as from one joint frame to the next. These matrices combine translation and rotation information into a single 4x4 matrix.
+    
+    - For a given joint i, the homogeneous transformation matrix Tᵢ₊₁ represents the transformation from the i-th frame to the (i+1)-th frame. It is calculated using the DH parameters and can be expressed as:
+
+        Tᵢ₊₁ = [ Rₓ(αᵢ) * Tₓ(dᵢ) * Rₓ(θᵢ) ]
+
+        Where:
+
+            - Rₓ(αᵢ) represents a 3x3 rotation matrix about the X-axis by angle αᵢ.
+
+            - Tₓ(dᵢ) represents a 3x3 translation matrix along the X-axis by distance dᵢ.
+
+            - Rₓ(θᵢ) represents a 3x3 rotation matrix about the X-axis by angle θᵢ.
+
+4. Forward Kinematics Equation:
+
+- The forward kinematics equation relates the position and orientation of the end effector (usually represented by a 4x4 transformation matrix T) to the joint angles (θᵢ) of the robot arm. It is computed by multiplying the homogeneous transformation matrices for all joints from the base to the end effector:
+    
+    T = T₀₁ * T₁₂ * T₂₃ * ... * Tₙ₋₁ₙ
+
+    Where:
+
+        - T is the transformation matrix representing the end effector's position and orientation.
+        
+        - Tᵢ₊₁ represents the transformation matrix from joint i to joint (i+1).
+        
+        - n is the total number of joints in the robotic arm.
+
+5. Application:
+
+    - Once the forward kinematics equation is established for a specific robotic arm, it can be used to determine the end effector's position and orientation for any given joint configuration. This information is essential for robot control, motion planning, and task execution.
+
+    - Understanding forward kinematics is foundational for working with robotic arms, as it allows engineers and roboticists to predict the robot's end effector's location and orientation based on the joint angles or lengths. This knowledge is essential for tasks such as trajectory planning, path optimization, and robot programming in various applications, including manufacturing, assembly, and robotics research.

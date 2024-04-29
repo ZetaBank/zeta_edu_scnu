@@ -1,0 +1,14 @@
+How to Install Python
+======================
+
+.. thumbnail:: /_images/python/python1.png
+
+1. Download Python for Windows from the download page of the official Python website.
+
+<https://www.python.org/downloads/>
+
+|
+
+.. thumbnail:: /_images/python/python2.png
+
+2. Pay attention to the checkbox and proceed with the installation by running the installer.

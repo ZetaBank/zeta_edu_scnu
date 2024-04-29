@@ -1,0 +1,178 @@
+Code Explanation
+==================
+
+Structure Explanation
+--------------------
+
+.. code-block:: python
+
+    import cv2
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import pyrealsense2 as rs
+    print("Environment Ready")
+
+- This section imports the necessary libraries: cv2 for OpenCV operations, numpy for numerical operations, matplotlib.pyplot for visualization, and pyrealsense2 for working with RealSense cameras. The message "Environment Ready" is printed to indicate successful library imports.
+
+.. code-block:: python
+
+    # Setup RealSense pipeline and configuration:
+    pipe = rs.pipeline()
+    cfg = rs.config()
+    cfg.enable_device_from_file("object_detection.bag")
+    profile = pipe.start(cfg)
+
+
+- Here, a RealSense pipeline is initialized, and a configuration is set up to enable reading frames from a recorded bag file named "object_detection.bag". The pipeline is then started using this configuration.
+
+.. code-block:: python
+
+    # Skip 5 first frames to give the Auto-Exposure time to adjust
+    for x in range(5):
+        pipe.wait_for_frames()
+
+- To allow the camera's auto-exposure time to adjust, the code skips the first 5 frames using a loop that waits for frames to be captured.
+
+.. code-block:: python
+
+    # Store next frameset for later processing:
+    frameset = pipe.wait_for_frames()
+    color_frame = frameset.get_color_frame()
+    depth_frame = frameset.get_depth_frame()
+
+- The next frameset is captured, which includes both color and depth frames.
+
+.. code-block:: python
+
+    # Cleanup:
+    pipe.stop()
+    print("Frames Captured")
+
+- The pipeline is stopped to release camera resources, and a message "Frames Captured" is printed to indicate that frames have been successfully captured.
+
+.. code-block:: python
+
+    # Display color frame:
+    color = np.asanyarray(color_frame.get_data())
+    plt.rcParams["axes.grid"] = False
+    plt.rcParams['figure.figsize'] = [12, 6]
+    plt.imshow(color)
+- In this part, the RGB color frame is extracted using color_frame.get_data(). This frame is then converted into a NumPy array called color. The plt.rcParams settings modify the appearance of the upcoming plot. The color frame is displayed using plt.imshow(color) to visualize the RGB image.
+
+.. code-block:: python
+
+    # Colorize depth frame using the RealSense colorizer:
+    colorizer = rs.colorizer()
+    colorized_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data())
+    plt.imshow(colorized_depth)
+
+- Here, the depth frame is colorized using the RealSense colorizer. The colorized depth frame is stored in the colorized_depth variable. It's important to note that colorizing the depth frame assigns colors to different depths for visualization purposes. The colorized depth frame is displayed using plt.imshow(colorized_depth).
+
+.. code-block:: python
+
+    # Create alignment primitive with color as its target stream:
+    align = rs.align(rs.stream.color)
+    frameset = align.process(frameset)
+
+    # Update color and depth frames with aligned data:
+    aligned_depth_frame = frameset.get_depth_frame()
+    colorized_depth = np.asanyarray(colorizer.colorize(aligned_depth_frame).get_data())
+
+    # Display color and aligned depth frames together:
+    images = np.hstack((color, colorized_depth))
+    plt.imshow(images)
+
+- In this section, the color and depth frames are aligned using rs.align. The aligned depth frame is obtained using frameset.get_depth_frame(). The aligned depth frame is then colorized, and the result is stored in the colorized_depth variable. Both the original color frame and the colorized aligned depth frame are horizontally stacked and displayed together using plt.imshow(images).
+
+.. code-block:: python
+
+    # Standard OpenCV boilerplate for running the neural network:
+    height, width = color.shape[:2]
+    expected = 300
+    aspect = width / height
+    resized_image = cv2.resize(color, (round(expected * aspect), expected))
+    crop_start = round(expected * (aspect - 1) / 2)
+    crop_img = resized_image[0:expected, crop_start:crop_start+expected]
+
+- In this section, the color image is prepared for object detection using a pre-trained neural network. The height and width of the original color frame are extracted. The expected size is set for the input to the neural network. The aspect ratio of the image is calculated to ensure proper resizing.
+
+- The image is resized using cv2.resize to match the expected dimensions while preserving the aspect ratio. A cropping window (crop_img) is created to focus on the central part of the resized image.
+
+.. code-block:: python
+
+    # Load pre-trained MobileNet SSD model:
+    net = cv2.dnn.readNetFromCaffe("MobileNetSSD_deploy.prototxt", "MobileNetSSD_deploy.caffemodel")
+    inScaleFactor = 0.007843
+    meanVal = 127.53
+    classNames = ("background", "aeroplane", "bicycle", "bird", "boat",
+                "bottle", "bus", "car", "cat", "chair",
+                "cow", "diningtable", "dog", "horse",
+                "motorbike", "person", "pottedplant",
+                "sheep", "sofa", "train", "tvmonitor")
+
+    # Preprocess the image for the network:
+    blob = cv2.dnn.blobFromImage(crop_img, inScaleFactor, (expected, expected), meanVal, False)
+    net.setInput(blob, "data")
+    detections = net.forward("detection_out")
+
+- Here, a pre-trained MobileNet SSD (Single Shot MultiBox Detector) model is loaded using cv2.dnn.readNetFromCaffe. The model is designed for object detection. Parameters like inScaleFactor and meanVal are set to preprocess the image for the neural network. The classNames list holds class labels for the detected objects.
+
+- The image is preprocessed using cv2.dnn.blobFromImage to prepare it for input to the network. The processed image is passed to the network, and detections are obtained using net.forward.
+
+.. code-block:: python
+
+    # Extract object information from the detection results:
+    label = detections[0, 0, 0, 1]
+    conf = detections[0, 0, 0, 2]
+    xmin = detections[0, 0, 0, 3]
+    ymin = detections[0, 0, 0, 4]
+    xmax = detections[0, 0, 0, 5]
+    ymax = detections[0, 0, 0, 6]
+    className = classNames[int(label)]
+
+- In this part, the detection results are extracted from the output of the neural network. These results include the label (label), confidence score (conf), and bounding box coordinates (xmin, ymin, xmax, ymax). The class name corresponding to the label is extracted from the classNames list.
+
+.. code-block:: python
+
+    # Draw bounding box and label on the cropped image:
+    cv2.rectangle(crop_img, (int(xmin * expected), int(ymin * expected)),
+                (int(xmax * expected), int(ymax * expected)), (255, 255, 255), 2)
+    cv2.putText(crop_img, className,
+                (int(xmin * expected), int(ymin * expected) - 5),
+                cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255))
+
+    plt.imshow(crop_img)
+
+- Here, a bounding box and the class label are drawn on the cropped image to indicate the detected object. cv2.rectangle draws the bounding box, and cv2.putText displays the class name. The modified cropped image is displayed using plt.imshow.
+
+- This completes the object detection process.
+
+.. code-block:: python
+
+    # Scale detection coordinates to depth frame:
+    scale = height / expected
+    xmin_depth = int((xmin * expected + crop_start) * scale)
+    ymin_depth = int((ymin * expected) * scale)
+    xmax_depth = int((xmax * expected + crop_start) * scale)
+    ymax_depth = int((ymax * expected) * scale)
+
+    # Draw bounding box on the colorized depth frame:
+    cv2.rectangle(colorized_depth, (xmin_depth, ymin_depth),
+                (xmax_depth, ymax_depth), (255, 255, 255), 2)
+    plt.imshow(colorized_depth)
+
+- These lines scale the detection coordinates from the resized image to the original depth frame dimensions. A bounding box is drawn on the colorized depth frame to visualize the detected object's position in 3D space.
+
+.. code-block:: 
+        
+    # Crop depth data and convert to meters:
+    depth = np.asanyarray(aligned_depth_frame.get_data())
+    depth = depth[xmin_depth:xmax_depth, ymin_depth:ymax_depth].astype(float)
+    depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
+    depth = depth * depth_scale
+    dist, _, _, _ = cv2.mean(depth)
+    print("Detected a {0} {1:.3} meters away.".format(className, dist))
+    
+- In this final part, the depth data within the bounding box region is extracted from the aligned depth frame. The depth values are converted to meters using the depth scale. The mean depth value within the region is calculated to estimate the distance of the detected object from the camera.
+
+- A message is printed indicating the class of the detected object and its distance from the camera.

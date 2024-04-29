@@ -1,0 +1,22 @@
+Discussion
+=============
+
+Realsense lets you do a lot of things with your camera. We only did basic work using Realsense through the lecture.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li> 
+                Industrial Applications: Quality Control and Automation with Realsense
+                <ul>
+                    <li>How is Realsense utilized for defect detection and quality assurance in manufacturing environments?</li>
+                    <li>What potential benefits does the integration of Realsense cameras bring to robotic inspection systems?</li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>

@@ -1,0 +1,10 @@
+Follow Along!
+===========================
+
+Here are the follow along contents:
+
+.. toctree:: 
+
+    2.dancing_arm
+    3.gripper_control
+    4.teaching_arm

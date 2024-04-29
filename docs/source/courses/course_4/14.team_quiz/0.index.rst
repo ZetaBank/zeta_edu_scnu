@@ -1,0 +1,53 @@
+Team Problem Solving (Robot Arm)
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Team Quiz: Robot Arm
+        </p>
+        <div class="line-block">
+            <div class="line">This is a team problem solving session where each team solves a quiz.</div>
+        </div>
+        <ul>
+            <li>Let's use what we've learned so far to find the answer to the quiz.</li>
+            <li>It's time to find the answer to some of the quizzes below.</li>
+            <li>After answering the team quiz, there will be presentations by each team.</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+Topic: 
+    1. Robot arm analysis questions
+        1. Kinematics and Inverse Kinematics of Robot Arms: In which fields are the principles of kinematics and inverse kinematics of robot arms applied in practice?
+        2. Robot Arms and Algorithms: What real-time motion planning and path planning algorithms are used in the control systems of robot arms, and what performance differences exist between them?
+        3. Robot Arms and Deep Learning: How are machine learning and deep learning algorithms utilized for real-time learning and adaptation in robot manipulation?
+        4. Precision Manipulation with Robot Arms: Which type of robot arm, either multi-axis or parallel, is more suitable for precise manipulation and high-speed operations?
+        5. Robot Arm Protocols: What industrial Ethernet and protocol choices and issues are involved in integrating robot arms with on-site automation systems?
+        6. Integration of IoT with Robot Arms: How can the integration with Internet of Things (IoT) technologies enhance the performance of robot arms?
+        7. Safety and Preventive Measures for Robot Arms: What technological solutions are available for developing safety systems and preventive measures for robot arms?
+        8. Robot Arm Repair and Maintenance: In what situations are autonomous repair robots and maintenance robots used, and what technological advancements have been made in this field?
+        9. Automated Inspection and Quality Control with Robot Arms: How is robot-assisted product quality monitoring and defect detection technology currently utilized, and what are the future possibilities?
+        10. Materials and Lightweighting for Robot Arms: How can the structure and materials of robot arms be lightweighted to enhance their performance?
+
+    2. Robot arm application questions
+        1. Self-Calibration of Robot Arms: How can machine learning be used for self-calibration and learning algorithms in robot arms?
+        2. Monitoring of Robot Arms: How can environmental modeling and sensor data visualization improve state monitoring in the working environment?
+        3. Robot Arms and Art: How can robots be applied in art and the creative design process, with a focus on ethical and creative aspects?
+        4. Innovative Medical Applications of Robot Arms: What innovative possibilities and challenges are associated with using robot arms for precision surgery and medical treatments?
+        5. Space Exploration with Robot Arms: What technological challenges are involved in using robot arms for space exploration and environmental monitoring?
+        6. Real-World Applications and Business Models for Robot Arms: How can robot arms be effectively applied in real industries and services, and what business models can be built around them?
+        7. Collaboration between Robot Arms and Unmanned Aerial Vehicles (Drones): What are the future prospects for cooperative operations and applications between robot arms and drones?
+        8. Food Services and Cooking with Robot Arms: What are the technological discussions and future outlook for using robot arms in food preparation and service?
+        9. Precision Indoor Agriculture with Robot Arms: How is robot arm technology advancing and what are the prospects for indoor agriculture and crop management?
+        10. Military Applications of Robot Arms: How are robot arms utilized in the military and defense sector, and what security issues are involved?
+
+Evaluation Standard:
+    1. Choose two Robot arm analysis questions and two Robot arm application questions to submit your report.
+
+    2. The report evaluation criteria are as follows.
+        - A+ : Write at least 20 pages
+        - A  : Write at least 15 pages
+        - B+ : Write at least 10 pages

@@ -1,0 +1,15 @@
+Screen
+====================================================
+
+Message delivery through the screen on the front of the robot
+
+------------------------------------------------------------------------------------------
+
+Screen & Speaker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Disinfection message output through the screen
+
+Speakers inform pedestrians that a robot is nearby and that it is currently being quarantined.
+
+.. thumbnail:: /_images/components/display.jpg

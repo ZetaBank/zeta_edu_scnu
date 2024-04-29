@@ -1,0 +1,12 @@
+Detecting Keyboard Input
+------------------------
+
+Using PyQt, it's straightforward to detect user keyboard input. 
+Each keyboard event is processed through the ``keyPressEvent`` function.
+For instance, when the user presses the 'A' key, a specific action can be executed.
+
+.. toctree:: 
+
+    1.a_pressed
+    2.move_rectangle
+

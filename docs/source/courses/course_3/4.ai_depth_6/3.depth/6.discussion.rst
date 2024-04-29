@@ -1,0 +1,26 @@
+Discussion
+=============
+
+DepthNet allows us to estimate depth in images, enhancing various applications like augmented reality, robot navigation, and 3D reconstruction. 
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p> 
+        <ul>
+            <li> 
+                Where do you see the most potential for DepthNet in consumer products?
+            </li>
+            <li>
+                What challenges might arise when integrating DepthNet into a new application?
+                <ul>
+                    <li> For DepthNet to be effective, high-quality training data is essential. For instance, if we want to use it for indoor robot navigation, we need datasets comprising diverse indoor scenes. How would you gather and curate such data?</li>
+                </ul>
+            </li>
+            <li>
+                Can you think of innovative applications or areas where DepthNet hasn't been applied yet but would be beneficial?
+            </li>
+        </ul>
+    </div>

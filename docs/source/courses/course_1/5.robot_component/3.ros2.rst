@@ -1,0 +1,31 @@
+ROS 2 (Raspberry Pi)
+======================
+
+.. image:: /_images/robot_component/ros_jets.webp  
+
+In the dynamic landscape of robotics and automation, ROS 2 emerges as a beacon of innovation, building upon the foundation laid by its predecessor, ROS. Much like Python simplifies programming, ROS 2 redefines the framework of robotic development, offering enhanced capabilities, scalability, and adaptability to meet the evolving demands of modern robotics.
+
+Distinctive Traits of ROS 2: Shaping the Future of Robotics
+^^^^^^^^^^^^^^^^^^^^^^
+
+ROS 2 introduces an array of features and advancements that collectively redefine the landscape of robotic systems and development:
+
+1. Modular Architecture: Precision in Customization
+
+   ROS 2 embraces a modular architecture, enabling developers to design robotic systems with precision and customization. The modular nature allows developers to select and integrate only the components necessary for their specific application, streamlining resource utilization and enhancing efficiency.
+
+2. Real-Time Capabilities: Bridging Latency Gaps
+
+   One of the defining features of ROS 2 is its real-time capabilities, a crucial improvement for time-sensitive applications. ROS 2 accommodates hard real-time systems, bridging latency gaps and ensuring predictable response times—essential for applications like industrial automation and autonomous vehicles.
+
+3. Enhanced Security: Safeguarding Robotic Ecosystems
+
+   Security takes center stage in ROS 2, addressing vulnerabilities that emerged with ROS 1. ROS 2 offers enhanced security mechanisms, including fine-grained access control and secure communication protocols. These features safeguard robotic ecosystems against potential threats, reinforcing trust and reliability.
+
+4. Interoperability and Standardization: Fostering Collaboration
+
+   ROS 2 emphasizes interoperability with other robotics frameworks and standards, enabling collaboration and integration across heterogeneous systems. This approach promotes a cohesive ecosystem where robots, sensors, and devices from various manufacturers can seamlessly communicate and collaborate.
+
+5. Performance Optimization: Elevating Efficiency
+
+   Performance optimization is a hallmark of ROS 2, improving resource utilization and execution speed. With ROS 2, developers can harness the power of multicore processors, ensuring efficient computation and improved response times across diverse robotic applications.

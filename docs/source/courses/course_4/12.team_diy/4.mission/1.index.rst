@@ -1,0 +1,118 @@
+Mission Project
+==================
+
+.. raw:: html
+
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Project Name: Make Your Robot Dance to the Music!
+        </p>
+        <div class="line-block">
+            <div class="line"><strong>-</strong> This mission is a <strong>group project.</strong></div>
+            <div class="line"><strong>-</strong> Within your team, create a custom robot arm control system.</div>
+            <div class="line"><strong>-</strong> System should be able to: </div>
+            <div class="line">&emsp;<strong>2.</strong> Controls that would allow the robot arm to move and pick up objects.</div>
+            <div class="line">&emsp;<strong>3.</strong> Ability to play and stop the music while operating above tasks.</div>
+            <div class="line"><strong>-</strong> It is recommended that the final code be on the Leaders computer. (Simultaneous commands to the robot must be avoided!)</div>
+        </div>
+    </div>
+
+
+Libraries used for this Mission
+------------------------------------------
+
+Here are the libraries needed for our Mission.
+
+
+time and Arm_Lib Library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- To control the robot arm we will import:
+
+    - time library for delays on robot arm.
+    - Arm_Lib library for controlling the robot arm.
+    
+    .. code-block:: python 
+
+        import time
+        from Arm_Lib import Arm_Device
+
+
+os Library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- To control the music we will import:
+
+    - os library to publish ROS topic
+
+    .. code-block:: python 
+
+        import os
+
+
+Lets Start the Mission!!!
+----------------------------
+
+
+Open the mission folder and open the mission-dance.ipynb file.
+
+- mission-dance.ipynb
+
+.. thumbnail:: /_images/arm_dance/mission_dance.png
+
+- To control the robot arm from code, don't forget to shut down the docker container. See `here <https://zeta-edu-lecture.readthedocs.io/en/latest/lecture_courses/course_1/5.robot_arm_ex/2.basic_control/2.before_starting.html>`_.
+
+- First, import in the necessary libraries.
+
+.. code-block:: python
+
+    import os
+    import time
+    from Arm_Lib import Arm_Device
+
+    Arm = Arm_Device()
+    time.sleep(.1)
+
+- Initialize the Arm Device.
+
+.. code-block:: python
+
+    Arm.Arm_serial_servo_write6(0, 90, 0, 180, 90, 90, 2000)
+
+- Check out what music you can choose from.
+
+.. thumbnail:: /_images/arm_dance/gui_dance1.png
+
+.. code-block:: python
+
+    !ls /root/scripts/sensor/arm_sounds
+
+- Select the music you want by changing the data of the play_specific topic.
+
+.. code-block:: python 
+
+    os.system('rostopic pub -1 /play_specific std_msgs/String "data: \'/root/scripts/sensor/arm_sounds/music_1.mp3\'"')
+
+- You can stop the music if you wish.
+
+.. code-block:: python 
+
+    os.system('rostopic pub -1 /play_specific std_msgs/String "data: \'stop\'"')
+
+- Be sure to delete the robot after running the code. 
+
+.. code-block:: python 
+
+    del Arm
+
+Make Your Robot Dance to the Music!
+-------------------------------------------------
+
+Now let the robot dance to the music you want. Don't forget to add sleep() code between robot movements.
+
+.. thumbnail:: /_images/arm_dance/gui_dance2.png
+    
+ 
+(**IMPORTANT**) 
+- The servo's operating angle is 0-180 degrees, but in practice, collisions may occur due to the operating range between each joint. 
+- Code with crashes and injuries in mind.

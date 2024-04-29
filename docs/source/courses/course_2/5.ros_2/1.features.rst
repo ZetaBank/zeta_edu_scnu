@@ -1,0 +1,54 @@
+Features of C / C++
+======================
+
+.. thumbnail:: /_images/cpp_install/c_logo.png
+
+Efficiency and Simplicity
+^^^^^^^^^^^^^^^^^^^^^^
+
+C and C++ are celebrated for their remarkable efficiency in program execution and their simplicity in terms of syntax. These qualities make them exceptionally well-suited for system-level programming, where performance and control over resources are paramount. Developers appreciate the concise and clear language structure that allows them to write efficient code while maintaining readability.
+
+Portability
+^^^^^^^^^^^^^^^^^^^^^^
+
+One of the key strengths of C and C++ is their portability across various platforms. Code written in these languages can be easily adapted to different operating systems and hardware architectures with minimal modifications. This portability makes them versatile choices for cross-platform development, saving time and effort when targeting multiple environments.
+
+Rich Library Support
+^^^^^^^^^^^^^^^^^^^^^^
+
+Both C and C++ offer extensive libraries and functions that cover a wide range of tasks and functionalities. These libraries provide developers with a wealth of pre-built tools, making it easier and faster to implement features and solutions in their projects. This extensive support contributes to the productivity and efficiency of developers working with these languages.
+
+Procedural and Object-Oriented
+^^^^^^^^^^^^^^^^^^^^^^
+
+C follows a procedural programming paradigm, emphasizing functions and procedures for structuring code. In contrast, C++ extends this by incorporating object-oriented programming (OOP) capabilities. This duality allows developers to choose the programming style that best suits their project's requirements. Procedural programming in C provides a straightforward approach, while C++'s OOP features enable code reuse and modularity.
+
+High-Performance
+^^^^^^^^^^^^^^^^^^^^^^
+
+C and C++ are synonymous with high performance. They are often the languages of choice for developing performance-critical applications, such as operating systems, embedded systems, and real-time software. These languages provide fine-grained control over system resources, ensuring efficient use of memory and CPU cycles.
+
+Hardware Control
+^^^^^^^^^^^^^^^^^^^^^^
+
+Both languages offer direct access to hardware resources, making them well-suited for tasks that demand precise hardware control. This capability is essential for tasks like device driver development, where interaction with hardware components is a fundamental requirement.
+
+Versatility
+^^^^^^^^^^^^^^^^^^^^^^
+
+C++ stands out for its versatility, supporting multiple programming paradigms, including procedural, object-oriented, and generic programming. This flexibility allows developers to choose the most suitable paradigm for their project, making C++ adaptable to a wide range of application domains. While C is primarily procedural, it can still be used flexibly to meet various programming needs.
+
+Compatibility
+^^^^^^^^^^^^^^^^^^^^^^
+
+C++ is designed to maintain compatibility with C, which means that C++ code can seamlessly integrate with existing C codebases. This compatibility simplifies the process of incorporating existing C libraries into C++ projects, ensuring a smooth transition and reuse of valuable code assets.
+
+Standard Libraries
+^^^^^^^^^^^^^^^^^^^^^^
+
+Both C and C++ come with comprehensive standard libraries that provide a wide range of containers, algorithms, and utilities. These standard libraries significantly reduce the need for external libraries in many cases, simplifying development and ensuring consistency across different projects.
+
+Smart Memory Management (C++)
+^^^^^^^^^^^^^^^^^^^^^^
+
+C++ introduces smart pointers, such as `std::shared_ptr` and `std::unique_ptr`, which automate memory management. This helps mitigate the risk of memory leaks, a common challenge in many software projects. Smart memory management is a valuable feature that enhances code reliability and makes C++ programming more robust.

@@ -1,0 +1,22 @@
+Discussion
+=============
+
+The robot arm allows us to do variety of tasks with our robot. We have only tried elementary tasks with our robot arm through our lecture.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li> 
+                Coexistence of humans and robots.
+                <ul>
+                    <li>A robot that you think you need in your daily life.</li>
+                    <li>The positive impact of robots on human emotions.</li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>

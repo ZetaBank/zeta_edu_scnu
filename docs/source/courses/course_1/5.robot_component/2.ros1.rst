@@ -1,0 +1,39 @@
+ROS 1 (Jetson Nano)
+======================
+
+
+.. image:: /_images/robot_component/ros.jpg
+
+In the dynamic landscape of robotics and automation, ROS 1 has etched its legacy as a trailblazer, fundamentally reshaping the way robots are developed, operated, and navigated. Similar to Python simplifying programming, ROS 1 revolutionized the robotics domain, offering a robust framework for collaborative and innovative robotic systems.
+
+Key Traits of ROS 1: Sculpting the Robotic Landscape
+^^^^^^^^^^^^^^^^^^^^^^
+
+ROS 1 introduces a range of distinctive features and capabilities that converge to define its pivotal role in robotics:
+
+1. Middleware Communication: Uniting Robotic Components
+
+  Central to ROS 1's innovation is its middleware communication infrastructure. ROS 1 establishes a common language for robotic components, enabling seamless communication between sensors, actuators, and controllers. This unified communication fosters a collaborative ecosystem where robots exchange data and coordinate actions effectively.
+
+2. Modular Structure: Building Blocks of Robotics
+
+  ROS 1's modular structure empowers developers to construct robotic systems as interconnected modules. These modules encapsulate specific functionalities, allowing developers to customize and assemble robotic systems with precision. The modularity promotes code reusability and accelerates development cycles.
+
+3. Package Ecosystem: A Repository of Innovation
+
+  ROS 1's package ecosystem forms the repository of robotic innovation. Packages contain nodes, libraries, and configuration files that collectively contribute to various aspects of robotic functionality. This ecosystem enables developers to access a vast array of tools, algorithms, and functionalities, expediting development and enhancing system capabilities.
+
+4. Visualization and Debugging Tools: Insights in Action
+
+  ROS 1 integrates visualization and debugging tools that provide insights into the behavior of robotic systems. These tools enable developers to observe data streams, visualize sensor readings, and debug code in real-time. This visual feedback accelerates development, troubleshooting, and optimization.
+
+5. Community Collaboration: Cultivating a Robotic Ecosystem
+
+  ROS 1 thrives on a vibrant and collaborative community of developers, researchers, and enthusiasts. This open-source ecosystem fosters knowledge sharing, code contribution, and the evolution of robotics technology. The community's collective efforts result in a continuous cycle of innovation and improvement.
+  
+    * EN: ROS Discourse (`ROC_en`_)
+    * KR : 오로카 (`ROC_kr`_)
+
+.. _ROC_en: https://discourse.ros.org/
+.. _ROC_kr: https://cafe.naver.com/openrt
+    

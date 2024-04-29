@@ -1,0 +1,43 @@
+Artificial Intelligence - Ⅰ
+================
+
+- Artificial Intelligence (AI) is a multidisciplinary field aiming to create intelligent agents capable of performing tasks that typically require human cognitive abilities.
+
+- It encompasses various subfields, including machine learning, which addresses the challenges of uncertainty in data and involves techniques like supervised and unsupervised learning.
+
+Uncertainty in AI
+----------------
+
+- Uncertainty is inherent in real-world data and AI applications due to factors such as incomplete information, noise, and variability.
+
+- Dealing with uncertainty is crucial to making informed decisions.
+
+- Probabilistic models are employed to represent and manage uncertainty, enabling AI systems to reason under conditions of ambiguity.
+
+Machine Learning
+----------------
+
+- Machine learning is a subset of AI that focuses on developing algorithms and models that allow computers to learn from data and improve their performance over time.
+
+- It plays a pivotal role in handling uncertainty and making predictions based on patterns and trends within the data.
+
+Supervised Learning
+----------------
+
+- Supervised learning involves training a model on a labeled dataset, where inputs are associated with corresponding desired outputs.
+
+- The model learns to map inputs to outputs by generalizing from the training examples.
+
+- This enables the model to make accurate predictions on new, unseen data. Common applications include image recognition, language translation, and medical diagnosis.
+
+Unsupervised Learning
+----------------
+
+- Unsupervised learning deals with unlabeled data, where the model aims to discover patterns, relationships, and structures within the data.
+
+- Clustering and dimensionality reduction are prominent tasks within unsupervised learning.
+
+- Clustering groups similar data points together, while dimensionality reduction reduces the complexity of data while retaining essential information.
+
+- These techniques are valuable for tasks like customer segmentation, anomaly detection, and data visualization.
+

@@ -1,0 +1,78 @@
+Functions and Classes
+======================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Follow along: Functions and Classes
+        </p>
+        <div class="line-block">
+            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+        </div>
+        <ul>
+            <li>Create a new *.ipynb file Jupyter Notebook</li>
+            <li>Fill in the content below in the newly created file</li>
+            <li>Follow and Execute the example codes</li>
+        </ul>
+        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        
+    </div>
+
+.. raw:: html
+
+Function
+----------------------
+
+.. code-block:: python
+
+    # Defining a Function
+    def greet(name):
+        return f"Hello, {name}!"
+
+    # Calling the Function
+    message = greet("Alice")
+    print(message)
+
+    # Defining a Function with Default Parameter
+    def add_numbers(a, b=0):
+        return a + b
+
+    # Calling the Function with Different Arguments
+    result1 = add_numbers(5, 3)
+    result2 = add_numbers(7)
+    print("Result 1:", result1)
+    print("Result 2:", result2)
+
+Class
+----------------------
+
+.. code-block:: python
+    
+    # Defining a Class
+    class Rectangle:
+        def __init__(self, width, height):
+            self.width = width
+            self.height = height
+
+        def calculate_area(self):
+            return self.width * self.height
+
+    # Creating Objects of the Class
+    rect1 = Rectangle(10, 5)
+    rect2 = Rectangle(8, 6)
+
+    # Calling Methods on the Objects
+    area1 = rect1.calculate_area()
+    area2 = rect2.calculate_area()
+    print("Area 1:", area1)
+    print("Area 2:", area2)
+
+More Code Examples
+----------------------
+
+- Feel like you're not familiar enough with Python yet?
+
+- More Python examples in the link below!
+
+<https://github.com/ZetaBank/zeta_education_examples/>

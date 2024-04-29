@@ -1,0 +1,27 @@
+Auxiliary functions for autonomous driving
+====================================================
+
+Objects lower than or higher than the lidar height are not detected.
+
+It has a camera and ultrasonic sensor to assist with this.
+
+------------------------------------------------------------------------------------------
+
+Real-sense Camera
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Detect objects through the camera at the bottom of the front part of the robot
+
+.. thumbnail:: /_images/components/cam.png
+
+------------------------------------------------------------------------------------------
+
+Sonar Sensor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Detection through rear top, rear bottom, left and right ultrasonic sensors
+
+.. thumbnail:: /_images/components/sonar1.png
+|
+
+.. thumbnail:: /_images/components/sonar2.png

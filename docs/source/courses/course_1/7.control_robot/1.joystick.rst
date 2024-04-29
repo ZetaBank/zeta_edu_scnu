@@ -1,0 +1,27 @@
+Joystick Operation
+================
+
+.. raw:: html
+    
+    <div style="background: #C3F8FF" class="admonition note custom">
+        <p style="background: light-blue" class="admonition-title">
+            Control AI Robot
+        </p>
+        <div class="line-block">
+            <div class="line">This is to control the AI robot we built ourselves.</div>
+        </div>
+        <ul>
+            <li>Let's learn various manipulation methods and move the robot.</li>
+            <li>It's time to move the robot we made.</li>
+            <li>ADon't forget to check if each function of the robot is working well.</li>
+        </ul>
+    </div>
+
+.. raw:: html
+
+
+How to Control Robot Using Joystick
+----------------
+.. thumbnail:: /_images/joystick/joystick1.png
+
+.. thumbnail:: /_images/joystick/joystick2.png
