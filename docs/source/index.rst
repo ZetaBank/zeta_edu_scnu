@@ -53,7 +53,7 @@ AI 로봇 융합형 인재 교육
     :titlesonly: 
 
     edu/edu_3/rosintro2
-    edu/edu_4/competition
+    edu/edu_3/competition
     edu/edu_3/teammission2
 
 .. toctree:: 
@@ -62,6 +62,6 @@ AI 로봇 융합형 인재 교육
     :hidden:
     :titlesonly: 
 
-    edu/edu_5/reverse
-    edu/edu_5/finish
+    edu/edu_4/control/index
+    edu/edu_4/ai/index
 
