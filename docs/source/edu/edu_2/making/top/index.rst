@@ -6,6 +6,7 @@
 .. toctree::
 
      lidar
+     camera
      checker
      antena
      combination
