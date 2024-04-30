@@ -1,0 +1,22 @@
+Discussion
+=============
+
+Using ROS, we were able to check the status of the robot and operate it.
+
+.. raw:: html
+
+    <div style="background: #CFFDE1" class="admonition note custom">
+        <p style="background: #68B984" class="admonition-title">
+            Group Discussion Points
+        </p>
+        <ul>
+            <li> How does ROS impact the robotics industry?</li>
+            <li>
+                Let’s think about the impact ROS has on every aspect of the robotics industry.
+                <ul>
+                    <li>How does the collaborative nature of ROS contribute to the development of a robust ecosystem and shared knowledge in the field of robotics?</li>
+                    <li>ROS's modular and flexible architecture contribute to the evolution of robotics technology, and what potential does it hold for future advancements in the field?</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
