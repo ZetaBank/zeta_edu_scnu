@@ -5,18 +5,18 @@ ROS Topic Publisher
     
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            Follow along: ROS Topic Publisher Example
+            따라하기 : ROS Topic Publisher 예제
         </p>
         <div class="line-block">
-            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter Notebook 환경에서 설정됩니다.</div>
         </div>
         <ul>
-            <li>Open the 01_01_ros_topic_publisher.ipynb Jupyter Notebook</li>
-            <li>Import the necessary python libraries and modules</li>
-            <li>Follow and Execute the example codes</li>
+            <li>01_01_ros_topic_publisher.ipynb Jupyter Notebook을 엽니다.</li>
+            <li>필요한 Python 라이브러리 및 모듈을 가져옵니다.</li>
+            <li>예제 코드를 따라 실행해보세요.</li>
 
         </ul>
-        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        <div class="line">(이 예시에 사용된 Jetson 보드는 'Jetson Nano' 입니다.)</div>
         
     </div>
 
@@ -28,25 +28,25 @@ ROS Topic Publisher
 Open the following jupyter notebook:
 
 - 03_01_ros_topic_publisher.ipynb
-- To run the cells within the notebook use *Ctrl + Enter*
+- 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
 
 
 .. thumbnail:: /_images/robot_control/comm1.jpg
 
 |
 
-Import the necessary python libraries and modules
+필요한 Python 라이브러리 및 모듈을 가져옵니다.
 
 .. code-block:: python
 
     import rospy
     from std_msgs.msg import String
     
-- Create `talker()` function
-- Within the talker function:
+- `talker()` 함수 생성
+- talker() 기능 내에서:
 
-    - Create talker nodes and chatter topics
-    - Publish "hello world" + ROS Timestamp Message repeatedly (per 10hz)
+    - Talker 노드 및 Chatter topic 만들기 
+    - "hello world" + ROS 타임스탬프 메시지 반복 게시 (per 10hz)
 
 .. code-block:: python
 
@@ -54,6 +54,7 @@ Import the necessary python libraries and modules
         pub = rospy.Publisher('chatter', String, queue_size=10)
         rospy.init_node('talker', anonymous=True)
         rate = rospy.Rate(10) # 10hz
+
         while not rospy.is_shutdown():
             hello_str = "hello world %s" % rospy.get_time()
             rospy.loginfo(hello_str)
@@ -61,7 +62,7 @@ Import the necessary python libraries and modules
             rate.sleep()
 
 
-- Execute the talker() function with handler functions. 
+- 핸들러 함수와 함께 talker() 함수를 실행합니다. 
 
 .. code-block:: python
 
