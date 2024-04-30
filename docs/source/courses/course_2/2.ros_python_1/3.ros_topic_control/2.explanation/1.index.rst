@@ -1,44 +1,44 @@
-Explanation
+개념 설명
 =============================================
 
-Within our zetabot robot, we use Robot Operating System (ROS) to control and communicate with our robot. 
+Zetabot 로봇 내에서는 ROS(Robot Operating System)를 사용하여 로봇을 제어하고 통신합니다.
 
 
-The ROS is a set of software libraries and tools that provides functions such as low-level device controls and many more. 
-With our **Follow Along** example, we were able to see how Topic and Node modules interacted with one another. 
+ROS는 낮은 수준의 장치 제어 등과 같은 기능을 제공하는 소프트웨어 라이브러리 및 도구 세트입니다. 
+따라하기 예제를 통해 Topic과 Node 모듈이 서로 상호 작용하는 방식을 확인할 수 있습니다.
 
 Topic 
 -------
 
-Topic/s are named buses over which nodes exchange messages [link]_. They provide a means for the unidirectional communication. 
-This means, we may send (publish) procedue calls for our robot and recieve (subscribe) movement informations from our robot on the said topic.
+Topic은 노드가 메시지를 교환하는 버스로 명명됩니다. 단방향 통신을 위한 수단을 제공합니다. 
+이는 로봇에 대한 절차 호출을 전송(Publish)하고 해당 주제에 대한 로봇의 구동 정보를 수신(Subscribe) 할 수 있음을 의미합니다.
 
-The two nodes used with Topic within our **Follow Along** examples are:
+**따라하기** 예제에서 Topic과 함께 사용되는 두 개의 노드는 다음과 같습니다.
 
-- Publisher (talker node to send information)
-- Subscriber (listener node to recieve information)
+- Publisher (정보를 보내는 talker 노드)
+- Subscriber (정보를 수신하는 listener 노드)
 
-One important point is that every topics are strongly typed by the ROS message type. This means that the message type used during 
-publishing must be the same type when subscribing to the topic. 
+한 가지 중요한 점은 모든 Topic이 ROS 메시지 유형에 따라 강력하게 유형화된다는 것입니다.
+이는 게시 중에 사용된 메시지 유형이 주제를 구독할 때와 동일한 유형이어야 함을 의미합니다.
 
 Nodes
 -------
 
-Node is an executable file wihtin a ROS package. These nodes use ROS client library to communicate with one another. 
-They can publish a message to a Topic or subscribe to a Topic to process the published messages. 
+노드는 ROS 패키지 내의 실행 파일입니다. 이러한 노드는 ROS 클라이언트 라이브러리를 사용하여 서로 통신합니다.
+주제에 메시지를 게시하거나 주제를 구독하여 게시된 메시지를 처리할 수 있습니다.
 
-The below picture shows the interactions between different Topics and Nodes present within our zetabot:
+아래 그림은 Zetabot 내에 존재하는 다양한 주제와 노드 간의 상호 작용을 보여줍니다.
 
 .. thumbnail:: /_images/robot_control/ros_topic_node.png
 
 Publisher 
 --------------
 
-Publihser is a talker node that can broadcast a message to a Topic.
+Publihser는 주제에 메시지를 브로드캐스트할 수 있는 talker 노드입니다.
 
-To Publish a message, initialize a distinct **Topic** (for example *"chatter"*) and generate a output stream object (Publisher object).
+메시지를 게시하려면 **Topic** (예: *"chatter"*)를 초기화하고 출력 스트림 개체(Publisher object)를 생성합니다..
 
-- We use Publisher module from the rospy library which recieves 3 parameters and initializes a publisher object.
+- 우리는 3개의 매개변수를 수신하고 Publisher 개체를 초기화하는 rospy 라이브러리의 Publisher 모듈을 사용합니다.
 
   .. code-block:: python 
 
@@ -46,11 +46,11 @@ To Publish a message, initialize a distinct **Topic** (for example *"chatter"*) 
 
   - Parameters:
 
-    - **topic name**: Name your topic so that you may publish or subscribe on the same name.
-    - **Message_type**: What message type will be used for the communication. 
-    - **queue_size**: How many published messages will be in queue for the Subscriber to recieve them. 
+    - **topic name**: 동일한 이름으로 게시하거나 구독할 수 있도록 Topic Name을 지정합니다.
+    - **Message_type**: 통신에 사용될 메시지 유형입니다.
+    - **queue_size**: 구독자가 수신할 수 있도록 대기열에 게시된 메시지 수입니다.
 
-Below is the example used for our **Follow Along** guide. The topic was named *chatter*, the message type was Python String, and the queue size was 10 (meaning there will be 10 published messages in queue if the subscriber is not fast enough to catch every published message).
+다음은 **따라하기** 가이드에 사용된 예입니다. Topic Name은 chatter이고 메시지 유형은 Python String이며 대기열 크기는 10입니다(구독자가 게시된 모든 메시지를 포착할 만큼 바르지 않은 경우 대기열에 게시된 메시지가 10개가 있음을 의미). 
 
 .. code-block:: python 
 
@@ -58,18 +58,19 @@ Below is the example used for our **Follow Along** guide. The topic was named *c
     
 
 
-After the initialization of the "Topic" and the publisher, create the talker node to Publish the messages.
+'Topic'과 Publisher를 초기화한 후 메시지를 게시하기 위한 talker 노드를 생성합니다.
 
 .. code-block:: python 
 
     rospy.init_node('talker', anonymous=True)
 
-The node was created using a ``rospy.init_node`` function, which initializes a node with the specified name and a setting.
-We initialize our talker node with anonymous setting set to True. This is so that we may have multiple different nodes at the same time. 
+노드는 ``rospy.init_node`` 지정된 이름과 설정으로 노드를 초기화하는 함수를 사용하여 생성되었습니다.
+익명 설정을 True로 설정하여 talker 노드를 초기화합니다. 이는 동시에 여러 개의 서로 다른 노드를 가질 수 있도록 하기 위한 것입니다.
 
 |
 
-To publish a string with the initialized Topic and the talker, use publish function within the Publish object. If there are no Subscriber present during the publishing of the message, the message will go into the queue within the Topic. 
+초기화된 Topic과 talker가 포함된 문자열을 게시하려면 게시 개체 내에서 게시 기능을 사용해야합니다.
+메시지를 게시하는 동안 구독자가 없으면 메시지는 Topic 내의 대기열로 이동됩니다.
 
 .. code-block:: python 
 
@@ -80,10 +81,9 @@ To publish a string with the initialized Topic and the talker, use publish funct
 Subscriber
 ---------------------
 
-Subscriber is a listener node, that can recieve published messages from a Topic. 
+Subscriber는 Topic에 게시된 메시지를 수신할 수 있는 리스너 노드입니다.
 
-- For us to initialize a Subscriber we need to have a Topic name, the type of the message being recieved and function responsbile for handling the message (callback function). 
-  Unlike in the initialization process of the Publisher, we do not need to create an object for our Subscriber. 
+- Subscriber를 초기화하려면 Topic Name, 수신되는 메시지 유형 및 메시지 처리를 담당하는 함수(callback 함수)가 필요합니다. Publisher의 초기화 프로세스와 달리 Subscriber에 대한 개체를 만들 필요가 없습니다.
 
   .. code-block:: python 
     
@@ -91,11 +91,11 @@ Subscriber is a listener node, that can recieve published messages from a Topic.
 
   - Parameters
 
-    - **topic name**: The Topic name used for Publishing the message.
-    - **Message_type**: The message type used when publishing. 
-    - **callback_function**: The function used for the handling the published message. 
+    - **topic name**: 마시지 게시에 사용되는 Topic Name입니다.
+    - **Message_type**: 게시할 때 사용되는 메시지 유형입니다.. 
+    - **callback_function**: 게시된 메시지를 처리하는 데 사용되는 함수입니다.
 
-- Similar to the Publisher, we need to create listener node for the message to be recieved. And since we wish to constantly listen to the message that are being published, we can set the listener function to loop indefinetly. 
+- Publisher와 마찬가지로 메시지를 수신하려면 listener 노드를 만들어야 합니다. 그리고 우리는 게시되는 메시지를 지속적으로 확인하고 싶기 때문에 listener 기능을 무기한 반복하도록 설정할 수 있습니다. 
 
   - Example:
 
@@ -106,9 +106,9 @@ Subscriber is a listener node, that can recieve published messages from a Topic.
             rospy.Subscriber("chatter", String, callback)
             rospy.spin()
 
-- Creating the **callback_function()**
+- **callback_function()** 만들기
 
-  - The Subscriber function sends data object to the callback function which contains the published messeges. The object contains data variable which contains the message (``data_object.data``).
+  - Subscriber 함수는 게시된 메시지가 포함된 callback 함수에 데이터 개체를 보냅니다. 개체에는 메시지(``data_object.data``)가 포함된 데이터 변수가 포함되어 있습니다.
 
   .. code-block:: python 
 
