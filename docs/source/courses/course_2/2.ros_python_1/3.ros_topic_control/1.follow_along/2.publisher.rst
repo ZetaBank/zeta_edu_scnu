@@ -25,7 +25,7 @@ ROS Topic Publisher
 
     <hr>
 
-Open the following jupyter notebook:
+Jupyter Notebook 열기:
 
 - 03_01_ros_topic_publisher.ipynb
 - 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
@@ -35,7 +35,7 @@ Open the following jupyter notebook:
 
 |
 
-필요한 Python 라이브러리 및 모듈을 가져옵니다.
+필요한 Python 라이브러리 및 모듈 가져오기
 
 .. code-block:: python
 
@@ -43,7 +43,7 @@ Open the following jupyter notebook:
     from std_msgs.msg import String
     
 - `talker()` 함수 생성
-- talker() 기능 내에서:
+- `talker()` 기능 내에서:
 
     - Talker 노드 및 Chatter topic 만들기 
     - "hello world" + ROS 타임스탬프 메시지 반복 게시 (per 10hz)
@@ -62,7 +62,7 @@ Open the following jupyter notebook:
             rate.sleep()
 
 
-- 핸들러 함수와 함께 talker() 함수를 실행합니다. 
+- 핸들러 함수와 함께 `talker()` 함수를 실행합니다. 
 
 .. code-block:: python
 

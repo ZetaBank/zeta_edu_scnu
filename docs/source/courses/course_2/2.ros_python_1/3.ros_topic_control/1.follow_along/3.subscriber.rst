@@ -6,18 +6,18 @@ ROS Topic Subscriber
     
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            Follow along: ROS Topic Subscriber Example
+            따라하기 : ROS Topic Subscriber 예제
         </p>
         <div class="line-block">
-            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter Notebook 환경에서 설정됩니다.</div>
         </div>
         <ul>
-            <li>Open the 01_02_ros_topic_subscriber.ipynb Jupyter Notebook</li>
-            <li>Import the necessary python libraries and modules</li>
-            <li>Follow and Execute the example codes</li>
+            <li>01_02_ros_topic_subscriber.ipynb Jupyter Notebook을 엽니다.</li>
+            <li>필요한 Python 라이브러리 및 모듈을 가져옵니다.</li>
+            <li>예제 코드를 따라 실행해보세요.</li>
 
         </ul>
-        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        <div class="line">(이 예시에 사용된 Jetson 보드는 'Jetson Nano' 입니다.)</div>
         
     </div>
 
@@ -27,16 +27,16 @@ ROS Topic Subscriber
     <hr>
 
 
-Open the following jupyter notebook:
+Jupyter Notebook 열기:
 
 - 03_02_ros_topic_subscriber.ipynb
-- To run the cells within the notebook use *Ctrl + Enter*
+- 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
 
 .. thumbnail:: /_images/robot_control/comm2.jpg
 
 |
 
-Import the necessary python libraries and modules
+필요한 Python 라이브러리 및 모듈 가져오기
 
 .. code-block:: python
 
@@ -44,10 +44,10 @@ Import the necessary python libraries and modules
     from std_msgs.msg import String
 
 
-- Create `callback()` function
-- Within the callback function:
+- `callback()` 함수 생성
+- `callback()` 기능 내에서:
 
-    - Node id and message data output
+    - 노드 ID 및 메시지 데이터 출력
 
 .. code-block:: python
 
@@ -55,8 +55,8 @@ Import the necessary python libraries and modules
         rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 
 
-- Create `listener()` function
-- Within the listener function:
+- `listener()` 함수 생성
+- `listener()` 함수 내에서:
 
     - Create listener Node
     - Subscribe to Chatter Topic Message
@@ -69,7 +69,7 @@ Import the necessary python libraries and modules
         rospy.Subscriber("chatter", String, callback)
         rospy.spin()
 
-- Execute the listener() function with handler functions. 
+- 핸들러 함수와 함께 `listener()` 함수를 실행합니다.
 
 .. code-block:: python
 

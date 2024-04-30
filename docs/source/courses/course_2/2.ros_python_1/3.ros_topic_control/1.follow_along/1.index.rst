@@ -1,8 +1,8 @@
-ROS Topic
+따라하기
 =============
 
 ROS Topic에 대한 Publisher와 Subscriber의 예제를 설명합니다.
-Publisher에 대한 예제를 실행하고, 이에 대한 반응을 Subscriber에서 확인하는 예제를 실행합니다. 
+예제를 실행하면서 Publisher와 Subscriber에 대해 배워봅니다.
 
 
 .. toctree:: 
