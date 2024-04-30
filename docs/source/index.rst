@@ -62,6 +62,7 @@ AI 로봇 융합형 인재 교육
     :hidden:
     :titlesonly: 
 
-    edu/edu_4/control/index
+    courses/course_2/2.ros_python_1/0.index
+    courses/course_2/3.ros_python_2/0.index
     edu/edu_4/ai/index
 
