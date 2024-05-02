@@ -11,12 +11,12 @@ LIDAR
             <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter Notebook 환경에서 설정됩니다.</div>
         </div>
         <ul>
-            <li>Open the 01_04_scan.ipynb Jupyter Notebook</li>
-            <li>Import the necessary python libraries and modules</li>
-            <li>Follow and Execute the example codes</li>
+            <li>03_04_scan.ipynb Jupyter 노트북을 엽니다.</li>
+            <li>필요한 Python 라이브러리 및 모듈을 가져옵니다.</li>
+            <li>예제 코드를 따라 실행해보세요</li>
 
         </ul>
-        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        <div class="line">(이 예시에 사용된 Jetson 보드는 'Jetson Nano' 입니다.)</div>
         
     </div>
 
@@ -25,16 +25,16 @@ LIDAR
 
     <hr>
 
-Open the following jupyter notebook:
+Jupyter Notebook 열기:
 
 - 03_04_scan.ipynb
-- To run the cells within the notebook use *Ctrl + Enter*
+- 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
 
 .. thumbnail:: /_images/robot_control/sensor5.png
 
 |
 
-Import the necessary python libraries and modules
+필요한 Python 라이브러리 및 모듈 가져오기
 
 .. code-block:: python
 
@@ -43,8 +43,8 @@ Import the necessary python libraries and modules
 
 
 
--   Create zetabot Node
--   Subscribe to the "scan" topic, and display the published information. 
+-   Zetabot Node 생성
+-   "Scan" Topic을 구독하고 게시된 정보를 표시합니다.
 
 .. code-block:: python
 
