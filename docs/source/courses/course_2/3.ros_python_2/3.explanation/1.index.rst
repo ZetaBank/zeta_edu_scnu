@@ -14,7 +14,7 @@ ROS Command Line
 
 ``rosnode`` 는 ROS 노드에 대한 정보를 표시할 수 있는 명령입니다. 도구에 지원되는 명령어가 몇 가지 존재합니다.
 
-- ``rosnode info``: 노드에 대한 정보를 인쇄합니다.. 예시로 ``rosnode info /node_name`` 는 **게시** 와 **구독** 을 포함하여 노드에 대한 정보를 표시합니다.
+- ``rosnode info``: 노드에 대한 정보를 인쇄합니다. 예시로 ``rosnode info /node_name`` 는 **게시** 와 **구독** 을 포함하여 노드에 대한 정보를 표시합니다.
 - ``rosnode kill``: 실행 중인 노드를 종료합니다. 리스폰 되도록 설정된 노드는 죽지 않거나 다시 나타나기 때문에 주의가 필요합니다. 
 
   - 노드 이름으로 하나 이상의 노드를 종료합니다.
@@ -73,8 +73,10 @@ ROS Command Line
     /rosout
     /listener-zetabot.local-72615-1257921238320
 
-- ``rosnode The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.ping``: 반복적으로 핑을 보내 노드에 대한 연결을 테스트합니다.. 
+- ``rosnode The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.ping``: 반복적으로 핑을 보내 노드에 대한 연결을 테스트합니다.
+
   - ``rosnode ping /node_name`` 또는 ``rosnode ping --all`` 를 이용하여 노드 이름을 지정하거나 모든 노드를 ping 하여 개별적으로 또는 전체적으로 노드를 ping 할 수 있습니다.
+  
   - 개별 노드를 Count 횟수만큼 ping 할 수도 있습니다.
     
     .. code-block:: bash
@@ -88,7 +90,7 @@ ROS Command Line
       xmlrpc reply from http://ann:46635/     time=1.137018ms
       ping average: 1.150429ms
 
-- ``rosnode clearnup``: 도달할 수 없는 노드의 등록 정보를 제거합니다. 이 기능은 ros 노드 표시를 위한 미용 솔루션으로 추가된 기능이므로 기능적 수단으로 사용해서는 안 됩니다. 
+- ``rosnode clearnup``: 도달할 수 없는 노드의 등록 정보를 제거합니다. 이 기능은 ROS 노드 표시를 위한 미용 솔루션으로 추가된 기능이므로 기능적 수단으로 사용해서는 안 됩니다. 
 단순히 지연으로 인해 작동 중인 노드가 종료될 수도 있기 때문입니다.
 
 
@@ -106,17 +108,18 @@ rostopic 명령줄 도구는 ROS Topic에 대한 정보를 표시합니다. 현�
   - 해당 토픽의 구독자만 나열하려면 ``-s`` 인수를 추가하세요.
   - ``-v`` 인수를 추가하여 디스플레이 출력을 제어할 수도 있습니다. 
 
-- ``rostopic echo`` 은 토픽에 전송된 메시지를 표시합니다.. 
+- ``rostopic echo`` 은 토픽에 전송된 메시지를 표시합니다.
+
   - 원하는 토픽을 지정하려면 명령줄 뒤에 토픽 이름을 추가하세요.
     
     .. code-block:: bash
 
       $ rostopic echo /imu
   
-3. ``pm2`` command line tool
+3. ``pm2`` command line 도구
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``pm2`` is a deamon process manager that helps the management of application and nodes within the system. For our application we can type
+``pm2`` 는 시스템 내 애플리케이션 및 노드 관리를 돕는 데몬 프로세스 관리자입니다. 애플리케이션의 경우 다음을 입력할 수 있습니다.
 
 .. code-block:: bash
 
@@ -127,40 +130,42 @@ ROS Service
 ----------------
 
 
-As we learned, the publish / subscribe model is a very flexible communication paradigm but it does not allow request / reply based interactions. 
-Big example for this is sensors that has to recieve and send feedback inforamtions, rather than publishing every sensed information. We can implement
-request / reply based communication system with *Service* which is defined by a pair of messages; one for the request and one for the reply. 
+우리가 배운 대로 Publish / Subscribe 모델은 매우 유연한 통신 패러다임이지만 요청 / 응답 기반 상호 작용을 어용하지 않습니다.
+이에 대한 큰 예는 감지된 모든 정보를 게시하는 대신 피드백 정보를 수신하고 보내야 하는 센서입니다.
+우리는 한 쌍의 메시지로 정의된 서비스를 사용하여 요청 / 응답 기반 통신 시스템을 구현할 수 있습니다.
+하나는 요청용이고 다른 하나는 응답용입니다. 
 
-A providing ROS node offers a service under a string name, and a client calls the service by sending the request message and awaiting the reply. 
+ROS를 제공하는 노드는 문자열 이름으로 서비스를 제공하고, 클라이언트는 요청 메시지를 보내고 응답을 기다리는 방식으로 서비스를 호출합니다.
 
-As mentioned earlier the ROS Services are defined by srv (simplified service description language) files. With the usage of rospy (python library),
-we can convert the srv files into Python source code, and create three classes necessary for ROS Services:
+앞서 언급했듯이 ROS 서비스는 srv(Simplified Service Description Language) 파일로 정의됩니다. 
+rospy(python 라이브러리)를 사용하면 srv 파일을 Python 소스 코드로 변환하고 ROS 서비스에 필요한 세 가지 클래스를 생성할 수 있습니다.
 
-1. Service Definition. Ex: (my_package/srv/Foo.srv -> my_package.srv.Foo)
+1. 서비스 정의. 예: (my_package/srv/Foo.srv -> my_package.srv.Foo)
    
-   Within a python file, the Service is defined as a container for the request and response type. It must be used whenever one creates or calls a service
+   Python 파일 내에서 서비스는 요청 및 응답 유형에 대한 컨테이너로 정의됩니다. 서비스를 생성하거나 호출할 때마다 사용해야 합니다.
 
    .. code-block:: python 
 
     add_two_ints = rospy.ServiceProxy('service_name', my_package.srv.Foo)
 
-2. Request Messages. Ex: (my_package/srv/Foo.srv -> my_package.srv.FooRequest)
+2. Request Messages. 예: (my_package/srv/Foo.srv -> my_package.srv.FooRequest)
    
-   The resuest message is used to call the appropriate service. 
+   요쳥 메시지는 적절한 서비스를 호출하는 데 사용됩니다.
 
 
-3. Response Messages. Ex: (my_package/srv/Foo.srv -> my_package.srv.FooResponse)
+3. Response Messages. 예: (my_package/srv/Foo.srv -> my_package.srv.FooResponse)
 
-   The response message is used to contain the return value from the appropriate service. Hecne the Service handlers must return response messages instances of the correct type. 
+   응답 메시지는 해당 서비스의 반환 값을 포함하는 데 사용됩니다. 따라서 서비스 핸들러는 올바른 유형의 응답 메시지 인스턴스를 반환해야 합니다.
   
 
 2. Service proxies
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-In most cases, you wish to set up a ``rospy.wait_for_service('service_name', timeout=None)`` to block until a service is available. 
+대부분의 경우 ``rospy.wait_for_service('service_name', timeout=None)`` 를 이용하여 서비스를 사용할 수 있을 때까지 차단하도록 설정하려고 합니다.
 
-In order to use a Service, we need to create a ``rospy.ServiceProxy(name, service_class, persistent=False, headers=None)`` with the name of the service one wishes to call. The Service may return an error
-in which case, we need to have a exception handler. 
+서비스를 사용하려면 ``rospy.ServiceProxy(name, service_class, persistent=False, headers=None)`` 사용하여 호출하려는 서비스 이름으로 서비스를 생성해야 합니다. 
+서비스는 오류를 반환할 수 있으며, 이 경우 예외 처리기가 필요합니다.
+
 
 .. code-block:: python 
 
@@ -175,56 +180,59 @@ in which case, we need to have a exception handler.
 3. Calling services
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``rospy.ServiceProxy`` instances are callable. Within the python environment, you may call upon these instances similar to how a methos is called.
+인스턴스 ``rospy.ServiceProxy`` 는 호출 가능합니다. Python 환경 내에서는 메소드가 호출되는 방식과 유사하게 이러한 인스턴스를 호출할 수 있습니다.
 
 .. code-block:: python
 
   add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
   add_two_ints(1, 2)
 
-There are total of three ways to pass an argument to the ServiceProxy instance.
+ServiceProxy 인스턴스에 인수를 전달하는 방법에는 총 세 가지가 있습니다.
 
-1. Explicit style:
+1. 명시적 스타일:
    
-   The explicit style allows you to crewate your won * Request instance and pass it to publish. e.g:
+   명시적 스타일을 사용하면 원 요청 인스턴스를 제작하고 이를 전달하여 게시할 수 있습니다.
 
    .. code-block:: python 
 
     request = rospy_tutorials.srv.AddTwoIntsRequest(1, 2)
     response = add_two_ints(request)
 
-2. Implicit style with in-order arguments:
+2. 순서대로 인수를 사용하는 암시적 스타일:
    
-   In the in-order style, a new Message instance will be created with the arguments provided, in order. With this style, all of the fields must be provided. 
+   순차 스타일에서는 제공된 인수를 순서대로 사용하여 새 Message 인스턴스가 생성됩니다. 이 스타일을 사용하면 모든 필드를 제공해야 합니다. 
 
    .. code-block:: python 
 
     resp = add_two_ints(1, 2)
 
-3. Implicit style with keyword arguments:
+3. 키워드 인수를 사용한 암시적 스타일:
 
-   In the keyword style, you can only initialize the fields you wish to put into as a Message. 
+   키워드 스타일에서는 메시지로 삽입하려는 필드만 초기화할 수 있습니다.
 
    .. code-block:: python 
 
     resp = add_two_ints(a = 1)
 
-   The above code will set the a as 1 and b as the default value (for our case it is 0)
+   위의 코드는 a를 1로 설정하고 b를 기본값으로 설정합니다(우리의 경우에는 0입니다).
 
 4. Providing Services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In rospy, the rospy.Service instance with a callback to invoke when new requests are recieved is created to provide Service. Each inbound request is handled in its own thread,
-so services must be **thread-safe**.
+rospy에서는 서비스를 제공하기 위해 새 요청이 수신될 때 호출할 callback이 있는 rospy.Service 인스턴스가 생성됩니다. 
+각 인바운드 요청은 자체 스레드에서 처리되므로 서비스는 **스레드로부터 안전** 해야 합니다 .
 
 ``rospy.Service(name, service_class, handler, buff_size=65536)``
 
-- Create a new ROS Service with 
-  - Specified name
-  - Service type
-  - Handler
+- 새 ROS Service 생성을 위해서는 
 
-    The handler is invoked with the service request and should invoke appropriate service response message. 
+  - 지정된 이름
+
+  - 서비스 유형
+
+  - 핸들러
+
+    핸들러는 서비스 요청과 함께 호출되며 적절한 서비스 응답 메시지를 호출해야 합니다.
 
     .. code-block:: python 
 
@@ -236,10 +244,10 @@ so services must be **thread-safe**.
         s = rospy.Service('add_two_ints', rospy_tutorials.srv.AddTwoInts, add_two_ints)
         rospy.spin()
 
-    The handler return type may be:
+    핸들러 반환 유형은 다음과 같습니다.
 
-    - None(failure)
-    - ServiceResponse
-    - tuple or list
-    - dict
-    - singe-arugment responses only: value of fields.
+    - 없음(실패)
+    - 서비스 응답
+    - 튜플 또는 리스트
+    - 딕셔너리
+    - 단일 인수 응답만 해당: 필드 값
