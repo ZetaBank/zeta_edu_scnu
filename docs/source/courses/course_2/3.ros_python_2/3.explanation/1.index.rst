@@ -110,7 +110,7 @@ rostopic 명령줄 도구는 ROS Topic에 대한 정보를 표시합니다. 현�
   - 해당 토픽의 게시자만 나열하려면 ``-p`` 인수를 추가하세요. 
 
   - 해당 토픽의 구독자만 나열하려면 ``-s`` 인수를 추가하세요.
-  
+
   - ``-v`` 인수를 추가하여 디스플레이 출력을 제어할 수도 있습니다. 
 
 - ``rostopic echo`` 은 토픽에 전송된 메시지를 표시합니다.
@@ -163,7 +163,7 @@ rospy(python 라이브러리)를 사용하면 srv 파일을 Python 소스 코드
    응답 메시지는 해당 서비스의 반환 값을 포함하는 데 사용됩니다. 따라서 서비스 핸들러는 올바른 유형의 응답 메시지 인스턴스를 반환해야 합니다.
   
 
-2. Service proxies
+1. Service proxies
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 대부분의 경우 ``rospy.wait_for_service('service_name', timeout=None)`` 를 이용하여 서비스를 사용할 수 있을 때까지 차단하도록 설정하려고 합니다.
@@ -182,7 +182,7 @@ rospy(python 라이브러리)를 사용하면 srv 파일을 Python 소스 코드
   except rospy.ServiceException as e:
       print("Service call failed: %s"%e)
 
-3. Calling services
+2. Calling services
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 인스턴스 ``rospy.ServiceProxy`` 는 호출 가능합니다. Python 환경 내에서는 메소드가 호출되는 방식과 유사하게 이러한 인스턴스를 호출할 수 있습니다.
@@ -221,7 +221,7 @@ ServiceProxy 인스턴스에 인수를 전달하는 방법에는 총 세 가지�
 
    위의 코드는 a를 1로 설정하고 b를 기본값으로 설정합니다(우리의 경우에는 0입니다).
 
-4. Providing Services
+3. Providing Services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 rospy에서는 서비스를 제공하기 위해 새 요청이 수신될 때 호출할 callback이 있는 rospy.Service 인스턴스가 생성됩니다. 
