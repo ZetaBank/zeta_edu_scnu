@@ -1,30 +1,25 @@
 개념 설명
 =============
 
-With our **Follow Along** examples we are able to subscribe and listen to two of the 
-sensors attached to our robot. 
+**따라하기** 예제를 통해 로봇에 연결된 두 개의 센서를 구독하고 데이터를 확인할 수 있습니다.
 
-- IMU (inertial measurement unit sensor)
-- LIDAR (light detecting and ranging sensor)
+- IMU (관성 측정 장치 센서)
+- LIDAR (빛 감지 및 거리 측정 센서)
 
 
 IMU
 -----
 
-Inertial Measurement Unit sensor (IMU) are electronic device that measures and reports
-the host's specific force, angular rate, linear velocity, position relative to the 
-global reference frame and so on. 
-This allows for us to detect changes in position within our robot, calculate positional
-information relative to a global reference and so on. 
+관성 측정 장치 센서(IMU)는 호스트의 특정 힘, 각속도, 선속도, 전역 기준 프레임에 대한 상대적인 위치 등을 측정하고 보고하는 전자 장치입니다.
+이를 통해 로봇 내의 위치 변화를 감지하고 전역 참조에 대한 위치 정보를 계산하는 등의 작업을 수행할 수 있습니다.
 
-With our examples, we displayed the current measurments in x, y, z, w read on the 
-Topic using our subscriber node. 
+예제를 통해 구독자 노드를 사용하여 주제에 대해 읽은 x, y, z, w의 현재 측정값을 표시했습니다.
 
-The data type used to store the x, y, z, w values are from sensor_msgs.msg library (IMU module). 
+x, y, z, w 값을 저장하는 데 사용되는 데이터 유형은 sensor_msgs.msg 라이브러리(IMU 모듈)에서 가져온 것입니다. 
 
-- Callback function
+- Callback 함수
 
-  - The example create ``process_imu(msg)`` callback function which displays the read sensor data as a loginfo.
+  - 예제에서는 ``process_imu(msg)`` 읽은 센서 데이터를 로그인 정보로 표시하는 Callback 함수를 생성합니다. 
 
     .. code-block:: python 
 
@@ -50,21 +45,17 @@ The data type used to store the x, y, z, w values are from sensor_msgs.msg libra
 LIDAR
 ---------
 
-Light Detecting and Ranging Sensor (LIDAR) sensors are one of the key components when it comes to self driving robots. 
-It uses eye-safe laser beams to locate and draw the surrounding terrain/environment. 
+LIDAR(빛 감지 및 거리 측정 센서)는 자율 주행 로봇의 핵심 구성 요소 중 하나입니다. 눈에 안전한 레이저 빔을 사용하여 주변 지형과 환경을 찾아 그립니다.
 
-The LIDAR attached onto our zetabot creates a 2 dimensional environmental image. This
-can be used in applications such as self navigation, self driving and other various
-tasks. 
+제타봇에 부착된 LIDAR는 2차원 환경 이미지를 생성합니다. 이는 셀프 내비게이션, 자율 주행 및 기타 다양한 작업과 같은 애플리케이션에 사용될 수 있습니다.
 
-The process of reading the data from the sensor is the same as IMU sensor. 
-The only differences are the message type and the topic name. Unlike IMU Topic, the LIDAR topic publishes
-messages with LaserScan module from sensor_msgs.msg library. And the topic onto which
-the sensor data are published is called **"scan"**
+센서에서 데이터를 읽는 과정은 IMU 센서와 동일합니다. 유일한 차이점은 메시지 유형과 Topic 이름입니다.
+IMU 주제와 달리 LIDAR Topic은 sensor_msgs.msg 라이브러리의 LaserScan 모듈을 사용하여 메시지를 게시합니다.
+그리고 센서 데이터가 게시되는 Topic을 **"scan"** 이라고 합니다.
 
-- Callback function
+- Callback 함수
 
-  - The example create ``process_scan(msg)`` callback function which displays the sensor data as a loginfo.
+  - 예제에서는 ``process_scan(msg)`` 센서 데이터를 로그인 정보로 표시하는 콜백 함수를 만듭니다.
 
     .. code-block:: python 
 
