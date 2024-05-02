@@ -14,7 +14,7 @@ ROS Command Line
 
 ``rosnode`` 는 ROS 노드에 대한 정보를 표시할 수 있는 명령입니다. 도구에 지원되는 명령어가 몇 가지 존재합니다.
 
-- ``rosnode info``: 노드에 대한 정보를 인쇄합니다.. For example: ``rosnode info /node_name`` 는 **게시** 와 **구독** 을 포함하여 노드에 대한 정보를 표시합니다.
+- ``rosnode info``: 노드에 대한 정보를 인쇄합니다.. 예시로 ``rosnode info /node_name`` 는 **게시** 와 **구독** 을 포함하여 노드에 대한 정보를 표시합니다.
 - ``rosnode kill``: 실행 중인 노드를 종료합니다. 리스폰 되도록 설정된 노드는 죽지 않거나 다시 나타나기 때문에 주의가 필요합니다. 
 
   - 노드 이름으로 하나 이상의 노드를 종료합니다.
@@ -74,7 +74,7 @@ ROS Command Line
     /listener-zetabot.local-72615-1257921238320
 
 - ``rosnode The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.ping``: 반복적으로 핑을 보내 노드에 대한 연결을 테스트합니다.. 
-  - ``rosnode ping /node_name`` 또는 ``rosnode ping --all``를 이용하여 노드 이름을 지정하거나 모든 노드를 ping 하여 개별적으로 또는 전체적으로 노드를 ping 할 수 있습니다.
+  - ``rosnode ping /node_name`` 또는 ``rosnode ping --all`` 를 이용하여 노드 이름을 지정하거나 모든 노드를 ping 하여 개별적으로 또는 전체적으로 노드를 ping 할 수 있습니다.
   - 개별 노드를 Count 횟수만큼 ping 할 수도 있습니다.
     
     .. code-block:: bash
