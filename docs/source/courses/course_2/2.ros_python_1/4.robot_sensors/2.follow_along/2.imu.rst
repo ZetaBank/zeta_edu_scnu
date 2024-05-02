@@ -8,7 +8,7 @@ IMU
             따라하기: IMU 센서 작동 예제
         </p>
         <div class="line-block">
-            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter 노트북 환경에서 설정됩니다.</div>
+            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter Notebook 환경에서 설정됩니다.</div>
         </div>
         <ul>
             <li>03_03_imu.ipynb Jupyter Notebook을 엽니다.</li>
