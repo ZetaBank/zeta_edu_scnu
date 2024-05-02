@@ -50,6 +50,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm3.png
 
+---------------------------------------------------------------------
 
 -   joy_node 정보를 출력합니다.
 
@@ -59,6 +60,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm4.webp
 
+---------------------------------------------------------------------
 
 -   현재 실행 중인 ROS Topic 목록을 출력합니다.
 
@@ -68,6 +70,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm5.png
 
+---------------------------------------------------------------------
 
 -   IMU Topic 정보 출력
 
@@ -77,6 +80,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm6.png
 
+---------------------------------------------------------------------
 
 -   IMU Topic 메시지 출력
 
@@ -86,6 +90,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm7.png
 
+---------------------------------------------------------------------
 
 -   pm2를 사용하여 프로세스 목록 확인
 
@@ -95,6 +100,7 @@ Jupyter Notebook 열기:
 
 .. thumbnail:: /_images/robot_control_move/comm8.webp
 
+---------------------------------------------------------------------
 
 -   zetasound 노드 정보 출력
 
