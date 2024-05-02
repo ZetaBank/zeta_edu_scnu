@@ -3,7 +3,7 @@
 ROS Service Client 
 ======================
 
-The Follow Along Examples:
+예제 따라하기:
 
 - :ref:`Command ROS`
 - :ref:`Server ROS`
