@@ -3,7 +3,7 @@
 
 
 ROS Topic에 대한 게시자 및 구독자 방법 예제는 다음과 같습니다.
-(**Important**) Publisher 예제를 실행하고 Subscriber 예제를 실행하는 동안 마지막 셀을 계속 실행하거나 Publisher 예제를 실행하는 동안 Subscirber 예제 내의 마지막 셀을 유지합니다.
+(**중요**) Publisher 예제를 실행하고 Subscriber 예제를 실행하는 동안 마지막 셀을 계속 실행하거나 Publisher 예제를 실행하는 동안 Subscirber 예제 내의 마지막 셀을 유지합니다.
 
 .. toctree:: 
 
