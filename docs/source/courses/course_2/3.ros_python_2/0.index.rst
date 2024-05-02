@@ -2,7 +2,7 @@ ROS Python Control - Ⅱ
 ================
 
 
-Here are the contents for this section:
+이번 섹션의 컨텐츠들입니다.
 
 .. toctree::
 
