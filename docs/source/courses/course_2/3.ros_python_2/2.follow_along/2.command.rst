@@ -38,7 +38,7 @@ ROS Command Example
 
 Jupyter Notebook 열기:
 
-- 03_03_imu.ipynb
+- 01_ros.ipynb
 - 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
 
 
