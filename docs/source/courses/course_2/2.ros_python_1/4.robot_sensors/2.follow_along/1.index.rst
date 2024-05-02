@@ -1,4 +1,4 @@
-Follow Along!
+따라하기
 ==============
 
 .. toctree:: 
