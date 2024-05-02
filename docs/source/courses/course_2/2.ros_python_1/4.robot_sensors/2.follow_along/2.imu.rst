@@ -5,18 +5,18 @@ IMU
     
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            Follow along: IMU Sensor Operation Example
+            따라하기: IMU 센서 작동 예제
         </p>
         <div class="line-block">
-            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter 노트북 환경에서 설정됩니다.</div>
         </div>
         <ul>
-            <li>Open the 01_03_imu.ipynb Jupyter Notebook</li>
-            <li>Import the necessary python libraries and modules</li>
-            <li>Follow and Execute the example codes</li>
+            <li>03_03_imu.ipynb Jupyter Notebook을 엽니다.</li>
+            <li>필요한 Python 라이브러리 및 모듈을 가져옵니다.</li>
+            <li>예제 코드를 따라 실행해보세요.</li>
 
         </ul>
-        <div class="line">(The Jetson Board used for these examples are => Jetson Nano)</div>
+        <div class="line">(이 예시에 사용된 Jetson 보드는 'Jetson Nano' 입니다.)</div>
         
     </div>
 
@@ -25,16 +25,16 @@ IMU
 
     <hr>
 
-Open the following jupyter notebook:
+Jupyter Notebook 열기:
 
 - 03_03_imu.ipynb
-- To run the cells within the notebook use *Ctrl + Enter*
+- 노트북 내에서 셀을 실행하려면 *Ctrl + Enter* 를 사용하세요.
 
 .. thumbnail:: /_images/robot_control/sensor1.png
 
 |
 
-Import the necessary python libraries and modules
+필요한 Python 라이브러리 및 모듈 가져오기
 
 .. code-block:: python
 
@@ -43,9 +43,9 @@ Import the necessary python libraries and modules
     from tf.transformations import quaternion_from_euler
 
 
-- Create zetabot Node
-- Subscribe to the "imu" Topic
-- Check message by dividing it into x, y, z, w values
+- Zetabot Node 생성
+- "imu" Topic 구독하기
+- x, y, z, w 값으로 나누어 메시지 확인
 
 
 .. code-block:: python
