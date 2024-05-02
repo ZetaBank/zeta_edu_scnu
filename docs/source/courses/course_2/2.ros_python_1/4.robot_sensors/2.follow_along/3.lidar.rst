@@ -5,10 +5,10 @@ LIDAR
     
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            Follow along: LIDAR Sensor Operation Example
+            따라하기: LIDAR 센서 작동 예제
         </p>
         <div class="line-block">
-            <div class="line">The program launching process along with parameter settings are all simplified and set up on the Jupyter Notebook Environment.</div>
+            <div class="line">매개변수 설정과 함께 프로그램 시작 프로세스가 모두 단순화되었으며 Jupyter Notebook 환경에서 설정됩니다.</div>
         </div>
         <ul>
             <li>Open the 01_04_scan.ipynb Jupyter Notebook</li>
