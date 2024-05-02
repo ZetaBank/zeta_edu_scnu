@@ -1,4 +1,4 @@
-Explanation
+개념 설명
 =============
 
 With our **Follow Along** examples we are able to subscribe and listen to two of the 
