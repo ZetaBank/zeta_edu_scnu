@@ -1,9 +1,6 @@
 Follow Along!
 ==============
 
-
-Here are the examples for this section:
-
 .. toctree:: 
 
     2.imu
