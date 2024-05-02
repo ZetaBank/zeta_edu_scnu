@@ -1,31 +1,29 @@
-Explanation
+개념 설명
 =============================================
 
-Within our zetabot robot, we use Robot Operating System (ROS) to control and communicate with our robot. 
+Zetabot 로봇 내에서는 ROS(Robot Operating System)를 사용하여 로봇을 제어하고 통신합니다.
 
-
-If we looked at what Topic and Node was within ROS and how to publish and subscribe to the said topic with nodes, 
-we will look at general ROS command lines, as well as service server and client interactions. 
+ROS 내에서 Topic과 Node가 무엇인지, 해당 Topic을 노드로 게시하고 구독하는 방법을 살펴보았다면 일반적인 ROS Command Line과 Service Server 및 Client 상호 작용을 살펴보겠습니다.
 
 
 ROS Command Line  
 ------------------
 
-1. ``rosnode`` command line tool
+1. ``rosnode`` command line 도구
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``rosnode`` is a command line that allows informations about the ROS Nodes to be displayed. There are few supported commands for the tool:
+``rosnode`` 는 ROS 노드에 대한 정보를 표시할 수 있는 명령입니다. 도구에 지원되는 명령어가 몇 가지 존재합니다.
 
-- ``rosnode info``: prints information about a node. For example:
-  - ``rosnode info /node_name`` would display information about a node, including **publication** and **subscription**.
-- ``rosnode kill``: kill a running node. Please be aware that nodes that are set to *respawn* will fail to die, or reappear.
-  - Killing one or more nodes by their name:
+- ``rosnode info``: 노드에 대한 정보를 인쇄합니다.. For example: ``rosnode info /node_name``는 **publication** and **subscription**을 포함하여 노드에 대한 정보를 표시합니다.
+- ``rosnode kill``: 실행 중인 노드를 종료합니다. 리스폰 되도록 설정된 노드는 죽지 않거나 다시 나타나기 때문에 주의가 필요합니다. 
+
+  - 노드 이름으로 하나 이상의 노드를 종료합니다.
     
     .. code-block:: bash
 
       $ rosnode kill rosout add_two_ints_server add_threeints_server ...
   
-  - Killing nodes by user input (interactive mode):
+  - 사용자 입력으로 노드 종료 (대화형 모드):
 
     .. code-block:: bash
 
@@ -35,37 +33,38 @@ The ``rosnode`` is a command line that allows informations about the ROS Nodes t
       Please enter the number of the node you wish to kill.
       > 
 
-  - Kill all nodes:
+  - 모든 노드를 종료합니다.
     
     ``kill -a, kill --all``
 
-- ``rosnode list``: list active nodes
-  - To display the current node list:
+- ``rosnode list``: 활성 노드 나열
+
+  - 현재 노드 목록을 표시합니다.
 
     .. code-block:: bash
 
       $ rosnode list
   
-  - To display all the current list inside a /namespace_topic:
+  - /namespace_topic 내의 모든 현재 목록을 표시합니다.
     
     .. code-block:: bash
 
       $ rosnode list /example_topic_name
 
-  - To display XML -RPC URIs of current nodes:
+  - XML -RPC URI를 표시하려면 다음을 수행하세요.
   
     .. code-block:: bash
 
       $ rosnode list -u
   
-  - To display the name and XML -RPC URIs of all the current nodes (either ``-a`` or ``--all``):
+  - 모든 현재 노드( ``-a`` 또는 ``--all``)의 이름과 XML -RPC UIR를 표시하려면
   
     .. code-block:: bash
 
       $ rosnode list -a
 
   
-- ``rosnode machine``: list nodes runnning on a particular machine or list machines. For example, to see the nodes running on zetabot:
+- ``rosnode machine``: 특정 머신에서 실행 중인 노드를 나열하거나 머신을 나열합니다. 예를 들어 Zetabot에서 실행 중인 노드를 보려면 다음을 수행하세요.
   
   .. code-block:: bash
 
@@ -74,9 +73,9 @@ The ``rosnode`` is a command line that allows informations about the ROS Nodes t
     /rosout
     /listener-zetabot.local-72615-1257921238320
 
-- ``rosnode The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.ping``: test connectivity to a node by pinging them repeatedly. 
-  - You may ping the nodes either individually or in total by specifying a node name ``rosnode ping /node_name`` or ping all the nodes by ``rosnode ping --all``
-  - You may also ping an individual node Count number of times. 
+- ``rosnode The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.ping``: 반복적으로 핑을 보내 노드에 대한 연결을 테스트합니다.. 
+  - ``rosnode ping /node_name`` 또는 ``rosnode ping --all``를 이용하여 노드 이름을 지정하거나 모든 노드를 ping 하여 개별적으로 또는 전체적으로 노드를 ping 할 수 있습니다.
+  - 개별 노드를 Count 횟수만큼 ping 할 수도 있습니다.
     
     .. code-block:: bash
 
@@ -89,18 +88,18 @@ The ``rosnode`` is a command line that allows informations about the ROS Nodes t
       xmlrpc reply from http://ann:46635/     time=1.137018ms
       ping average: 1.150429ms
 
-- ``rosnode clearnup``: purge registration information of unreachable nodes. This function was added as a cosmetic solution for the ros node display and 
-  should not be used for functional means. This is because it may terminate functioning nodes simply due to a delay.
+- ``rosnode clearnup``: 도달할 수 없는 노드의 등록 정보를 제거합니다. 이 기능은 ros 노드 표시를 위한 미용 솔루션으로 추가된 기능이므로 기능적 수단으로 사용해서는 안 됩니다. 
+단순히 지연으로 인해 작동 중인 노드가 종료될 수도 있기 때문입니다.
 
 
 
-2. ``rostopic`` command line tool
+2. ``rostopic`` command line 도구
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-The rostopic command-line tool displays information about ROS topics. Currently, it can display a list of active topics, the publishers and subscribers of a specific topic, the publishing rate of a topic, the bandwidth of a topic, and messages published to a topic. The display of messages is configurable to output in a plotting-friendly format.
+rostopic 명령줄 도구는 ROS Topic에 대한 정보를 표시합니다. 현재는 활성 토픽 목록, 특정 토픽의 게시자 및 구독자, 토픽 게시 속도, 토픽 대역폭, 토픽에 게시된 메시지를 표시할 수 있습니다. 메시지 표시는 플로팅에 적합한 형식으로 출력되도록 구성할 수 있습니다.
 
-- ``rostopic list`` displays all current topics. 
+- ``rostopic list`` 모든 현재 토픽을 표시합니다. 
   - To recieve information on a specific topic, use the ``rostopic list /topic_name`` command. This is equivalent to ``rostopic info `` command. 
   - If you wish to save the topic lists in a bag file, add ``-b`` argument.
   - If you wish to only list the publishers of the said topic, add ``-p`` argument. 
