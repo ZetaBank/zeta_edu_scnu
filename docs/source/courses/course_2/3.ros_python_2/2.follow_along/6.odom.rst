@@ -1,0 +1,24 @@
+ROS Python Command1
+====================================================
+
+로봇의 좌표 정보 받기
+-------------------------
+
+.. thumbnail:: /_images/robot_control_move/odom.png
+      :width: 800
+      :height: 500
+
+.. raw:: html
+
+1. `process_odom(data)`
+      로봇의 x, y, z, w 좌표값을 받아와 출력
+
+2. `process_serial_input(data)`
+      로봇의 주행 상태 알림 함수      
+
+3. `subs()`
+      모터 드라이버의 시리얼과 필터링 된 odometry 정보를 구독하는 함수
+
+
+로봇이 이동함에 따라 로봇의 변화하는 좌표를 받아와 사용자에게 알려주는 예제입니다.
+
