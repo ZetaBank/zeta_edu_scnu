@@ -1,26 +1,15 @@
-Mission
+Mission4
 =========
 
-.. raw:: html
-
-    <div style="background: #C3F8FF" class="admonition note custom">
-        <p style="background: light-blue" class="admonition-title">
-            Project Name: Forward Message
-        </p>
-        <div class="line-block">
-            <div class="line"><strong>-</strong> This mission is an <strong>team project</strong></div>
-            <div class="line"><strong>-</strong> Message transmission using ROS publisher and subscriber.</div>
-            <div class="line"><strong>-</strong> Send and receive messages you want to send to team members. </div>
-        </div>
-    </div>
-
-.. raw:: html
-
-Let's send a message to our team members!
+받은 메시지를 다시 전달해보자!
 -----------------------
 
-1. Through the previous training, we learned about ROS publishers and subscribers.
+1. ROS Publisher와 Subscriber를 응용
 
-2. Now let's send and receive messages with nearby team members through ROS.
+2. Publisher1는 Subscriber2로 사용자의 문자열을 전송
 
-3. Don't forget to adapt the examples we used before!
+3. Subscriber2는 전달받은 메시지 출력
+
+4. 출력된 메시지를 Publisher2에 전송
+
+5. Publisher2는 Subscriber1에 전달받은 문자열 전송
