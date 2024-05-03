@@ -8,5 +8,5 @@ ROS Python Control - Ⅱ
 
     2.follow_along/1.index
     3.explanation/1.index
-    4.discussion
-    5.qa
+    4.mission/1.index
+    5.discussion
