@@ -1,13 +1,10 @@
 Mission
 ======================================
 
- 앞에서 배운 내용들을 활용하여 아래의 미션들을 수행해봅시다.
+앞에서 배운 내용들을 활용하여 아래의 미션들을 수행해봅시다.
 
 .. toctree:: 
     :titlesonly:
 
     mission1
     mission2
-    mission3
-    mission4
-    mission5

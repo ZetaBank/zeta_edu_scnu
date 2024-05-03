@@ -1,4 +1,4 @@
-정수 데이터를 받아 합 구하기
+오각형 그리기
 =========
 
 
@@ -6,12 +6,11 @@
 
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            정수 데이터를 받아 합을 구해보자!
+            로봇을 움직여 오각형을 그려보자!
         </p>
         <div class="line-block">
-            <div class="line"><strong>-</strong> ROS Publisher와 Subscriber를 응용합니다.</div>
-            <div class="line"><strong>-</strong> Publisher는 사용자의 정수 입력을 받아 이를 메시지로 퍼블리시 합니다.</div>
-            <div class="line"><strong>-</strong> Subscriber는 전달받은 정수의 합을 출력합니다. </div>
+            <div class="line"><strong>-</strong> robot_command Topic을 이용하여 로봇 제어하기</div>
+            <div class="line"><strong>-</strong> 직진과 회전을 잘 활용하여 로봇이 오각형을 그리도록 해봅시다.</div>
         </div>
     </div>
 
