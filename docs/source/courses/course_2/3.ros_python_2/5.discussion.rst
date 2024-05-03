@@ -1,21 +1,21 @@
 Discussion
 =============
 
-Using ROS, we were able to check the status of the robot and operate it.
+ROS를 이용하여 로봇의 상태를 확인하고 동작시킬 수 있었습니다.
 
 .. raw:: html
 
     <div style="background: #CFFDE1" class="admonition note custom">
         <p style="background: #68B984" class="admonition-title">
-            Group Discussion Points
+            그룹 토론 요점
         </p>
         <ul>
-            <li> How does ROS impact the robotics industry?</li>
+            <li> ROS는 로봇 산업에 어떤 영향을 미치나요?</li>
             <li>
-                Let’s think about the impact ROS has on every aspect of the robotics industry.
+                ROS가 로봇 산업의 모든 측면에 미치는 영향에 대해 생각해 봅시다.
                 <ul>
-                    <li>How does the collaborative nature of ROS contribute to the development of a robust ecosystem and shared knowledge in the field of robotics?</li>
-                    <li>ROS's modular and flexible architecture contribute to the evolution of robotics technology, and what potential does it hold for future advancements in the field?</li>
+                    <li>ROS의 협업적 성격은 로봇 공학 분야의 강력한 생태계 개발과 지식 공유에 어떻게 기여합니까?</li>
+                    <li>ROS의 유연한 모듈식 아키텍처는 로봇 기술의 발전에 기여하며, 이 분야의 미래 발전을 위해 어떤 잠재력을 갖고 있습니까?</li>
                 </ul>
             </li>
         </ul>
