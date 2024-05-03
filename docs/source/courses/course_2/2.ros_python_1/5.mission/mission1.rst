@@ -6,7 +6,7 @@
 
     <div style="background: #C3F8FF" class="admonition note custom">
         <p style="background: light-blue" class="admonition-title">
-            Project Name: 정수 데이터를 받아 합을 구해보자!
+            정수 데이터를 받아 합을 구해보자!
         </p>
         <div class="line-block">
             <div class="line"><strong>-</strong> ROS Publisher와 Subscriber를 응용합니다.</strong></div>
