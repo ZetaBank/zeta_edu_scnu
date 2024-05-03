@@ -10,3 +10,6 @@ ROS Topic에 대한 게시자 및 구독자 방법 예제는 다음과 같습니
     2.command
     3.server
     4.client
+    5.move
+    6.odom
+    

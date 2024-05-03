@@ -1,0 +1,30 @@
+ROS Python Command1
+====================================================
+
+기본적인 이동 조작
+-------------------------
+
+.. thumbnail:: /_images/robot_control_move/move.png
+      :width: 800
+      :height: 500
+
+.. raw:: html
+
+1. `move()`
+      정면으로 1만큼 이동하는 함수
+
+2. `stop()`
+      정지 함수      
+
+3. `moveTo()`
+      0.5 만큼 후진하는 함수
+
+4. `turnTo()`
+      90 radian 만큼 회전하는 함수
+
+5. `moveTo(distance)`
+      입력한 거리만큼 이동하는 함수
+
+6. `turnTo()`
+      입력한 radian 만큼 회전하는 함수
+
