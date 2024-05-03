@@ -10,4 +10,3 @@ ROS Python Control - Ⅰ
     4.robot_sensors/1.index
     5.mission/1.index
     6.discussion
-    7.qa
